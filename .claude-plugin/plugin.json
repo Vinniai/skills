@@ -1,6 +1,7 @@
 {
   "name": "vinniai-skills",
   "skills": [
+    "./skills/engineering/abcdefg",
     "./skills/engineering/example-skill"
   ]
 }
