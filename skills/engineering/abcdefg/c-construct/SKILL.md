@@ -1,15 +1,12 @@
 ---
-name: abcdefg-construct
-description: Phase C of the abcdefg workflow. Implement the blueprint. Use after Blueprint to write the code in vertical slices, matching the surrounding conventions.
+name: c-construct
+description: Phase C of the abcdefg feature workflow. Internal step invoked by abcdefg — not triggered on its own. Implement the blueprint: write the code in vertical slices, matching the surrounding conventions.
 ---
 
 # C — Construct
 
-Third phase of [abcdefg](../SKILL.md). Goal: working code that realizes the blueprint.
-
-## When to use
-
-- The blueprint is set and you're ready to write code.
+Third phase of [abcdefg](../SKILL.md). Run as a step of that workflow. Goal: working
+code that realizes the blueprint.
 
 ## Steps
 
@@ -24,4 +21,4 @@ Third phase of [abcdefg](../SKILL.md). Goal: working code that realizes the blue
 
 The feature/change is implemented and runs, even if rough edges remain for later phases.
 
-→ Prev: [B — Blueprint](../blueprint/SKILL.md) · Next: [D — Debug](../debug/SKILL.md)
+→ Prev: [B — Blueprint](../b-blueprint/SKILL.md) · Next: [D — Debug](../d-debug/SKILL.md)

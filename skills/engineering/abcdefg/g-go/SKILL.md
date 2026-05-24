@@ -1,15 +1,12 @@
 ---
-name: abcdefg-go
-description: Phase G of the abcdefg workflow. Ship the change. Use after Finalize to commit with a clear message, push, and open or merge the PR as appropriate.
+name: g-go
+description: Phase G of the abcdefg feature workflow. Internal step invoked by abcdefg — not triggered on its own. Ship the change: commit with a clear message, push, and open or merge the PR as appropriate.
 ---
 
 # G — Go
 
-Final phase of [abcdefg](../SKILL.md). Goal: the change is shipped.
-
-## When to use
-
-- The change is finalized, clean, and green — time to ship.
+Final phase of [abcdefg](../SKILL.md). Run as a step of that workflow. Goal: the change
+is shipped.
 
 ## Steps
 
@@ -23,4 +20,4 @@ Final phase of [abcdefg](../SKILL.md). Goal: the change is shipped.
 
 The change is committed, pushed, and on its way to (or already in) the target branch.
 
-→ Prev: [F — Finalize](../finalize/SKILL.md) · Back to [abcdefg](../SKILL.md)
+→ Prev: [F — Finalize](../f-finalize/SKILL.md) · Back to [abcdefg](../SKILL.md)
