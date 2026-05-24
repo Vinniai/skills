@@ -75,9 +75,10 @@ export default function App() {
             change from request to shipped — each finished before the next begins.
           </p>
           <PhaseRail phases={phases} active={active} onSelect={select} />
-          <p className="hint">
+          <p className="hint hint--keys">
             <kbd>←</kbd> <kbd>→</kbd> to walk the sequence
           </p>
+          <p className="hint hint--touch">Tap a phase · swipe the rail for more</p>
         </div>
       </header>
 

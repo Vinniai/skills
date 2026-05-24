@@ -28,7 +28,7 @@
 }
 
 * { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
+html { -webkit-text-size-adjust: 100%; overflow-x: clip; }
 
 body {
   margin: 0;
@@ -39,7 +39,11 @@ body {
   line-height: 1.65;
   font-feature-settings: "liga" 1, "onum" 1, "kern" 1;
   -webkit-font-smoothing: antialiased;
+  overflow-x: clip; /* belt-and-braces against horizontal scroll */
 }
+
+/* long URLs/paths (e.g. ~/.claude) must never force horizontal scroll */
+.lead, .what, ul.steps li, .exit, footer { overflow-wrap: anywhere; }
 
 code {
   font-family: var(--font-mono);
@@ -50,7 +54,13 @@ code {
   padding: 0.08em 0.36em;
 }
 
-.wrap { max-width: 1100px; margin: 0 auto; padding-inline: var(--edge); }
+.wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  /* respect the notch / rounded corners on mobile */
+  padding-left: max(var(--edge), env(safe-area-inset-left));
+  padding-right: max(var(--edge), env(safe-area-inset-right));
+}
 
 /* ---- hero ---- */
 .hero { padding-top: clamp(3rem, 9vw, 7rem); padding-bottom: var(--space-2xl); }
@@ -65,31 +75,40 @@ code {
 .wordmark {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(3.2rem, 12vw, 8rem);
+  /* lower floor + vw-driven so the single unbreakable word fits ~320px */
+  font-size: clamp(2.5rem, 13vw, 8rem);
   line-height: 0.92;
   letter-spacing: -0.03em;
   margin: 0;
+  max-width: 100%;
   color: var(--ink);
 }
 .wordmark .dot { color: var(--accent); }
 .lead {
   font-size: clamp(1.15rem, 1rem + 0.8vw, 1.5rem);
   line-height: 1.45;
-  max-width: 38ch;
+  max-width: min(38ch, 100%);
   margin: var(--space-lg) 0 0;
   color: var(--ink);
 }
 
-/* ---- the interactive A–G rail ---- */
+/* ---- the interactive A–G rail ----
+   Mobile-first: a single horizontal scroll-snap strip that keeps A→G in a
+   straight line. From 720px up, all seven fit and the strip stops scrolling. */
 .rail {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: stretch;
   gap: 0;
   margin-top: var(--space-2xl);
   border-top: 1px solid var(--hair);
   border-bottom: 1px solid var(--hair);
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
 }
+.rail::-webkit-scrollbar { display: none; } /* WebKit */
 .rail-step {
   appearance: none;
   background: none;
@@ -104,10 +123,25 @@ code {
   font-family: var(--font-display);
   color: var(--muted);
   transition: color 0.25s ease, background-color 0.25s ease;
+  flex: 0 0 auto;            /* hold width on mobile so the strip can scroll */
+  scroll-snap-align: start;
+  min-width: 5.5rem;
 }
 .rail-step:first-child { border-left: 0; }
 .rail-step:last-child { border-right: 0; }
-.rail-step:hover { color: var(--ink); background: var(--paper-2); }
+.rail-step[aria-current="true"] {
+  color: var(--accent-ink);
+  background: var(--paper-2);
+}
+/* hover only where a real pointer exists; touch uses active/selected state */
+@media (hover: hover) {
+  .rail-step:hover { color: var(--ink); background: var(--paper-2); }
+}
+/* from 720px the seven steps share the row evenly and stop scrolling */
+@media (min-width: 720px) {
+  .rail { overflow-x: visible; }
+  .rail-step { flex: 1 1 0; min-width: 0; }
+}
 .rail-step .rl {
   font-weight: 800;
   font-size: 1.5rem;
@@ -119,10 +153,6 @@ code {
   font-size: 0.8rem;
   color: inherit;
   opacity: 0.85;
-}
-.rail-step[aria-current="true"] {
-  color: var(--accent-ink);
-  background: var(--paper-2);
 }
 .rail-step[aria-current="true"] .rl { color: var(--accent); }
 .rail-step:focus-visible {
@@ -144,6 +174,12 @@ code {
   border-radius: 4px;
   padding: 0.05em 0.4em;
   background: var(--paper-2);
+}
+/* show the keyboard hint on pointer devices, the tap hint on touch */
+.hint--touch { display: none; }
+@media (pointer: coarse) {
+  .hint--keys { display: none; }
+  .hint--touch { display: block; }
 }
 
 /* ---- phase detail ---- */
@@ -184,9 +220,9 @@ code {
   font-style: italic;
   font-size: clamp(1.05rem, 1rem + 0.4vw, 1.3rem);
   margin: var(--space-sm) 0 var(--space-xl);
-  max-width: 46ch;
+  max-width: min(46ch, 100%);
 }
-ul.steps { list-style: none; padding: 0; margin: 0; max-width: var(--measure); }
+ul.steps { list-style: none; padding: 0; margin: 0; max-width: min(var(--measure), 100%); }
 ul.steps li {
   padding-left: 1.6rem;
   position: relative;
@@ -209,7 +245,7 @@ ul.steps li::before {
   font-size: 0.82rem;
   color: var(--ink);
   letter-spacing: 0.02em;
-  max-width: var(--measure);
+  max-width: min(var(--measure), 100%);
 }
 .exit b { color: var(--accent-ink); font-weight: 600; }
 
@@ -227,7 +263,26 @@ footer {
 }
 footer a { color: var(--accent-ink); }
 
-@media (max-width: 640px) {
-  .detail { grid-template-columns: 1fr; gap: var(--space-md); }
-  .rail-step { flex: 1 1 auto; padding: var(--space-sm) var(--space-md); }
+/* ---- mobile layout (below the 720px rail breakpoint) ---- */
+@media (max-width: 719px) {
+  .hero { padding-top: clamp(2rem, 8vw, 4rem); }
+  /* stack the detail; the marker becomes a compact inline header */
+  .detail {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+    padding-block: var(--space-2xl);
+  }
+  .detail .marker {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-md);
+  }
+  .detail .marker .big { font-size: 3rem; }
+  .detail .marker .idx { margin-top: 0; }
+}
+
+/* generous touch targets on touch devices (WCAG ≥44px) */
+@media (pointer: coarse) {
+  .rail-step { padding: var(--space-md); min-height: 44px; min-width: 4.75rem; }
+  .hint kbd { padding: 0.15em 0.5em; }
 }
