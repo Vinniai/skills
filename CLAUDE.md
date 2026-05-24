@@ -39,6 +39,12 @@ scripts/sync-vendored-skills.sh   # re-copy both trees; flags unregistered skill
 The category `README.md` files are repo-authored and preserved by the sync.
 Override source paths with `AGENT_SIM_SRC` / `AGENT_EMULATE_SRC`.
 
+`design/impeccable` is a **third-party** skill (Apache 2.0) vendored from
+[`pbakaus/impeccable`](https://github.com/pbakaus/impeccable), not from a sibling
+repo. Keep its `LICENSE` and `NOTICE.md` intact. Refresh it with
+`npx skills add pbakaus/impeccable` and re-copy the files (it is not handled by
+`sync-vendored-skills.sh`).
+
 ## Lifecycle folders
 
 - `skills/<category>/` — active, maintained skills.

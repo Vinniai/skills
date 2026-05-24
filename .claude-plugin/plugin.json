@@ -21,6 +21,7 @@
     "./skills/agent-emulate/aws",
     "./skills/agent-emulate/stripe",
     "./skills/agent-emulate/resend",
-    "./skills/agent-emulate/next"
+    "./skills/agent-emulate/next",
+    "./skills/design/impeccable"
   ]
 }
