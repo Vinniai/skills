@@ -151,8 +151,11 @@ group), looks it up via the resource's list endpoint, matches it against the rec
 - Resolution costs one extra list call and fails with exit 4 (`No <resource> found with
   identifier "…"`) when nothing matches — so a typo'd number never silently hits the wrong
   record.
-- Works for tasks (including `assign`/`note`/status verbs) and every factory resource that
-  carries a numbered/reference field (invoices, quotes, purchase orders, assets, …).
+- Works for tasks (including `assign`/`note`/status verbs), every factory resource that
+  carries a numbered/reference field (invoices, quotes, purchase orders, assets, …), and the
+  quoting workflow verbs (`estimates promote|boq|sections`, `takeoffs|prebuilds items`).
+- Verbs whose target has **no list endpoint** keep the raw record id: `compliance update`,
+  `faults`/`subtasks`, `agent runs`, `schedule blocks`, and the line-item resources.
 
 ```bash
 taskr tasks complete T-42            # resolve T-42 → its id, then PATCH status
