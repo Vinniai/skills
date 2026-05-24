@@ -40,8 +40,8 @@
     },
     {
       "title": "Taskr Platform",
-      "description": "Integrate with Taskr from outside — the REST API for external consumers (auth, routes, webhooks, agent triggers).",
-      "skills": ["taskr-api"]
+      "description": "Integrate with Taskr from outside — the REST API and the `taskr` CLI/MCP server (auth, routes, webhooks, agent triggers, scripting, automation).",
+      "skills": ["taskr-api", "taskr-cli"]
     },
     {
       "title": "Compliance",

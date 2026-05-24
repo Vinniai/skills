@@ -52,7 +52,7 @@ See [CLAUDE.md](./CLAUDE.md) for authoring conventions.
 - **[engineering](./skills/engineering/README.md)** — skills for code work (`abcdefg`, `example-skill`).
 - **[agent-sim](./skills/agent-sim/README.md)** — drive iOS simulators headlessly via the `agent-sim` CLI.
 - **[agent-emulate](./skills/agent-emulate/README.md)** — local drop-in API emulators (`npx agent-emulate`) for Vercel, GitHub, Google, Slack, AWS, Stripe, and more.
-- **[taskr](./skills/taskr/README.md)** — integrate with the Taskr platform from the outside via its REST API (`taskr-api`).
+- **[taskr](./skills/taskr/README.md)** — integrate with the Taskr platform from the outside via its REST API (`taskr-api`) and the `taskr` CLI/MCP server (`taskr-cli`).
 - **[compliance](./skills/compliance/README.md)** — implement a regulatory standard as structured, testable data (`compliance-standards`).
 
 ## External skills

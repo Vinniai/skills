@@ -23,6 +23,7 @@
     "./skills/agent-emulate/resend",
     "./skills/agent-emulate/next",
     "./skills/taskr/taskr-api",
+    "./skills/taskr/taskr-cli",
     "./skills/compliance/compliance-standards",
     "./external/design/impeccable",
     "./external/productivity/handoff",
