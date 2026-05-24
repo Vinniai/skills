@@ -68,6 +68,11 @@ When you add or rename a skill, add its `name` slug to the right `groupings`
 entry there too (every skill should appear in exactly one group). The repo shows
 up on skills.sh once someone installs from it with the `skills` CLI.
 
+Its `$schema` points at the in-repo [`skills.sh.schema.json`](./skills.sh.schema.json)
+for editor validation — skills.sh doesn't publish a referenceable schema, so we
+ship a local one mirroring the documented fields. Update that schema if the
+skills.sh config format changes.
+
 ## Lifecycle folders
 
 - `skills/<category>/` — active, maintained skills.

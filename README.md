@@ -2,6 +2,17 @@
 
 Reusable Claude Code skills, maintained by Vinniai.
 
+[![View on skills.sh](https://img.shields.io/badge/skills.sh-Vinniai%2Fskills-1f6feb)](https://www.skills.sh/Vinniai/skills)
+
+Browse them on **[skills.sh/Vinniai/skills](https://www.skills.sh/Vinniai/skills)**, or pull them in with the [`skills`](https://www.skills.sh) CLI:
+
+```bash
+npx skills add Vinniai/skills            # choose skills from this repo
+npx skills add Vinniai/skills --list     # just list what's available
+```
+
+> The skills.sh page populates once the repo is first installed from with the `skills` CLI.
+
 ## Structure
 
 Each skill is a folder with a `SKILL.md`. Skills we author live under `skills/`;
