@@ -1,0 +1,67 @@
+{
+  "$schema": "https://skills.sh/schemas/skills.sh.schema.json",
+  "notGrouped": "bottom",
+  "groupings": [
+    {
+      "title": "Feature Workflow",
+      "description": "The abcdefg seven-phase feature-development workflow — the entry point plus its phase subskills, run in order.",
+      "skills": [
+        "abcdefg",
+        "a-analyze",
+        "b-blueprint",
+        "c-construct",
+        "d-debug",
+        "e-enhance",
+        "f-finalize",
+        "g-go"
+      ]
+    },
+    {
+      "title": "iOS Simulator",
+      "description": "Drive iOS simulators headlessly via the agent-sim CLI — taps, gestures, screenshots, and a review-task queue.",
+      "skills": ["agent-sim"]
+    },
+    {
+      "title": "API Emulation",
+      "description": "Local, stateful drop-in API emulators (agent-emulate) for CI and no-network dev — real OAuth/OIDC, not mocks.",
+      "skills": [
+        "emulate",
+        "vercel",
+        "github",
+        "google",
+        "slack",
+        "apple",
+        "microsoft",
+        "aws",
+        "stripe",
+        "resend",
+        "next"
+      ]
+    },
+    {
+      "title": "Templates",
+      "description": "Starting points for authoring new skills.",
+      "skills": ["example-skill"]
+    },
+    {
+      "title": "External: Design",
+      "description": "Third-party. Distinctive, production-grade frontend interfaces.",
+      "skills": ["impeccable"]
+    },
+    {
+      "title": "External: Engineering",
+      "description": "Third-party. Sharpen a plan against the existing domain model.",
+      "skills": ["grill-with-docs"]
+    },
+    {
+      "title": "External: Productivity",
+      "description": "Third-party. Compact a conversation into a handoff for another agent.",
+      "skills": ["handoff"]
+    },
+    {
+      "title": "External: Tooling",
+      "description": "Third-party. Browser automation and named local HTTPS dev URLs.",
+      "skills": ["agent-browser", "portless"]
+    }
+  ]
+}

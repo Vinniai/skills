@@ -60,6 +60,14 @@ See [`external/README.md`](./external/README.md) for the full table.
 | `agent-browser` | `external/agent-browser` | `npx skills add https://github.com/vercel-labs/agent-browser --skill agent-browser` | Apache 2.0 |
 | `portless` | `external/portless` | `npx skills add vercel-labs/portless` | Apache 2.0 |
 
+## skills.sh listing
+
+[`skills.sh.json`](./skills.sh.json) at the repo root controls how skills are
+grouped on the repo's [skills.sh](https://www.skills.sh/docs/customize) page.
+When you add or rename a skill, add its `name` slug to the right `groupings`
+entry there too (every skill should appear in exactly one group). The repo shows
+up on skills.sh once someone installs from it with the `skills` CLI.
+
 ## Lifecycle folders
 
 - `skills/<category>/` — active, maintained skills.
