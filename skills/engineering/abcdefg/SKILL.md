@@ -35,3 +35,9 @@ workflow — invoke them here rather than expecting them to trigger on their own
   isn't fully met, loop back to the earliest affected phase (often Debug or Enhance),
   run forward again, and re-gate. Only pass to **Go** once Finalize confirms the original
   request is satisfied.
+
+## Media delivery
+
+- Always deliver visual artifacts — screenshots, images, rendered diagrams, PDFs, video — using the `SendUserFile` delivery tool, not by saving to disk or printing a file path. Saving a path never surfaces media to the user; only the delivery tool renders it on their client.
+- Do this proactively and automatically: any time you capture or generate a screenshot/video, send it. Don't wait to be asked. This applies most in **Debug** (the "before" baseline), **Enhance** (the "after" baseline), and **Finalize** (the before/after comparison) — deliver each baseline as you capture it.
+- Use status `proactive` when the user didn't explicitly request the file (so it pings their device); `normal` when it's a direct reply.
