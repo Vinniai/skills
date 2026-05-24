@@ -210,6 +210,37 @@ when the defect was raised, even if policies change later.
 
 ---
 
+## Driving it from the Taskr CLI
+
+When the standard is implemented on **Taskr**, the abstract model above maps onto concrete
+resources you can inspect and update from the terminal with the [`taskr` CLI](../../taskr/taskr-cli/SKILL.md)
+— useful for seeding verification, spot-audits, and resolving defects in scripts or CI. Set
+`TASKR_API_KEY` (a key with `compliance:update` plus the relevant read scopes) and:
+
+```bash
+# Inspect what the standard produced
+taskr contracts list --all                                # contract-scoped SLA overrides
+taskr contracts get CT-2024-01                            # printed number resolves to the id
+taskr assets list --search "fire-pump"                    # entities a requirement applies to
+
+# Update a compliance requirement (flip status, push a corrected frequency).
+# Note: compliance update takes the raw 32-char requirement id, not a printed number.
+taskr compliance update <requirementId> --status retired
+echo '{"frequencyMonths":6}' | taskr compliance update <requirementId> --body-file -
+
+# A failed inspection becomes a defect/fault carrying its snapshotted SLA
+taskr faults create --body-file fault.json                # {"title","severity","assetId",…}
+taskr faults update <faultId> --body-file resolve.json    # {"status":"resolved","resolution":…}
+taskr tasks list --status overdue --json | jq '.tasks[] | {id,title,dueDate}'
+```
+
+Printed-number addressing (`CT-2024-01`, `AS-014`) works for **tasks and the standard CRUD
+resources** (contracts, assets, invoices, …); `compliance update` and `faults update` take the
+raw record id. Pair the CLI with the **invariant tests** above: the CLI inspects and patches
+live tenant data, the invariants are what keep the seeded standard itself from drifting.
+
+---
+
 ## Adding a new standard
 
 Follow the same pattern every time so standards stay consistent and comparable:

@@ -1,8 +1,8 @@
 ---
 name: taskr-cli
 displayName: Taskr CLI
-description: Drive Taskr from the terminal with the `taskr` CLI — a single compiled binary over the Taskr REST API. Use when scripting or automating Taskr, listing/creating/updating tasks and customers, managing webhooks, calling any endpoint via the generic `api` escape hatch, bootstrapping an API key on a self-hosted deployment, wiring Taskr into CI, or running it as an MCP stdio server so an AI agent can drive Taskr. Covers auth/profiles, output formats (table/json/csv), exit codes, self-hosted/TLS quirks, and keeping the client in sync with the backend.
-version: 0.1.0
+description: Drive Taskr from the terminal with the `taskr` CLI — a single compiled binary over the Taskr REST API. Use when scripting or automating Taskr, listing/creating/updating tasks, customers, invoices, quotes, estimates, assets, purchase orders and ~30 other org resources, addressing records by their printed number (T-1, INV-1001) instead of UUIDs, running workflow verbs (assign, schedule, promote, faults, agent runs), generating PDFs, managing webhooks, calling any endpoint via the generic `api` escape hatch, bootstrapping an API key on a self-hosted deployment, wiring Taskr into CI, or running it as an MCP stdio server so an AI agent can drive Taskr. Covers auth/profiles, output formats (table/json/csv), exit codes, self-hosted/TLS quirks, and keeping the client in sync with the backend.
+version: 0.2.0
 author: Taskr
 tags: [taskr, cli, rest, automation, mcp, terminal]
 ---
@@ -57,13 +57,63 @@ taskr tasks create --body-file task.json --status open   # flags override file f
 taskr tasks update <id> [--title <t>] [--status <s>] [--priority 1-5]
 taskr tasks update --batch tasks.ndjson                  # bulk PATCH; one {"id",…}/line (- = stdin)
 taskr tasks start|complete|hold|cancel <id>              # status-transition shortcuts
+taskr tasks assign <id> --to <userId> | --unassign      # (re)assign or clear the assignee
+taskr tasks note   <id> --text "…"                      # append a note (or --body-file)
 
-# Customers (read) and webhook subscriptions
-taskr customers list [--search <t>] [--limit <n>]
-taskr customers get  <id>
+# Customers and webhook subscriptions
+taskr customers list   [--search <t>] [--limit <n>]
+taskr customers get    <id>
+taskr customers create --name <n> [--email <e>] [--phone <p>] [--body-file f.json]
+taskr customers update <id> [--name <n>] [--email <e>] [--phone <p>] [--body-file f.json]
 taskr webhooks list
 taskr webhooks create --url <url> [--event <event>]
 taskr webhooks delete <id> [--force]
+
+# Resource commands — uniform list|get|create|update over ~30 org resources.
+# Each is `taskr <resource> <verb>`; create/update take --body-file (- = stdin).
+#   projects milestones maintenance-plans sla-rules assets stock-movements
+#   locations variations quotes estimates takeoffs prebuilds tenders
+#   tender-clarifications subcontractor-quotes supplier-pricing-requests
+#   labour-rates invoices payments progress-claims transactions purchase-orders
+#   vendor-bills job-costs timesheet-entries contracts companies contacts
+#   employees vendors
+taskr invoices list [--search <t>] [--status <s>] [--limit <n>] [--cursor <c>]
+taskr invoices get    <id|number>                        # e.g. INV-1001 (see Friendly identifiers)
+taskr invoices create --body-file invoice.json
+taskr invoices update <id|number> --body-file patch.json
+taskr purchase-orders list --status issued
+taskr assets get  AS-014                                  # assetNumber resolves to the real id
+
+# Workflow verbs beyond CRUD
+taskr subtasks create|update <id> --body-file f.json
+taskr faults   create|update <id> --body-file f.json
+taskr activity list [--limit <n>]                         # field activity feed
+taskr activity log  --body-file entry.json
+taskr schedule assign --body-file slot.json
+taskr schedule unscheduled | suggestions | capacity       # read-only scheduling views
+taskr schedule blocks list|get|create|update|delete <id> [--force]
+
+# Quoting / estimating
+taskr estimates promote <id>                              # promote an estimate → quote
+taskr estimates boq <id>                                  # bill of quantities
+taskr estimates sections list|add <id> [--body-file s.json]
+taskr takeoffs  items list|add <id> [--body-file i.json]
+taskr prebuilds items list|add <id> [--body-file i.json]
+taskr estimate-sections|takeoff-items|prebuild-items update <id> --body-file f.json
+
+# Compliance, reports, AI agent, comms
+taskr compliance update <id> [--status <s>] [--body-file f.json]
+taskr report invoice|quote|task <id> --out report.pdf     # writes the PDF to a file
+taskr agent trigger --body-file goal.json
+taskr agent runs list|get <id>
+taskr agent blockers|block|resume <id> [--body-file f.json]   # human-in-the-loop
+taskr conversations list|create
+taskr conversations messages list|send <id> [--text "…"]
+taskr platform-threads list|get|update <id>
+taskr platform-threads messages send <id> --text "…"
+taskr documents list|get|create [--body-file d.json]
+taskr documents upload-url --name file.pdf                # signed upload URL
+taskr settings claude get|set [--body-file s.json]
 
 # Whole-org surface — every module, not just the typed commands
 taskr org overview                  # org identity + per-resource reachability & counts
@@ -84,6 +134,30 @@ taskr ping                          # reachability + latency + TLS-trust probe
 taskr completion bash|zsh|fish      # print a completion script
 taskr mcp                           # run as an MCP stdio server (see below)
 taskr doctor [--json] [--strict]    # client manifest vs live API registry (drift report)
+```
+
+## Friendly identifiers
+
+Anywhere a command takes an `<id>`, you can pass a record's **printed number** instead of its
+32-char Convex id — `tasks get T-1`, `invoices update INV-1001`, `assets get AS-014`,
+`purchase-orders get PO-77`. The CLI detects a printed number (letter-led with a `-<value>`
+group), looks it up via the resource's list endpoint, matches it against the record's
+`*Number` / `reference` / `code` field, and substitutes the real id before calling the API.
+
+- The **REST API only addresses records by their 32-char id** — number resolution is a CLI
+  convenience, not an API feature (see the **taskr-api** skill).
+- A real id (or any value without a hyphen) is passed straight through with **no extra
+  request**, so scripts that already use ids are unaffected.
+- Resolution costs one extra list call and fails with exit 4 (`No <resource> found with
+  identifier "…"`) when nothing matches — so a typo'd number never silently hits the wrong
+  record.
+- Works for tasks (including `assign`/`note`/status verbs) and every factory resource that
+  carries a numbered/reference field (invoices, quotes, purchase orders, assets, …).
+
+```bash
+taskr tasks complete T-42            # resolve T-42 → its id, then PATCH status
+taskr invoices update INV-1001 --body-file paid.json
+taskr tasks get jd7abc123def456…     # already an id → no lookup
 ```
 
 ## Global flags (work in any position)

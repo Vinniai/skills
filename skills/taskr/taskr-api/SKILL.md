@@ -2,7 +2,7 @@
 name: taskr-api
 displayName: Taskr API
 description: Integrate with the Taskr REST API as an external consumer. Covers API-key authentication, scopes and module entitlements, cursor pagination, the full route reference for every org resource (tasks, customers, invoices, quotes, assets, faults, projects, scheduling, estimating, PDF generation, and more), webhooks, agent triggers with human-in-the-loop blockers, the customer-facing Portal API, and the public OpenAPI/discovery endpoints. Use when building an integration against Taskr, calling its API from a script or service, configuring API keys and webhooks, or driving Taskr agents over HTTP.
-version: 2.0.0
+version: 2.1.0
 author: Taskr
 tags: [taskr, api, rest, http, integration, webhooks]
 ---
@@ -222,6 +222,30 @@ GET /api/v1/org/tasks?limit=25&cursor=<nextCursor>
 ```
 
 When `hasMore` is `false` or `nextCursor` is `null`, you've reached the end.
+
+---
+
+## Record identifiers
+
+Every `:id` path parameter is the record's **32-char Convex document id** (lowercase
+alphanumeric, e.g. `jd7abc123def456…`). The API does **not** resolve a record by its printed
+number — `taskNumber` (`T-1`), `invoiceNumber` (`INV-1001`), an asset's `assetNumber`, or a
+PO number are display fields, not addressable keys. Passing one to `GET /tasks/T-1` returns
+`404`/`400`, not the task.
+
+To go from a printed number to an id, list the collection with `search` and match the number
+field yourself:
+
+```bash
+# Resolve invoice INV-1001 → its id, then fetch it
+ID=$(curl -s -H "Authorization: Bearer $API_KEY" \
+  "$BASE/api/v1/org/invoices?search=INV-1001&limit=100" \
+  | jq -r '.invoices[] | select(.invoiceNumber=="INV-1001") | ._id')
+curl -s -H "Authorization: Bearer $API_KEY" "$BASE/api/v1/org/invoices/$ID" | jq .
+```
+
+The **taskr-cli** does this resolution automatically — `taskr invoices get INV-1001` — so
+prefer the CLI for interactive or scripted number-based lookups.
 
 ---
 
