@@ -33,6 +33,8 @@ See [CLAUDE.md](./CLAUDE.md) for authoring conventions.
 ## Categories
 
 - **[engineering](./skills/engineering/README.md)** — skills for code work.
+- **[agent-sim](./skills/agent-sim/README.md)** — drive iOS simulators headlessly via the `agent-sim` CLI.
+- **[agent-emulate](./skills/agent-emulate/README.md)** — local drop-in API emulators (`npx agent-emulate`) for Vercel, GitHub, Google, Slack, AWS, Stripe, and more.
 
 ## Documentation
 

@@ -9,6 +9,18 @@
     "./skills/engineering/abcdefg/e-enhance",
     "./skills/engineering/abcdefg/f-finalize",
     "./skills/engineering/abcdefg/g-go",
-    "./skills/engineering/example-skill"
+    "./skills/engineering/example-skill",
+    "./skills/agent-sim/agent-sim",
+    "./skills/agent-emulate/emulate",
+    "./skills/agent-emulate/vercel",
+    "./skills/agent-emulate/github",
+    "./skills/agent-emulate/google",
+    "./skills/agent-emulate/slack",
+    "./skills/agent-emulate/apple",
+    "./skills/agent-emulate/microsoft",
+    "./skills/agent-emulate/aws",
+    "./skills/agent-emulate/stripe",
+    "./skills/agent-emulate/resend",
+    "./skills/agent-emulate/next"
   ]
 }
