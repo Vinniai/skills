@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>abcdefg — feature development workflow</title>
+  <meta name="description" content="Documentation for the abcdefg skill: a sequential, seven-phase feature-development workflow (Analyze, Blueprint, Construct, Debug, Enhance, Finalize, Go)." />
+  <style>
+    :root {
+      --bg: #0e1116;
+      --surface: #161b22;
+      --surface-2: #1c2430;
+      --border: #2a3340;
+      --text: #e6edf3;
+      --muted: #9aa7b4;
+      --accent: #6ea8fe;
+      --accent-2: #7ee787;
+      --max: 880px;
+      --radius: 12px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.1em 0.4em;
+      font-size: 0.9em;
+    }
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 0 1.25rem; }
+
+    header.hero {
+      background: linear-gradient(135deg, #12203a 0%, #0e1116 60%);
+      border-bottom: 1px solid var(--border);
+      padding: 4rem 0 3rem;
+    }
+    .seq {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .seq span {
+      width: 2.2rem; height: 2.2rem;
+      display: grid; place-items: center;
+      border-radius: 8px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      font-weight: 700;
+      color: var(--accent);
+      font-family: ui-monospace, monospace;
+    }
+    h1 { font-size: 2.4rem; margin: 0 0 0.5rem; letter-spacing: -0.02em; }
+    .tagline { color: var(--muted); font-size: 1.15rem; margin: 0; max-width: 42rem; }
+    .navlinks { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem; font-size: 0.95rem; }
+    .navlinks a { color: var(--muted); }
+    .navlinks a:hover { color: var(--accent); }
+
+    main { padding: 3rem 0; }
+    section { margin-bottom: 3rem; }
+    h2 {
+      font-size: 1.4rem;
+      margin: 0 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    ul { padding-left: 1.2rem; }
+
+    .phases { display: grid; gap: 1rem; }
+    .phase {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .phase::before {
+      content: attr(data-letter);
+      position: absolute;
+      top: -0.6rem; right: 0.6rem;
+      font-size: 5rem;
+      font-weight: 800;
+      color: var(--border);
+      font-family: ui-monospace, monospace;
+      line-height: 1;
+      pointer-events: none;
+    }
+    .phase h3 { margin: 0 0 0.25rem; font-size: 1.15rem; }
+    .phase h3 .name { color: var(--accent); }
+    .phase .lead { color: var(--muted); margin: 0 0 0.75rem; }
+    .phase .exit {
+      margin-top: 0.75rem;
+      font-size: 0.9rem;
+      color: var(--accent-2);
+    }
+    .phase .exit strong { color: var(--accent-2); }
+
+    .callout {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+    }
+    pre {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      overflow-x: auto;
+    }
+    pre code { background: none; border: none; padding: 0; }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      h1 { font-size: 1.9rem; }
+      header.hero { padding: 2.5rem 0 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <div class="seq" aria-hidden="true">
+        <span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span>
+      </div>
+      <h1><code>abcdefg</code></h1>
+      <p class="tagline">An end-to-end feature-development workflow. Take any non-trivial feature, fix, or change from request to shipped through seven sequential phases — each completed before the next begins.</p>
+      <nav class="navlinks" aria-label="Page sections">
+        <a href="#overview">Overview</a>
+        <a href="#when">When to use</a>
+        <a href="#phases">Phases</a>
+        <a href="#triggering">Triggering</a>
+        <a href="#run">Run it</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="overview">
+      <h2>What it is</h2>
+      <p><code>abcdefg</code> is a Claude Code skill that orchestrates a disciplined build process. When you ask to build or ship a non-trivial change, it walks the work through seven phases <strong>in order</strong>, each a dedicated subskill. The name is the mnemonic for the phase sequence:</p>
+      <p><strong>A</strong>nalyze → <strong>B</strong>lueprint → <strong>C</strong>onstruct → <strong>D</strong>ebug → <strong>E</strong>nhance → <strong>F</strong>inalize → <strong>G</strong>o</p>
+    </section>
+
+    <section id="when">
+      <h2>When to use it</h2>
+      <ul>
+        <li>Building or shipping a non-trivial feature, fix, or change from request to done.</li>
+        <li>You want a repeatable order that prevents skipping design, testing, or cleanup.</li>
+      </ul>
+    </section>
+
+    <section id="phases">
+      <h2>The seven phases</h2>
+      <div class="phases">
+        <article class="phase" data-letter="A">
+          <h3><span class="name">A — Analyze</span></h3>
+          <p class="lead">Understand the request and existing code before any design or code.</p>
+          <ul>
+            <li>Restate the request; confirm the desired outcome.</li>
+            <li>Clarify unknowns and acceptance criteria.</li>
+            <li>Locate relevant files and existing patterns.</li>
+            <li>Surface constraints: dependencies, data shapes, edge cases, non-goals.</li>
+          </ul>
+          <p class="exit"><strong>Exit:</strong> the problem and constraints are stated precisely.</p>
+        </article>
+
+        <article class="phase" data-letter="B">
+          <h3><span class="name">B — Blueprint</span></h3>
+          <p class="lead">Design the approach before writing code.</p>
+          <ul>
+            <li>Choose the approach; name components and responsibilities.</li>
+            <li>Define interfaces and data flow at the boundaries.</li>
+            <li>List the files to create or change, and in what order.</li>
+            <li>Note trade-offs; reuse existing patterns first.</li>
+          </ul>
+          <p class="exit"><strong>Exit:</strong> a concrete plan — components, interfaces, files, build order.</p>
+        </article>
+
+        <article class="phase" data-letter="C">
+          <h3><span class="name">C — Construct</span></h3>
+          <p class="lead">Implement the blueprint.</p>
+          <ul>
+            <li>Build in vertical slices — one working path at a time.</li>
+            <li>Match the surrounding code's style and idioms.</li>
+            <li>Implement to the defined interfaces; note any forced changes.</li>
+          </ul>
+          <p class="exit"><strong>Exit:</strong> the change is implemented and runs.</p>
+        </article>
+
+        <article class="phase" data-letter="D">
+          <h3><span class="name">D — Debug</span></h3>
+          <p class="lead">Make it correct.</p>
+          <ul>
+            <li>Run it across the happy path and edge cases.</li>
+            <li>Reproduce failures minimally before fixing.</li>
+            <li>Fix root causes; add or run tests to lock in behavior.</li>
+          </ul>
+          <p class="exit"><strong>Exit:</strong> behavior is verified and tests pass.</p>
+        </article>
+
+        <article class="phase" data-letter="E">
+          <h3><span class="name">E — Enhance</span></h3>
+          <p class="lead">Improve beyond "works".</p>
+          <ul>
+            <li>Harden edge cases and failure modes.</li>
+            <li>Tighten error handling and validation.</li>
+            <li>Refactor for clarity; address performance where it matters.</li>
+          </ul>
+          <p class="exit"><strong>Exit:</strong> robust, clear, and acceptably performant.</p>
+        </article>
+
+        <article class="phase" data-letter="F">
+          <h3><span class="name">F — Finalize</span></h3>
+          <p class="lead">Clean up before shipping.</p>
+          <ul>
+            <li>Remove dead code and debug output.</li>
+            <li>Update docs, comments, and READMEs.</li>
+            <li>Review the diff; confirm tests pass and the build is clean.</li>
+          </ul>
+          <p class="exit"><strong>Exit:</strong> the diff is tight, documented, and green.</p>
+        </article>
+
+        <article class="phase" data-letter="G">
+          <h3><span class="name">G — Go</span></h3>
+          <p class="lead">Ship the change.</p>
+          <ul>
+            <li>Commit with a clear message; push to the right branch.</li>
+            <li>Open or merge the PR; confirm CI passes.</li>
+            <li>Report what shipped — link the commit/PR.</li>
+          </ul>
+          <p class="exit"><strong>Exit:</strong> committed, pushed, and on its way to the target branch.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="triggering">
+      <h2>How triggering works</h2>
+      <div class="callout">
+        <p>Only the parent <code>abcdefg</code> skill auto-triggers — on requests like <em>"build this feature"</em>, <em>"implement X end to end"</em>, or <em>"take this from idea to shipped"</em>. The seven phases are internal steps it invokes in turn; they don't fire on their own, which keeps a stray "debug this" from launching a lone phase.</p>
+      </div>
+    </section>
+
+    <section id="run">
+      <h2>Running it locally</h2>
+      <p>Link the repo's skills into your Claude CLI, then trigger the workflow by describing a feature:</p>
+      <pre><code>scripts/link-skills.sh   # symlink every SKILL.md into ~/.claude/skills
+scripts/list-skills.sh   # list all skills in the repo</code></pre>
+      <p>If a later phase reveals a gap, the workflow returns to the earliest affected phase and continues forward again.</p>
+    </section>
+  </main>
+
+  <footer class="wrap">
+    <p>Part of <a href="https://github.com/Vinniai/skills">Vinniai/skills</a>. Workflow structure inspired by <a href="https://github.com/mattpocock/skills">mattpocock/skills</a> (MIT).</p>
+  </footer>
+</body>
+</html>

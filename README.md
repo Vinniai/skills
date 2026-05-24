@@ -34,6 +34,10 @@ See [CLAUDE.md](./CLAUDE.md) for authoring conventions.
 
 - **[engineering](./skills/engineering/README.md)** — skills for code work.
 
+## Documentation
+
+- **[abcdefg workflow](./docs/abcdefg.html)** — standalone HTML page documenting the seven-phase feature workflow (open in a browser).
+
 ---
 
 Structure inspired by [mattpocock/skills](https://github.com/mattpocock/skills) (MIT).
