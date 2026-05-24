@@ -208,35 +208,38 @@
 
         <article class="phase" data-letter="D">
           <h3><span class="name">D — Debug</span></h3>
-          <p class="lead">Make it correct.</p>
+          <p class="lead">Make it correct, and record a "before".</p>
           <ul>
             <li>Run it across the happy path and edge cases.</li>
-            <li>Reproduce failures minimally before fixing.</li>
-            <li>Fix root causes; add or run tests to lock in behavior.</li>
+            <li>Reproduce failures minimally before fixing; fix root causes.</li>
+            <li>Add or run tests to lock in behavior.</li>
+            <li>Capture a <strong>"before" baseline</strong> — a screenshot for UI work, or recorded output otherwise.</li>
           </ul>
-          <p class="exit"><strong>Exit:</strong> behavior is verified and tests pass.</p>
+          <p class="exit"><strong>Exit:</strong> behavior verified, tests pass, "before" captured.</p>
         </article>
 
         <article class="phase" data-letter="E">
           <h3><span class="name">E — Enhance</span></h3>
-          <p class="lead">Improve beyond "works".</p>
+          <p class="lead">Improve beyond "works", and record an "after".</p>
           <ul>
             <li>Harden edge cases and failure modes.</li>
             <li>Tighten error handling and validation.</li>
             <li>Refactor for clarity; address performance where it matters.</li>
+            <li>Capture an <strong>"after" baseline</strong> matching the "before" (same viewport/inputs).</li>
           </ul>
-          <p class="exit"><strong>Exit:</strong> robust, clear, and acceptably performant.</p>
+          <p class="exit"><strong>Exit:</strong> robust and clear, with an "after" to compare.</p>
         </article>
 
         <article class="phase" data-letter="F">
           <h3><span class="name">F — Finalize</span></h3>
-          <p class="lead">Clean up before shipping.</p>
+          <p class="lead">The gate — is the original request actually met?</p>
           <ul>
-            <li>Remove dead code and debug output.</li>
-            <li>Update docs, comments, and READMEs.</li>
-            <li>Review the diff; confirm tests pass and the build is clean.</li>
+            <li>Compare the "before" and "after" baselines; confirm the enhancements landed with no regression.</li>
+            <li>Re-check every part of the original request from Analyze.</li>
+            <li><strong>If not fully met → loop back</strong> to the earliest affected phase and re-gate.</li>
+            <li>Once it passes: remove dead code, update docs, confirm tests green.</li>
           </ul>
-          <p class="exit"><strong>Exit:</strong> the diff is tight, documented, and green.</p>
+          <p class="exit"><strong>Exit:</strong> request verifiably fulfilled; diff tight and green.</p>
         </article>
 
         <article class="phase" data-letter="G">

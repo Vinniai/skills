@@ -22,13 +22,16 @@ workflow — invoke them here rather than expecting them to trigger on their own
 1. **[a-analyze](./a-analyze/SKILL.md)** — Understand the request and existing code; state the problem precisely.
 2. **[b-blueprint](./b-blueprint/SKILL.md)** — Design the approach: structure, interfaces, data flow, files to touch.
 3. **[c-construct](./c-construct/SKILL.md)** — Implement the blueprint in vertical slices.
-4. **[d-debug](./d-debug/SKILL.md)** — Run, reproduce, fix, and verify with tests.
-5. **[e-enhance](./e-enhance/SKILL.md)** — Edge cases, error handling, refactor, performance.
-6. **[f-finalize](./f-finalize/SKILL.md)** — Clean up, update docs, tighten the diff, confirm green.
+4. **[d-debug](./d-debug/SKILL.md)** — Run, reproduce, fix, verify with tests; capture a **"before"** baseline (screenshot for UI work).
+5. **[e-enhance](./e-enhance/SKILL.md)** — Edge cases, error handling, refactor, performance; capture an **"after"** baseline to match the "before".
+6. **[f-finalize](./f-finalize/SKILL.md)** — **Gate:** compare before/after against the original request; loop back if gaps remain, else clean up and confirm green.
 7. **[g-go](./g-go/SKILL.md)** — Commit, push, ship the PR.
 
 ## How to run
 
 - Announce the phase you're entering, complete it, then proceed to the next.
-- If a later phase reveals a gap, return to the earliest affected phase and continue
-  forward again.
+- **Finalize is a gate, not a formality.** It compares the "before" (Debug) and "after"
+  (Enhance) baselines and re-checks every part of the original request. If the request
+  isn't fully met, loop back to the earliest affected phase (often Debug or Enhance),
+  run forward again, and re-gate. Only pass to **Go** once Finalize confirms the original
+  request is satisfied.
