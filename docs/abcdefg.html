@@ -5,269 +5,399 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>abcdefg — feature development workflow</title>
   <meta name="description" content="Documentation for the abcdefg skill: a sequential, seven-phase feature-development workflow (Analyze, Blueprint, Construct, Debug, Enhance, Finalize, Go)." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Spectral:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #0e1116;
-      --surface: #161b22;
-      --surface-2: #1c2430;
-      --border: #2a3340;
-      --text: #e6edf3;
-      --muted: #9aa7b4;
-      --accent: #6ea8fe;
-      --accent-2: #7ee787;
-      --max: 880px;
-      --radius: 12px;
+      /* warm-tinted paper palette (OKLCH) */
+      --paper:    oklch(0.985 0.004 70);
+      --paper-2:  oklch(0.965 0.006 70);
+      --ink:      oklch(0.23 0.012 70);
+      --muted:    oklch(0.52 0.012 70);
+      --hair:     oklch(0.87 0.008 70);
+      --accent:   oklch(0.55 0.20 27);   /* restrained vermilion */
+      --accent-ink: oklch(0.46 0.19 27);
+      --on-accent: oklch(0.97 0.012 70); /* paper-tinted, never pure #fff */
+
+      --font-display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+      --font-body: "Spectral", Georgia, "Times New Roman", serif;
+      --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+
+      /* 4pt spacing scale */
+      --space-xs: 0.5rem;
+      --space-sm: 0.75rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2rem;
+      --space-2xl: 3rem;
+      --space-3xl: 4rem;
+      --space-4xl: 6rem;
+
+      --measure: 68ch;
+      --edge: clamp(1.25rem, 5vw, 5rem);
     }
+
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    html { -webkit-text-size-adjust: 100%; }
+
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+      line-height: 1.65;
+      font-feature-settings: "liga" 1, "onum" 1, "kern" 1;
+      -webkit-font-smoothing: antialiased;
     }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
+
+    a { color: var(--accent-ink); text-decoration: none; border-bottom: 1px solid var(--hair); }
+    a:hover { border-bottom-color: var(--accent); }
+
     code {
-      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 0.1em 0.4em;
-      font-size: 0.9em;
+      font-family: var(--font-mono);
+      font-size: 0.85em;
+      background: var(--paper-2);
+      border: 1px solid var(--hair);
+      border-radius: 4px;
+      padding: 0.08em 0.36em;
     }
-    .wrap { max-width: var(--max); margin: 0 auto; padding: 0 1.25rem; }
 
-    header.hero {
-      background: linear-gradient(135deg, #12203a 0%, #0e1116 60%);
-      border-bottom: 1px solid var(--border);
-      padding: 4rem 0 3rem;
-    }
-    .seq {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 1.5rem;
-    }
-    .seq span {
-      width: 2.2rem; height: 2.2rem;
-      display: grid; place-items: center;
-      border-radius: 8px;
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      font-weight: 700;
-      color: var(--accent);
-      font-family: ui-monospace, monospace;
-    }
-    h1 { font-size: 2.4rem; margin: 0 0 0.5rem; letter-spacing: -0.02em; }
-    .tagline { color: var(--muted); font-size: 1.15rem; margin: 0; max-width: 42rem; }
-    .navlinks { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem; font-size: 0.95rem; }
-    .navlinks a { color: var(--muted); }
-    .navlinks a:hover { color: var(--accent); }
+    .wrap { max-width: 1100px; margin: 0 auto; padding-inline: var(--edge); }
 
-    main { padding: 3rem 0; }
-    section { margin-bottom: 3rem; }
-    h2 {
-      font-size: 1.4rem;
-      margin: 0 0 1rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid var(--border);
+    /* ---- hero ---- */
+    header.hero { padding-top: clamp(3rem, 9vw, 7rem); padding-bottom: var(--space-2xl); }
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 var(--space-lg);
     }
-    ul { padding-left: 1.2rem; }
-
-    .phases { display: grid; gap: 1rem; }
-    .phase {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.25rem 1.5rem;
-      position: relative;
-      overflow: hidden;
-    }
-    .phase::before {
-      content: attr(data-letter);
-      position: absolute;
-      top: -0.6rem; right: 0.6rem;
-      font-size: 5rem;
+    h1 {
+      font-family: var(--font-display);
       font-weight: 800;
-      color: var(--border);
-      font-family: ui-monospace, monospace;
-      line-height: 1;
-      pointer-events: none;
+      font-size: clamp(3.2rem, 12vw, 8rem);
+      line-height: 0.92;
+      letter-spacing: -0.03em;
+      margin: 0;
+      color: var(--ink);
     }
-    .phase h3 { margin: 0 0 0.25rem; font-size: 1.15rem; }
-    .phase h3 .name { color: var(--accent); }
-    .phase .lead { color: var(--muted); margin: 0 0 0.75rem; }
-    .phase .exit {
-      margin-top: 0.75rem;
-      font-size: 0.9rem;
-      color: var(--accent-2);
+    h1 .dot { color: var(--accent); }
+    .lead-tagline {
+      font-size: clamp(1.15rem, 1rem + 0.8vw, 1.5rem);
+      line-height: 1.45;
+      max-width: 34ch;
+      margin: var(--space-lg) 0 0;
+      color: var(--ink);
     }
-    .phase .exit strong { color: var(--accent-2); }
+    .rule { border: 0; border-top: 1px solid var(--hair); margin: var(--space-2xl) 0; }
+    .rule.accent { border-top: 2px solid var(--accent); width: 3.5rem; margin: var(--space-xl) 0; }
 
-    .callout {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-left: 3px solid var(--accent);
-      border-radius: var(--radius);
-      padding: 1rem 1.25rem;
+    /* sequence strip */
+    .seq {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0;
+      margin-top: var(--space-2xl);
+      font-family: var(--font-display);
     }
+    .seq .step { display: flex; align-items: baseline; gap: 0.5rem; }
+    .seq .letter {
+      font-weight: 800; font-size: 1.05rem; color: var(--ink);
+      width: 1.6rem; height: 1.6rem; display: grid; place-items: center;
+      border: 1px solid var(--ink); border-radius: 50%;
+    }
+    .seq .word { font-family: var(--font-body); font-size: 0.95rem; color: var(--muted); }
+    .seq .arrow { color: var(--hair); margin: 0 0.75rem; }
+    .seq .step:first-child .letter { color: var(--on-accent); background: var(--accent); border-color: var(--accent); }
+
+    nav.toc {
+      display: flex; flex-wrap: wrap; gap: var(--space-lg);
+      margin-top: var(--space-2xl);
+      font-family: var(--font-mono);
+      font-size: 0.8rem; letter-spacing: 0.04em; text-transform: uppercase;
+    }
+    nav.toc a { color: var(--muted); border: 0; }
+    nav.toc a:hover { color: var(--accent); }
+    nav.toc a span { color: var(--hair); margin-right: 0.4rem; }
+
+    /* ---- sections ---- */
+    main { padding-bottom: var(--space-4xl); }
+    section { padding-block: var(--space-2xl); }
+    .section-head {
+      display: grid; grid-template-columns: 4rem 1fr; gap: var(--space-md);
+      align-items: baseline; margin-bottom: var(--space-lg);
+    }
+    .section-head .num {
+      font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent);
+      letter-spacing: 0.1em; padding-top: 0.4rem;
+    }
+    h2 {
+      font-family: var(--font-display); font-weight: 600;
+      font-size: clamp(1.5rem, 1.2rem + 1vw, 2.1rem);
+      line-height: 1.1; letter-spacing: -0.015em; margin: 0;
+    }
+    .body-col { max-width: var(--measure); }
+    .body-col p { margin: 0 0 var(--space-md); }
+    .seq-inline { font-family: var(--font-display); font-weight: 600; color: var(--ink); }
+
+    ul.clean { list-style: none; padding: 0; margin: 0; max-width: var(--measure); }
+    ul.clean li { padding-left: 1.4rem; position: relative; margin-bottom: var(--space-sm); }
+    ul.clean li::before {
+      content: ""; position: absolute; left: 0; top: 0.7em;
+      width: 0.5rem; height: 1px; background: var(--accent);
+    }
+
+    /* ---- phases as numbered editorial rows ---- */
+    .phases { margin-top: var(--space-md); }
+    .phase {
+      display: grid;
+      grid-template-columns: 6rem 1fr;
+      gap: var(--space-lg);
+      padding-block: var(--space-2xl);
+      border-top: 1px solid var(--hair);
+    }
+    .phase:last-child { border-bottom: 1px solid var(--hair); }
+    .phase .marker { position: relative; }
+    .phase .marker .big {
+      font-family: var(--font-display); font-weight: 800;
+      font-size: clamp(2.6rem, 5vw, 3.6rem); line-height: 0.8;
+      color: var(--accent);
+    }
+    .phase .marker .idx {
+      font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted);
+      display: block; margin-top: 0.5rem; letter-spacing: 0.1em;
+    }
+    .phase h3 {
+      font-family: var(--font-display); font-weight: 600;
+      font-size: clamp(1.3rem, 1.1rem + 0.6vw, 1.7rem);
+      margin: 0 0 0.25rem; letter-spacing: -0.01em;
+    }
+    .phase .what { color: var(--muted); font-style: italic; margin: 0 0 var(--space-md); }
+    .phase .exit {
+      margin-top: var(--space-md); font-family: var(--font-mono);
+      font-size: 0.8rem; color: var(--ink); letter-spacing: 0.02em;
+    }
+    .phase .exit b { color: var(--accent-ink); font-weight: 600; }
+
+    /* callout — flat, no stripe, no glass */
+    .note {
+      background: var(--paper-2);
+      border: 1px solid var(--hair);
+      border-radius: 8px;
+      padding: var(--space-lg);
+      max-width: var(--measure);
+    }
+    .note p { margin: 0; }
+
     pre {
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1rem 1.25rem;
+      background: var(--ink);
+      color: var(--paper);
+      border-radius: 8px;
+      padding: var(--space-lg);
       overflow-x: auto;
+      font-size: 0.85rem;
+      max-width: var(--measure);
     }
-    pre code { background: none; border: none; padding: 0; }
+    pre code { background: none; border: 0; color: inherit; padding: 0; font-size: inherit; }
 
     footer {
-      border-top: 1px solid var(--border);
-      padding: 2rem 0;
+      border-top: 1px solid var(--hair);
+      padding-block: var(--space-xl);
       color: var(--muted);
-      font-size: 0.9rem;
+      font-size: 0.85rem;
+      max-width: var(--measure);
     }
-    @media (max-width: 600px) {
-      h1 { font-size: 1.9rem; }
-      header.hero { padding: 2.5rem 0 2rem; }
+
+    /* ---- calm staggered load ---- */
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal { opacity: 0; transform: translateY(12px); animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+      .reveal:nth-child(2) { animation-delay: 0.06s; }
+      .reveal:nth-child(3) { animation-delay: 0.12s; }
+      .reveal:nth-child(4) { animation-delay: 0.18s; }
+      @keyframes rise { to { opacity: 1; transform: none; } }
+    }
+
+    @media (max-width: 640px) {
+      .section-head { grid-template-columns: 1fr; gap: 0; }
+      .section-head .num { padding-top: 0; }
+      .phase { grid-template-columns: 1fr; gap: var(--space-sm); }
+      .seq .arrow { margin: 0 0.4rem; }
     }
   </style>
 </head>
 <body>
   <header class="hero">
     <div class="wrap">
-      <div class="seq" aria-hidden="true">
-        <span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span>
+      <p class="eyebrow reveal">Vinniai · engineering skills</p>
+      <h1 class="reveal">abcdefg<span class="dot">.</span></h1>
+      <p class="lead-tagline reveal">An end-to-end feature-development workflow. Seven sequential phases carry a change from request to shipped — each finished before the next begins.</p>
+
+      <div class="seq reveal" aria-hidden="true">
+        <span class="step"><span class="letter">A</span></span><span class="arrow">→</span>
+        <span class="step"><span class="letter">B</span></span><span class="arrow">→</span>
+        <span class="step"><span class="letter">C</span></span><span class="arrow">→</span>
+        <span class="step"><span class="letter">D</span></span><span class="arrow">→</span>
+        <span class="step"><span class="letter">E</span></span><span class="arrow">→</span>
+        <span class="step"><span class="letter">F</span></span><span class="arrow">→</span>
+        <span class="step"><span class="letter">G</span></span>
       </div>
-      <h1><code>abcdefg</code></h1>
-      <p class="tagline">An end-to-end feature-development workflow. Take any non-trivial feature, fix, or change from request to shipped through seven sequential phases — each completed before the next begins.</p>
-      <nav class="navlinks" aria-label="Page sections">
-        <a href="#overview">Overview</a>
-        <a href="#when">When to use</a>
-        <a href="#phases">Phases</a>
-        <a href="#triggering">Triggering</a>
-        <a href="#run">Run it</a>
+
+      <nav class="toc" aria-label="Page sections">
+        <a href="#overview"><span>01</span>Overview</a>
+        <a href="#when"><span>02</span>When to use</a>
+        <a href="#phases"><span>03</span>Phases</a>
+        <a href="#triggering"><span>04</span>Triggering</a>
+        <a href="#run"><span>05</span>Run it</a>
       </nav>
     </div>
   </header>
 
   <main class="wrap">
     <section id="overview">
-      <h2>What it is</h2>
-      <p><code>abcdefg</code> is a Claude Code skill that orchestrates a disciplined build process. When you ask to build or ship a non-trivial change, it walks the work through seven phases <strong>in order</strong>, each a dedicated subskill. The name is the mnemonic for the phase sequence:</p>
-      <p><strong>A</strong>nalyze → <strong>B</strong>lueprint → <strong>C</strong>onstruct → <strong>D</strong>ebug → <strong>E</strong>nhance → <strong>F</strong>inalize → <strong>G</strong>o</p>
+      <div class="section-head"><span class="num">01</span><h2>What it is</h2></div>
+      <div class="body-col">
+        <p><code>abcdefg</code> is a Claude Code skill that orchestrates a disciplined build process. When you ask to build or ship a non-trivial change, it walks the work through seven phases in order, each a dedicated subskill. The name is the mnemonic for the sequence:</p>
+        <p class="seq-inline">Analyze → Blueprint → Construct → Debug → Enhance → Finalize → Go</p>
+      </div>
     </section>
 
     <section id="when">
-      <h2>When to use it</h2>
-      <ul>
+      <div class="section-head"><span class="num">02</span><h2>When to use it</h2></div>
+      <ul class="clean">
         <li>Building or shipping a non-trivial feature, fix, or change from request to done.</li>
         <li>You want a repeatable order that prevents skipping design, testing, or cleanup.</li>
       </ul>
     </section>
 
     <section id="phases">
-      <h2>The seven phases</h2>
+      <div class="section-head"><span class="num">03</span><h2>The seven phases</h2></div>
       <div class="phases">
-        <article class="phase" data-letter="A">
-          <h3><span class="name">A — Analyze</span></h3>
-          <p class="lead">Understand the request, and survey the skills/tooling it needs.</p>
-          <ul>
-            <li>Restate the request; confirm the desired outcome and acceptance criteria.</li>
-            <li>Locate relevant files and existing patterns.</li>
-            <li>Survey <code>~/.claude</code> skills and decide what the task requires — framework, testing, browser UI testing, device testing, LSPs, and any other relevant skills.</li>
-            <li>Surface constraints; <strong>ask the user when it's unclear</strong> what applies or is needed.</li>
-          </ul>
-          <p class="exit"><strong>Exit:</strong> problem, constraints, and required skills/tooling are identified.</p>
+
+        <article class="phase">
+          <div class="marker"><span class="big">A</span><span class="idx">01 / 07</span></div>
+          <div>
+            <h3>Analyze</h3>
+            <p class="what">Understand the request, and survey the skills the task needs.</p>
+            <ul class="clean">
+              <li>Restate the request; confirm the outcome and acceptance criteria.</li>
+              <li>Locate relevant files and existing patterns.</li>
+              <li>Survey <code>~/.claude</code> skills and decide what's required — framework, testing, browser UI testing, device testing, LSPs, and anything else relevant.</li>
+              <li>Surface constraints; ask the user — via a structured question — when it's unclear what applies.</li>
+            </ul>
+            <p class="exit"><b>Exit</b> — problem, constraints, and required skills/tooling identified.</p>
+          </div>
         </article>
 
-        <article class="phase" data-letter="B">
-          <h3><span class="name">B — Blueprint</span></h3>
-          <p class="lead">Design the approach before writing code.</p>
-          <ul>
-            <li>Choose the approach; name components and responsibilities.</li>
-            <li>Define interfaces and data flow at the boundaries.</li>
-            <li>List the files to create or change, and in what order.</li>
-            <li>Note trade-offs; reuse existing patterns first.</li>
-          </ul>
-          <p class="exit"><strong>Exit:</strong> a concrete plan — components, interfaces, files, build order.</p>
+        <article class="phase">
+          <div class="marker"><span class="big">B</span><span class="idx">02 / 07</span></div>
+          <div>
+            <h3>Blueprint</h3>
+            <p class="what">Design the approach before writing code.</p>
+            <ul class="clean">
+              <li>Choose the approach; name components and responsibilities.</li>
+              <li>Define interfaces and data flow at the boundaries.</li>
+              <li>List the files to create or change, and in what order.</li>
+              <li>Note trade-offs; reuse existing patterns first.</li>
+            </ul>
+            <p class="exit"><b>Exit</b> — a concrete plan: components, interfaces, files, build order.</p>
+          </div>
         </article>
 
-        <article class="phase" data-letter="C">
-          <h3><span class="name">C — Construct</span></h3>
-          <p class="lead">Implement the blueprint.</p>
-          <ul>
-            <li>Build in vertical slices — one working path at a time.</li>
-            <li>Match the surrounding code's style and idioms.</li>
-            <li>Implement to the defined interfaces; note any forced changes.</li>
-          </ul>
-          <p class="exit"><strong>Exit:</strong> the change is implemented and runs.</p>
+        <article class="phase">
+          <div class="marker"><span class="big">C</span><span class="idx">03 / 07</span></div>
+          <div>
+            <h3>Construct</h3>
+            <p class="what">Implement the blueprint.</p>
+            <ul class="clean">
+              <li>Build in vertical slices — one working path at a time.</li>
+              <li>Match the surrounding code's style and idioms.</li>
+              <li>Implement to the defined interfaces; note any forced changes.</li>
+            </ul>
+            <p class="exit"><b>Exit</b> — the change is implemented and runs.</p>
+          </div>
         </article>
 
-        <article class="phase" data-letter="D">
-          <h3><span class="name">D — Debug</span></h3>
-          <p class="lead">Make it correct, and record a "before".</p>
-          <ul>
-            <li>Run it across the happy path and edge cases.</li>
-            <li>Reproduce failures minimally before fixing; fix root causes.</li>
-            <li>Add or run tests to lock in behavior.</li>
-            <li>Capture a <strong>"before" baseline</strong> — a screenshot for UI work, or recorded output otherwise.</li>
-          </ul>
-          <p class="exit"><strong>Exit:</strong> behavior verified, tests pass, "before" captured.</p>
+        <article class="phase">
+          <div class="marker"><span class="big">D</span><span class="idx">04 / 07</span></div>
+          <div>
+            <h3>Debug</h3>
+            <p class="what">Make it correct, and record a "before".</p>
+            <ul class="clean">
+              <li>Run it across the happy path and edge cases.</li>
+              <li>Reproduce failures minimally before fixing; fix root causes.</li>
+              <li>Add or run tests to lock in behavior.</li>
+              <li>Capture a "before" baseline — a screenshot for UI work, or recorded output otherwise.</li>
+            </ul>
+            <p class="exit"><b>Exit</b> — behavior verified, tests pass, "before" captured.</p>
+          </div>
         </article>
 
-        <article class="phase" data-letter="E">
-          <h3><span class="name">E — Enhance</span></h3>
-          <p class="lead">Improve beyond "works", and record an "after".</p>
-          <ul>
-            <li>Harden edge cases and failure modes.</li>
-            <li>Tighten error handling and validation.</li>
-            <li>Refactor for clarity; address performance where it matters.</li>
-            <li>Capture an <strong>"after" baseline</strong> matching the "before" (same viewport/inputs).</li>
-          </ul>
-          <p class="exit"><strong>Exit:</strong> robust and clear, with an "after" to compare.</p>
+        <article class="phase">
+          <div class="marker"><span class="big">E</span><span class="idx">05 / 07</span></div>
+          <div>
+            <h3>Enhance</h3>
+            <p class="what">Improve beyond "works", and record an "after".</p>
+            <ul class="clean">
+              <li>Harden edge cases and failure modes.</li>
+              <li>Tighten error handling and validation.</li>
+              <li>Refactor for clarity; address performance where it matters.</li>
+              <li>Capture an "after" baseline matching the "before" — same viewport and inputs.</li>
+            </ul>
+            <p class="exit"><b>Exit</b> — robust and clear, with an "after" to compare.</p>
+          </div>
         </article>
 
-        <article class="phase" data-letter="F">
-          <h3><span class="name">F — Finalize</span></h3>
-          <p class="lead">The gate — is the original request actually met?</p>
-          <ul>
-            <li>Compare the "before" and "after" baselines; confirm the enhancements landed with no regression.</li>
-            <li>Re-check every part of the original request from Analyze.</li>
-            <li><strong>If not fully met → loop back</strong> to the earliest affected phase and re-gate.</li>
-            <li>Once it passes: remove dead code, update docs, confirm tests green.</li>
-          </ul>
-          <p class="exit"><strong>Exit:</strong> request verifiably fulfilled; diff tight and green.</p>
+        <article class="phase">
+          <div class="marker"><span class="big">F</span><span class="idx">06 / 07</span></div>
+          <div>
+            <h3>Finalize</h3>
+            <p class="what">The gate — is the original request actually met?</p>
+            <ul class="clean">
+              <li>Compare the "before" and "after" baselines; confirm the enhancements landed with no regression.</li>
+              <li>Re-check every part of the original request from Analyze.</li>
+              <li>If not fully met, loop back to the earliest affected phase and re-gate.</li>
+              <li>Once it passes: remove dead code, update docs, confirm tests green.</li>
+            </ul>
+            <p class="exit"><b>Exit</b> — request verifiably fulfilled; diff tight and green.</p>
+          </div>
         </article>
 
-        <article class="phase" data-letter="G">
-          <h3><span class="name">G — Go</span></h3>
-          <p class="lead">Ship the change.</p>
-          <ul>
-            <li>Commit with a clear message; push to the right branch.</li>
-            <li>Open or merge the PR; confirm CI passes.</li>
-            <li>Report what shipped — link the commit/PR.</li>
-          </ul>
-          <p class="exit"><strong>Exit:</strong> committed, pushed, and on its way to the target branch.</p>
+        <article class="phase">
+          <div class="marker"><span class="big">G</span><span class="idx">07 / 07</span></div>
+          <div>
+            <h3>Go</h3>
+            <p class="what">Ship the change.</p>
+            <ul class="clean">
+              <li>Commit with a clear message; push to the right branch.</li>
+              <li>Open or merge the PR; confirm CI passes.</li>
+              <li>Report what shipped — link the commit or PR.</li>
+            </ul>
+            <p class="exit"><b>Exit</b> — committed, pushed, and on its way to the target branch.</p>
+          </div>
         </article>
+
       </div>
     </section>
 
     <section id="triggering">
-      <h2>How triggering works</h2>
-      <div class="callout">
+      <div class="section-head"><span class="num">04</span><h2>How triggering works</h2></div>
+      <div class="note">
         <p>Only the parent <code>abcdefg</code> skill auto-triggers — on requests like <em>"build this feature"</em>, <em>"implement X end to end"</em>, or <em>"take this from idea to shipped"</em>. The seven phases are internal steps it invokes in turn; they don't fire on their own, which keeps a stray "debug this" from launching a lone phase.</p>
       </div>
     </section>
 
     <section id="run">
-      <h2>Running it locally</h2>
-      <p>Link the repo's skills into your Claude CLI, then trigger the workflow by describing a feature:</p>
+      <div class="section-head"><span class="num">05</span><h2>Running it locally</h2></div>
+      <div class="body-col">
+        <p>Link the repo's skills into your Claude CLI, then trigger the workflow by describing a feature:</p>
+      </div>
       <pre><code>scripts/link-skills.sh   # symlink every SKILL.md into ~/.claude/skills
 scripts/list-skills.sh   # list all skills in the repo</code></pre>
-      <p>If a later phase reveals a gap, the workflow returns to the earliest affected phase and continues forward again.</p>
+      <div class="body-col">
+        <p>If a later phase reveals a gap, the workflow returns to the earliest affected phase and continues forward again.</p>
+      </div>
     </section>
   </main>
 
