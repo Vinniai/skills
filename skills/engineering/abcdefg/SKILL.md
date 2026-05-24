@@ -19,7 +19,7 @@ workflow — invoke them here rather than expecting them to trigger on their own
 
 ## The phases (subskills, run in order)
 
-1. **[a-analyze](./a-analyze/SKILL.md)** — Understand the request and existing code; state the problem precisely.
+1. **[a-analyze](./a-analyze/SKILL.md)** — Understand the request and existing code; survey available `~/.claude` skills and the tooling the task needs (framework, testing, browser/device testing, LSPs), asking the user if unclear; state the problem precisely.
 2. **[b-blueprint](./b-blueprint/SKILL.md)** — Design the approach: structure, interfaces, data flow, files to touch.
 3. **[c-construct](./c-construct/SKILL.md)** — Implement the blueprint in vertical slices.
 4. **[d-debug](./d-debug/SKILL.md)** — Run, reproduce, fix, verify with tests; capture a **"before"** baseline (screenshot for UI work).
