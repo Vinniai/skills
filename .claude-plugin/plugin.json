@@ -10,10 +10,6 @@
     "./skills/engineering/abcdefg/f-finalize",
     "./skills/engineering/abcdefg/g-go",
     "./skills/engineering/example-skill",
-    "./skills/engineering/grill-with-docs",
-    "./skills/productivity/handoff",
-    "./skills/agent-browser/agent-browser",
-    "./skills/portless/portless",
     "./skills/agent-sim/agent-sim",
     "./skills/agent-emulate/emulate",
     "./skills/agent-emulate/vercel",
@@ -26,6 +22,10 @@
     "./skills/agent-emulate/stripe",
     "./skills/agent-emulate/resend",
     "./skills/agent-emulate/next",
-    "./skills/design/impeccable"
+    "./external/design/impeccable",
+    "./external/productivity/handoff",
+    "./external/engineering/grill-with-docs",
+    "./external/agent-browser",
+    "./external/portless"
   ]
 }

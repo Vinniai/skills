@@ -4,15 +4,20 @@ Reusable Claude Code skills, maintained by Vinniai.
 
 ## Structure
 
-Each skill is a folder with a `SKILL.md`, grouped by category under `skills/`.
-Skills are registered in [`.claude-plugin/plugin.json`](./.claude-plugin/plugin.json).
+Each skill is a folder with a `SKILL.md`. Skills we author live under `skills/`;
+third-party skills we've vendored live under `external/`. All are registered in
+[`.claude-plugin/plugin.json`](./.claude-plugin/plugin.json).
 
 ```
-skills/
+skills/        # our own skills, grouped by category
   engineering/
     README.md
     example-skill/
       SKILL.md
+external/       # third-party skills, vendored (each keeps its upstream LICENSE)
+  README.md
+  design/impeccable/
+  agent-browser/
 scripts/
   link-skills.sh           # symlink every skill into ~/.claude/skills
   list-skills.sh           # list all SKILL.md paths
@@ -31,15 +36,21 @@ scripts/list-skills.sh
 
 See [CLAUDE.md](./CLAUDE.md) for authoring conventions.
 
-## Categories
+## Our skills
 
-- **[engineering](./skills/engineering/README.md)** — skills for code work.
-- **[design](./skills/design/README.md)** — building distinctive frontend interfaces (`impeccable`).
-- **[productivity](./skills/productivity/README.md)** — working with agents and managing context (`handoff`).
+- **[engineering](./skills/engineering/README.md)** — skills for code work (`abcdefg`, `example-skill`).
 - **[agent-sim](./skills/agent-sim/README.md)** — drive iOS simulators headlessly via the `agent-sim` CLI.
 - **[agent-emulate](./skills/agent-emulate/README.md)** — local drop-in API emulators (`npx agent-emulate`) for Vercel, GitHub, Google, Slack, AWS, Stripe, and more.
-- **[agent-browser](./skills/agent-browser/README.md)** — browser automation CLI for AI agents.
-- **[portless](./skills/portless/README.md)** — named local dev-server URLs over trusted HTTPS.
+
+## External skills
+
+Third-party skills we've vendored — see **[external/README.md](./external/README.md)** for sources, licenses, and refresh commands.
+
+- **impeccable** (design) — distinctive, production-grade frontend interfaces.
+- **handoff** (productivity) — compact a conversation into a handoff doc.
+- **grill-with-docs** (engineering) — challenge a plan against the domain model.
+- **agent-browser** (tooling) — browser automation CLI for AI agents.
+- **portless** (tooling) — named local dev-server URLs over trusted HTTPS.
 
 ## Documentation
 
