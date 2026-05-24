@@ -28,7 +28,16 @@ needs. No design or code yet.
    - **Other** — any further skill relevant to the request.
 
    Note which skills/tooling you'll use. **If it's unclear which apply or what the task
-   needs, ask the user before proceeding.**
+   needs, ask the user before proceeding** — prefer a structured multiple-choice question
+   (`AskUserQuestion`) over free-text, with one question per open dimension and concrete
+   options, e.g.:
+   - *Framework/stack* — the candidate frameworks you detected.
+   - *Test type* — unit / integration / e2e / none.
+   - *UI verification* — browser (headless screenshots) / on-device (simulator/emulator) / none.
+   - *LSPs* — the language servers the task would load.
+
+   Carry the answers into the problem statement so Blueprint and the later phases use the
+   confirmed tooling.
 5. Surface constraints: dependencies, data shapes, edge cases, non-goals.
 6. Write a concise problem statement — including the skills and tooling to use — to carry
    into **Blueprint**.
