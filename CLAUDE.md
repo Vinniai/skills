@@ -26,6 +26,19 @@ scripts/link-skills.sh   # symlinks every SKILL.md into ~/.claude/skills
 scripts/list-skills.sh   # lists all SKILL.md paths in the repo
 ```
 
+## Vendored skills
+
+The `agent-sim/` and `agent-emulate/` categories are copied from the sibling
+repos `../agent-sim/skills/` and `../agent-emulate/skills/`. Don't hand-edit
+their `SKILL.md` files — edit the source repo, then re-sync:
+
+```bash
+scripts/sync-vendored-skills.sh   # re-copy both trees; flags unregistered skills
+```
+
+The category `README.md` files are repo-authored and preserved by the sync.
+Override source paths with `AGENT_SIM_SRC` / `AGENT_EMULATE_SRC`.
+
 ## Lifecycle folders
 
 - `skills/<category>/` — active, maintained skills.

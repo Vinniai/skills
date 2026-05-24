@@ -14,8 +14,9 @@ skills/
     example-skill/
       SKILL.md
 scripts/
-  link-skills.sh   # symlink every skill into ~/.claude/skills
-  list-skills.sh   # list all SKILL.md paths
+  link-skills.sh           # symlink every skill into ~/.claude/skills
+  list-skills.sh           # list all SKILL.md paths
+  sync-vendored-skills.sh  # re-copy agent-sim / agent-emulate from sibling repos
 ```
 
 ## Quick start
