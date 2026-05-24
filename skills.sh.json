@@ -39,6 +39,16 @@
       ]
     },
     {
+      "title": "Taskr Platform",
+      "description": "Integrate with Taskr from outside — the REST API for external consumers (auth, routes, webhooks, agent triggers).",
+      "skills": ["taskr-api"]
+    },
+    {
+      "title": "Compliance",
+      "description": "Implement a regulatory/industry standard as structured, testable data — requirements, taxonomy, seeding, invariants, defect SLAs.",
+      "skills": ["compliance-standards"]
+    },
+    {
       "title": "Templates",
       "description": "Starting points for authoring new skills.",
       "skills": ["example-skill"]

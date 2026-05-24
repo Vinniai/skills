@@ -22,6 +22,8 @@
     "./skills/agent-emulate/stripe",
     "./skills/agent-emulate/resend",
     "./skills/agent-emulate/next",
+    "./skills/taskr/taskr-api",
+    "./skills/compliance/compliance-standards",
     "./external/design/impeccable",
     "./external/productivity/handoff",
     "./external/engineering/grill-with-docs",
