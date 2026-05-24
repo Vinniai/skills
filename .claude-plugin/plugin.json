@@ -2,6 +2,13 @@
   "name": "vinniai-skills",
   "skills": [
     "./skills/engineering/abcdefg",
+    "./skills/engineering/abcdefg/analyze",
+    "./skills/engineering/abcdefg/blueprint",
+    "./skills/engineering/abcdefg/construct",
+    "./skills/engineering/abcdefg/debug",
+    "./skills/engineering/abcdefg/enhance",
+    "./skills/engineering/abcdefg/finalize",
+    "./skills/engineering/abcdefg/go",
     "./skills/engineering/example-skill"
   ]
 }

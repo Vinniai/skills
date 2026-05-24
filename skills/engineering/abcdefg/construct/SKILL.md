@@ -1,0 +1,27 @@
+---
+name: abcdefg-construct
+description: Phase C of the abcdefg workflow. Implement the blueprint. Use after Blueprint to write the code in vertical slices, matching the surrounding conventions.
+---
+
+# C — Construct
+
+Third phase of [abcdefg](../SKILL.md). Goal: working code that realizes the blueprint.
+
+## When to use
+
+- The blueprint is set and you're ready to write code.
+
+## Steps
+
+1. Build in vertical slices — one working path at a time, end to end.
+2. Match the surrounding code's style, naming, and idioms.
+3. Implement to the interfaces defined in **Blueprint**; adjust the blueprint if
+   reality forces a change, and note it.
+4. Keep changes scoped to the files the blueprint listed.
+5. Commit logically grouped slices as you go (final shipping happens in **Go**).
+
+## Exit criteria
+
+The feature/change is implemented and runs, even if rough edges remain for later phases.
+
+→ Prev: [B — Blueprint](../blueprint/SKILL.md) · Next: [D — Debug](../debug/SKILL.md)
