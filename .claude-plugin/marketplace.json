@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "vinniai",
+  "owner": {
+    "name": "Vinniai",
+    "email": "josh@tocld.com"
+  },
+  "description": "Vinniai's Claude Code skills marketplace — one installable plugin bundling every skill in this repo.",
+  "plugins": [
+    {
+      "name": "vinniai-skills",
+      "source": "./",
+      "description": "The abcdefg feature workflow, iOS simulator control, local API emulators, Taskr integration, compliance authoring, lifecycle-hook setup, plus vendored third-party skills.",
+      "category": "development",
+      "keywords": [
+        "skills",
+        "workflow",
+        "ios-simulator",
+        "api-emulation",
+        "taskr",
+        "compliance",
+        "hooks",
+        "agents-md"
+      ],
+      "license": "MIT"
+    }
+  ]
+}

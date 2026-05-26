@@ -1,5 +1,8 @@
 {
   "name": "vinniai-skills",
+  "version": "0.1.0",
+  "description": "Vinniai's Claude Code skills: the abcdefg feature workflow, iOS simulator control, local API emulators, Taskr integration, compliance authoring, lifecycle-hook setup, plus vendored third-party skills.",
+  "author": { "name": "Vinniai", "email": "josh@tocld.com" },
   "skills": [
     "./skills/engineering/abcdefg",
     "./skills/engineering/abcdefg/a-analyze",

@@ -13,6 +13,16 @@ npx skills add Vinniai/skills --list     # just list what's available
 
 > The skills.sh page populates once the repo is first installed from with the `skills` CLI.
 
+Or install the whole repo as a **Claude Code plugin** via its marketplace manifest:
+
+```bash
+/plugin marketplace add Vinniai/skills   # register this repo as a marketplace
+/plugin install vinniai-skills@vinniai   # install the bundled plugin (all skills)
+```
+
+The marketplace is named `vinniai` and the plugin is `vinniai-skills`
+([`.claude-plugin/marketplace.json`](./.claude-plugin/marketplace.json)).
+
 ## Structure
 
 Each skill is a folder with a `SKILL.md`. Skills we author live under `skills/`;
