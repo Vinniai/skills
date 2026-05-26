@@ -1,0 +1,86 @@
+{
+  "runs": {
+    "without_skill": [
+      {
+        "run": "baseline-1",
+        "agent": "a06dc4bf94af1b398",
+        "verdicts": {
+          "1": "agents-inline",
+          "2": "agents-inline",
+          "3": "docs-index",
+          "4": "docs-index",
+          "5": "skill",
+          "6": "skill",
+          "7": "docs-index",
+          "8": "agents-inline"
+        },
+        "tokens": 15973,
+        "time_s": 7.6,
+        "pass_rate": 0.875,
+        "misses": [
+          {
+            "id": 7,
+            "expected": "skill",
+            "got": "docs-index"
+          }
+        ]
+      },
+      {
+        "run": "baseline-2",
+        "agent": "a0bd2a56f0ddad061",
+        "verdicts": {
+          "1": "agents-inline",
+          "2": "agents-inline",
+          "3": "docs-index",
+          "4": "docs-index",
+          "5": "skill",
+          "6": "skill",
+          "7": "skill",
+          "8": "agents-inline"
+        },
+        "tokens": 16002,
+        "time_s": 9.5,
+        "pass_rate": 1.0,
+        "misses": []
+      }
+    ],
+    "with_skill": [
+      {
+        "run": "withskill-1",
+        "agent": "adbb72146a49ddabf",
+        "verdicts": {
+          "1": "agents-inline",
+          "2": "agents-inline",
+          "3": "docs-index",
+          "4": "docs-index",
+          "5": "skill",
+          "6": "skill",
+          "7": "skill",
+          "8": "agents-inline"
+        },
+        "tokens": 20305,
+        "time_s": 24.5,
+        "pass_rate": 1.0,
+        "misses": []
+      },
+      {
+        "run": "withskill-2",
+        "agent": "a2551a95a393bfa18",
+        "verdicts": {
+          "1": "agents-inline",
+          "2": "agents-inline",
+          "3": "docs-index",
+          "4": "docs-index",
+          "5": "skill",
+          "6": "skill",
+          "7": "skill",
+          "8": "agents-inline"
+        },
+        "tokens": 20365,
+        "time_s": 21.2,
+        "pass_rate": 1.0,
+        "misses": []
+      }
+    ]
+  }
+}

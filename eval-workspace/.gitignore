@@ -1,0 +1,5 @@
+# Local eval scratch — never commit staged checkouts or installed deps.
+# Only the eval artifacts (spec.json / runs.json / benchmark.json / summary.md)
+# are worth keeping in git.
+.stage/
+**/node_modules/

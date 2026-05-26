@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "vinniai",
+  "owner": {
+    "name": "Vinniai",
+    "email": "josh@tocld.com"
+  },
+  "description": "Vinniai's Claude Code skills, installable per category: the abcdefg feature workflow, iOS simulator control, local API emulators, Taskr integration, compliance authoring, knowledge/hook authoring, plus vendored third-party skills.",
+  "plugins": [
+    {
+      "name": "abcdefg",
+      "source": "./skills/engineering/abcdefg",
+      "strict": false,
+      "skills": [
+        "./",
+        "./a-analyze",
+        "./b-blueprint",
+        "./c-construct",
+        "./d-debug",
+        "./e-enhance",
+        "./f-finalize",
+        "./g-go"
+      ],
+      "description": "The abcdefg seven-phase feature-development workflow — the entry skill plus its phase subskills (analyze → blueprint → construct → debug → enhance → finalize → go).",
+      "category": "workflow",
+      "keywords": ["workflow", "feature-development", "planning", "abcdefg"]
+    },
+    {
+      "name": "agent-sim",
+      "source": "./skills/agent-sim",
+      "strict": false,
+      "skills": ["./agent-sim"],
+      "description": "Drive iOS simulators headlessly via the agent-sim CLI — taps, gestures, screenshots, and a review-task queue.",
+      "category": "testing",
+      "keywords": ["ios", "simulator", "ui-testing", "automation"]
+    },
+    {
+      "name": "agent-emulate",
+      "source": "./skills/agent-emulate",
+      "strict": false,
+      "skills": [
+        "./emulate",
+        "./vercel",
+        "./github",
+        "./google",
+        "./slack",
+        "./apple",
+        "./microsoft",
+        "./aws",
+        "./stripe",
+        "./resend",
+        "./next"
+      ],
+      "description": "Local, stateful drop-in API emulators (agent-emulate) for CI and no-network dev — real OAuth/OIDC, not mocks. Covers Vercel, GitHub, Google, Slack, Apple, Microsoft, AWS, Stripe, Resend, and Next.",
+      "category": "development",
+      "keywords": ["api-emulation", "testing", "oauth", "ci", "mocks"]
+    },
+    {
+      "name": "taskr",
+      "source": "./skills/taskr",
+      "strict": false,
+      "skills": ["./taskr-api", "./taskr-cli"],
+      "description": "Integrate with the Taskr platform from outside — the REST API (taskr-api) and the taskr CLI/MCP server (taskr-cli) for auth, routes, webhooks, agent triggers, scripting, and automation.",
+      "category": "integration",
+      "keywords": ["taskr", "rest-api", "cli", "mcp", "automation"]
+    },
+    {
+      "name": "compliance",
+      "source": "./skills/compliance",
+      "strict": false,
+      "skills": ["./compliance-standards"],
+      "description": "Implement a regulatory/industry standard as structured, testable data — requirements, taxonomy, seeding, invariants, and defect SLAs.",
+      "category": "development",
+      "keywords": ["compliance", "standards", "data-modeling", "testing"]
+    },
+    {
+      "name": "authoring",
+      "source": "./skills/authoring",
+      "strict": false,
+      "skills": ["./skill-or-agents-md", "./claude-code-hooks"],
+      "description": "Author and organize agent knowledge itself — decide whether something belongs in AGENTS.md, a docs index, or a skill (skill-or-agents-md), and configure Claude Code lifecycle hooks (claude-code-hooks).",
+      "category": "productivity",
+      "keywords": ["authoring", "agents-md", "skills", "hooks", "claude-code"]
+    },
+    {
+      "name": "impeccable",
+      "source": "./external/design/impeccable",
+      "strict": false,
+      "skills": ["./"],
+      "description": "Third-party (Apache-2.0). Build distinctive, production-grade frontend interfaces.",
+      "category": "design",
+      "keywords": ["frontend", "design", "ui"],
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "grill-with-docs",
+      "source": "./external/engineering/grill-with-docs",
+      "strict": false,
+      "skills": ["./"],
+      "description": "Third-party (MIT). Sharpen a plan against the existing domain model before building.",
+      "category": "engineering",
+      "keywords": ["planning", "review", "domain-model"],
+      "license": "MIT"
+    },
+    {
+      "name": "handoff",
+      "source": "./external/productivity/handoff",
+      "strict": false,
+      "skills": ["./"],
+      "description": "Third-party (MIT). Compact a conversation into a handoff document for another agent.",
+      "category": "productivity",
+      "keywords": ["handoff", "context", "summarization"],
+      "license": "MIT"
+    },
+    {
+      "name": "agent-browser",
+      "source": "./external/agent-browser",
+      "strict": false,
+      "skills": ["./"],
+      "description": "Third-party (Apache-2.0). Browser automation CLI for AI agents.",
+      "category": "tooling",
+      "keywords": ["browser", "automation", "testing"],
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "portless",
+      "source": "./external/portless",
+      "strict": false,
+      "skills": ["./"],
+      "description": "Third-party (Apache-2.0). Named local dev-server URLs over trusted HTTPS.",
+      "category": "tooling",
+      "keywords": ["dev-server", "https", "local-development"],
+      "license": "Apache-2.0"
+    }
+  ]
+}

@@ -13,8 +13,20 @@ skills/<category>/<skill-name>/*.md       # optional supporting reference files
 skills/<category>/README.md               # index of skills in the category
 external/<group>/<skill-name>/SKILL.md    # vendored third-party skill (+ its LICENSE)
 external/README.md                        # index of all external skills
+tools/<tool>/TOOL.md                      # curated dev tool reference (NOT a skill)
+tools/<tool>/run.sh                       # runnable wrapper for that tool
 .claude-plugin/plugin.json                # registers each skill path (ours and external)
 ```
+
+`tools/` is a separate, curated catalogue of dev tools (typecheck, biome, vitest,
+…) — a reference doc plus a copy-pasteable `run.sh` per tool. These are **not**
+skills: they aren't registered in `plugin.json` and aren't auto-loaded. See
+[`tools/README.md`](./tools/README.md) for the layout and how to add one.
+
+`agents/` holds guidance for `AGENTS.md` (the always-on project-context file) — a
+do-this guide plus a copy-paste template. Also not skills; see
+[`agents/README.md`](./agents/README.md). Rule of thumb: broad, always-relevant
+project knowledge → `AGENTS.md`; explicitly-triggered vertical workflows → a skill.
 
 ## Adding a skill
 

@@ -1,0 +1,65 @@
+{
+  "skill_name": "skill-or-agents-md",
+  "iteration": 2,
+  "n_per_condition": 5,
+  "expected_3way": {
+    "1": "agents-inline", "2": "agents-inline", "3": "docs-index", "4": "docs-index",
+    "5": "skill", "6": "skill", "7": "skill", "8": "agents-inline"
+  },
+  "expected_binary_axis": {
+    "_note": "Truth collapsed to the coarse {agents, skill} call: any non-procedure (agents-inline OR docs-index) maps to 'agents'; procedures map to 'skill'. Used only to score baseline_binary's secondary metric.",
+    "1": "agents", "2": "agents", "3": "agents", "4": "agents",
+    "5": "skill", "6": "skill", "7": "skill", "8": "agents"
+  },
+  "grading": {
+    "baseline_3way": "exact match vs expected_3way",
+    "with_skill": "exact match vs expected_3way",
+    "baseline_binary_primary": "emits {agents, skill}; scored correct vs expected_3way where agents-inline->correct iff 'agents', skill->correct iff 'skill', docs-index->ALWAYS incorrect (binary cannot express it). Caps at 6/8=0.75.",
+    "baseline_binary_secondary": "binary-axis accuracy = exact match of emitted {agents,skill} vs expected_binary_axis (separates 'no vocabulary for docs-index' from 'wrong coarse call')."
+  },
+  "conditions": {
+    "baseline_binary": {
+      "labels_allowed": ["agents", "skill"],
+      "reads_files": false,
+      "runs": [
+        {"run": 1, "agent": "a6cd86f72b4c4789a", "labels": {"1":"agents","2":"agents","3":"skill","4":"skill","5":"skill","6":"skill","7":"skill","8":"agents"}, "primary_correct": 6, "binary_axis_correct": 6, "primary_pass_rate": 0.75, "binary_axis_pass_rate": 0.75},
+        {"run": 2, "agent": "ae1caf95e7d167f5a", "labels": {"1":"agents","2":"agents","3":"skill","4":"skill","5":"skill","6":"skill","7":"skill","8":"agents"}, "primary_correct": 6, "binary_axis_correct": 6, "primary_pass_rate": 0.75, "binary_axis_pass_rate": 0.75},
+        {"run": 3, "agent": "ad3cfeb2a4849a24d", "labels": {"1":"agents","2":"agents","3":"skill","4":"skill","5":"skill","6":"skill","7":"skill","8":"agents"}, "primary_correct": 6, "binary_axis_correct": 6, "primary_pass_rate": 0.75, "binary_axis_pass_rate": 0.75},
+        {"run": 4, "agent": "aa5345b059b0a46cb", "labels": {"1":"agents","2":"agents","3":"skill","4":"skill","5":"skill","6":"skill","7":"skill","8":"agents"}, "primary_correct": 6, "binary_axis_correct": 6, "primary_pass_rate": 0.75, "binary_axis_pass_rate": 0.75},
+        {"run": 5, "agent": "af0c5e3d6028f775f", "labels": {"1":"agents","2":"agents","3":"skill","4":"skill","5":"skill","6":"skill","7":"skill","8":"agents"}, "primary_correct": 6, "binary_axis_correct": 6, "primary_pass_rate": 0.75, "binary_axis_pass_rate": 0.75}
+      ],
+      "avg_total_tokens": 15998,
+      "avg_duration_ms": 6981,
+      "avg_tool_uses": 0
+    },
+    "baseline_3way": {
+      "labels_allowed": ["agents-inline", "docs-index", "skill"],
+      "reads_files": false,
+      "runs": [
+        {"run": 1, "agent": "a30dee5ae85e4ec18", "labels": {"1":"agents-inline","2":"agents-inline","3":"docs-index","4":"docs-index","5":"skill","6":"skill","7":"docs-index","8":"agents-inline"}, "correct": 7, "pass_rate": 0.875},
+        {"run": 2, "agent": "ad67c5ef9a64a1483", "labels": {"1":"agents-inline","2":"agents-inline","3":"docs-index","4":"docs-index","5":"skill","6":"skill","7":"docs-index","8":"agents-inline"}, "correct": 7, "pass_rate": 0.875},
+        {"run": 3, "agent": "a3f4156bc223f4111", "labels": {"1":"agents-inline","2":"agents-inline","3":"docs-index","4":"docs-index","5":"skill","6":"skill","7":"docs-index","8":"agents-inline"}, "correct": 7, "pass_rate": 0.875},
+        {"run": 4, "agent": "ac580b1614c5adcc1", "labels": {"1":"agents-inline","2":"agents-inline","3":"docs-index","4":"docs-index","5":"skill","6":"skill","7":"docs-index","8":"agents-inline"}, "correct": 7, "pass_rate": 0.875},
+        {"run": 5, "agent": "a1ee49302c42aefe9", "labels": {"1":"agents-inline","2":"agents-inline","3":"docs-index","4":"docs-index","5":"skill","6":"skill","7":"docs-index","8":"agents-inline"}, "correct": 7, "pass_rate": 0.875}
+      ],
+      "avg_total_tokens": 16026,
+      "avg_duration_ms": 7047,
+      "avg_tool_uses": 0
+    },
+    "with_skill": {
+      "labels_allowed": ["agents-inline", "docs-index", "skill"],
+      "reads_files": true,
+      "files_read": ["~/.claude/skills/skill-or-agents-md/SKILL.md", "~/.claude/skills/skill-or-agents-md/examples.md"],
+      "runs": [
+        {"run": 1, "agent": "aa151661c802c4abc", "labels": {"1":"agents-inline","2":"agents-inline","3":"docs-index","4":"docs-index","5":"skill","6":"skill","7":"skill","8":"agents-inline"}, "correct": 8, "pass_rate": 1.00},
+        {"run": 2, "agent": "ac5a7ce84591fa8dc", "labels": {"1":"agents-inline","2":"agents-inline","3":"docs-index","4":"docs-index","5":"skill","6":"skill","7":"skill","8":"agents-inline"}, "correct": 8, "pass_rate": 1.00},
+        {"run": 3, "agent": "a4f625d50fc99cf8c", "labels": {"1":"agents-inline","2":"agents-inline","3":"docs-index","4":"docs-index","5":"skill","6":"skill","7":"skill","8":"agents-inline"}, "correct": 8, "pass_rate": 1.00, "note": "trailing brace omitted in raw output; all 8 labels parsed unambiguously"},
+        {"run": 4, "agent": "a3c1560a9aaceeeb5", "labels": {"1":"agents-inline","2":"agents-inline","3":"docs-index","4":"docs-index","5":"skill","6":"skill","7":"skill","8":"agents-inline"}, "correct": 8, "pass_rate": 1.00},
+        {"run": 5, "agent": "ace38427c42a6a8e8", "labels": {"1":"agents-inline","2":"agents-inline","3":"docs-index","4":"docs-index","5":"skill","6":"skill","7":"skill","8":"agents-inline"}, "correct": 8, "pass_rate": 1.00}
+      ],
+      "avg_total_tokens": 20298,
+      "avg_duration_ms": 19480,
+      "avg_tool_uses": 2
+    }
+  }
+}

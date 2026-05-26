@@ -1,0 +1,74 @@
+{
+  "run_summary": {
+    "without_skill": {
+      "pass_rate": {
+        "mean": 0.9375,
+        "stddev": 0.0625
+      },
+      "time_seconds": {
+        "mean": 8.55,
+        "stddev": 0.95
+      },
+      "tokens": {
+        "mean": 15987.5,
+        "stddev": 14.5
+      },
+      "n": 2
+    },
+    "with_skill": {
+      "pass_rate": {
+        "mean": 1.0,
+        "stddev": 0.0
+      },
+      "time_seconds": {
+        "mean": 22.85,
+        "stddev": 1.65
+      },
+      "tokens": {
+        "mean": 20335,
+        "stddev": 30.0
+      },
+      "n": 2
+    }
+  },
+  "delta": {
+    "baseline": "without_skill",
+    "pass_rate": 0.0625,
+    "time_seconds": 14.3,
+    "tokens": 4347.5
+  },
+  "per_item": {
+    "1": {
+      "expected": "agents-inline",
+      "correct_of_total": "4/4"
+    },
+    "2": {
+      "expected": "agents-inline",
+      "correct_of_total": "4/4"
+    },
+    "3": {
+      "expected": "docs-index",
+      "correct_of_total": "4/4"
+    },
+    "4": {
+      "expected": "docs-index",
+      "correct_of_total": "4/4"
+    },
+    "5": {
+      "expected": "skill",
+      "correct_of_total": "4/4"
+    },
+    "6": {
+      "expected": "skill",
+      "correct_of_total": "4/4"
+    },
+    "7": {
+      "expected": "skill",
+      "correct_of_total": "3/4"
+    },
+    "8": {
+      "expected": "agents-inline",
+      "correct_of_total": "4/4"
+    }
+  }
+}
