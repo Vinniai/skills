@@ -1,12 +1,12 @@
 ---
 name: g-go
-description: Phase G of the abcdefg feature workflow. Internal step invoked by abcdefg — not triggered on its own. Ship the change: commit with a clear message, push, and open or merge the PR as appropriate.
+description: Ship a finished change: commit with a clear message, push to the right branch (branching first if on the default), open a PR or merge per the agreed flow, confirm CI is green, and report what shipped. Phase G of the abcdefg workflow, also usable on its own. Triggers: "ship it", "commit and open a PR", "push and merge this", "land this change".
 ---
 
 # G — Go
 
-Final phase of [abcdefg](../SKILL.md). Run as a step of that workflow. Goal: the change
-is shipped.
+Phase G of [abcdefg](../SKILL.md) — run as part of that workflow or on its own. Goal:
+the change is shipped.
 
 ## Steps
 

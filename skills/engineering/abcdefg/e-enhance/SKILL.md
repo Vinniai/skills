@@ -1,13 +1,13 @@
 ---
 name: e-enhance
-description: Phase E of the abcdefg feature workflow. Internal step invoked by abcdefg — not triggered on its own. Improve beyond "works": harden edge cases, tighten error handling, refactor for clarity, address performance, and capture an "after" baseline matching Debug's "before".
+description: Take working code beyond "it works": harden edge cases, tighten error handling, refactor for clarity, address performance, and capture an "after" baseline to compare against Debug's "before". Phase E of the abcdefg workflow, also usable on its own. Triggers: "harden this", "improve error handling", "refactor for clarity", "optimize this path", "make this production-ready".
 ---
 
 # E — Enhance
 
-Fifth phase of [abcdefg](../SKILL.md). Run as a step of that workflow. Goal: a solution
-that's robust and clear, plus an **"after" baseline** that pairs with Debug's "before"
-so Finalize can compare them.
+Phase E of [abcdefg](../SKILL.md) — run as part of that workflow or on its own. Goal: a
+solution that's robust and clear, plus an **"after" baseline** that pairs with Debug's
+"before" so Finalize can compare them.
 
 ## Steps
 

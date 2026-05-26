@@ -1,12 +1,12 @@
 ---
 name: f-finalize
-description: Phase F of the abcdefg feature workflow. Internal step invoked by abcdefg — not triggered on its own. The verification gate: compare the before/after baselines, confirm the original request is fully met, and loop back to an earlier phase if not. Only when it passes, clean up and confirm green.
+description: Run the verification gate before shipping: compare Debug's "before" to Enhance's "after", re-check every acceptance criterion against the original request, loop back to the earliest affected phase if anything fell short, then clean up and confirm green. Phase F of the abcdefg workflow, also usable on its own. Triggers: "verify this is complete", "did we actually meet the request", "final check before shipping", "is this ready to ship".
 ---
 
 # F — Finalize
 
-Sixth phase of [abcdefg](../SKILL.md). Run as a step of that workflow. This is the
-**gate** that decides whether the work is actually done — not just a cleanup step.
+Phase F of [abcdefg](../SKILL.md) — run as part of that workflow or on its own. This is
+the **gate** that decides whether the work is actually done — not just a cleanup step.
 
 ## Gate: verify against the original request
 
@@ -31,7 +31,5 @@ Sixth phase of [abcdefg](../SKILL.md). Run as a step of that workflow. This is t
 
 The before/after comparison confirms the enhancements landed, the original request is
 verifiably fulfilled, and the diff is tight and green — ready for **Go**.
-
-→ Prev: [E — Enhance](../e-enhance/SKILL.md) · Next: [G — Go](../g-go/SKILL.md)
 
 → Prev: [E — Enhance](../e-enhance/SKILL.md) · Next: [G — Go](../g-go/SKILL.md)
