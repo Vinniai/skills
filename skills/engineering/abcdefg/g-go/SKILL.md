@@ -1,6 +1,6 @@
 ---
 name: g-go
-description: Ship a finished change: commit with a clear message, push to the right branch (branching first if on the default), open a PR or merge per the agreed flow, confirm CI is green, and report what shipped. Phase G of the abcdefg workflow, also usable on its own. Triggers: "ship it", "commit and open a PR", "push and merge this", "land this change".
+description: Ship a finished change — commit with a clear message, push to the right branch (branching first if on the default), open a PR or merge per the agreed flow, confirm CI is green, and report what shipped. Phase G of the abcdefg workflow, also usable on its own. Triggers — "ship it", "commit and open a PR", "push and merge this", "land this change".
 ---
 
 # G — Go

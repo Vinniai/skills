@@ -1,6 +1,6 @@
 ---
 name: a-analyze
-description: Scope and investigate a coding task before any design or code: restate the request, map the relevant files and patterns, survey available ~/.claude skills and the tooling the task needs (framework, testing, browser/device testing, LSPs), and nail down acceptance criteria. Phase A of the abcdefg workflow, also usable on its own. Triggers: "analyze this task", "scope this before we build", "what do we need to know first", "survey the code and tooling for X".
+description: Scope and investigate a coding task before any design or code — restate the request, map the relevant files and patterns, survey available ~/.claude skills and the tooling the task needs (framework, testing, browser/device testing, LSPs), and nail down acceptance criteria. Phase A of the abcdefg workflow, also usable on its own. Triggers — "analyze this task", "scope this before we build", "what do we need to know first", "survey the code and tooling for X".
 ---
 
 # A — Analyze

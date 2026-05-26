@@ -1,6 +1,6 @@
 ---
 name: e-enhance
-description: Take working code beyond "it works": harden edge cases, tighten error handling, refactor for clarity, address performance, and capture an "after" baseline to compare against Debug's "before". Phase E of the abcdefg workflow, also usable on its own. Triggers: "harden this", "improve error handling", "refactor for clarity", "optimize this path", "make this production-ready".
+description: Take working code beyond "it works" — harden edge cases, tighten error handling, refactor for clarity, address performance, and capture an "after" baseline to compare against Debug's "before". Phase E of the abcdefg workflow, also usable on its own. Triggers — "harden this", "improve error handling", "refactor for clarity", "optimize this path", "make this production-ready".
 ---
 
 # E — Enhance

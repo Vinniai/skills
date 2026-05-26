@@ -1,6 +1,6 @@
 ---
 name: f-finalize
-description: Run the verification gate before shipping: compare Debug's "before" to Enhance's "after", re-check every acceptance criterion against the original request, loop back to the earliest affected phase if anything fell short, then clean up and confirm green. Phase F of the abcdefg workflow, also usable on its own. Triggers: "verify this is complete", "did we actually meet the request", "final check before shipping", "is this ready to ship".
+description: Run the verification gate before shipping — compare Debug's "before" to Enhance's "after", re-check every acceptance criterion against the original request, loop back to the earliest affected phase if anything fell short, then clean up and confirm green. Phase F of the abcdefg workflow, also usable on its own. Triggers — "verify this is complete", "did we actually meet the request", "final check before shipping", "is this ready to ship".
 ---
 
 # F — Finalize

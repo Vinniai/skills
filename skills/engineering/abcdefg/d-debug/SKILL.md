@@ -1,6 +1,6 @@
 ---
 name: d-debug
-description: Make an implementation correct: run it, reproduce failures with the smallest case, fix root causes rather than symptoms, lock in behavior with tests, and capture a "before" baseline for later comparison. Phase D of the abcdefg workflow, also usable on its own. Triggers: "debug this", "find the root cause", "make the tests pass", "why is this failing", "reproduce and fix".
+description: Make an implementation correct — run it, reproduce failures with the smallest case, fix root causes rather than symptoms, lock in behavior with tests, and capture a "before" baseline for later comparison. Phase D of the abcdefg workflow, also usable on its own. Triggers — "debug this", "find the root cause", "make the tests pass", "why is this failing", "reproduce and fix".
 ---
 
 # D — Debug

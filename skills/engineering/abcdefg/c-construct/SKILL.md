@@ -1,6 +1,6 @@
 ---
 name: c-construct
-description: Implement a planned change: write the code in vertical slices, reusing existing patterns and shared packages, matching the surrounding conventions and style. Phase C of the abcdefg workflow, also usable on its own. Triggers: "implement this plan/blueprint", "build it in vertical slices", "write the code for this design", "construct the feature".
+description: Implement a planned change — write the code in vertical slices, reusing existing patterns and shared packages, matching the surrounding conventions and style. Phase C of the abcdefg workflow, also usable on its own. Triggers — "implement this plan/blueprint", "build it in vertical slices", "write the code for this design", "construct the feature".
 ---
 
 # C — Construct

@@ -1,6 +1,6 @@
 ---
 name: abcdefg
-description: End-to-end feature development workflow. Use whenever building, implementing, or shipping a non-trivial feature, fix, or change from start to finish — e.g. "build this feature", "implement X end to end", "take this from idea to shipped". Runs seven sequential phases in order: Analyze, Blueprint, Construct, Debug, Enhance, Finalize, Go (A–G). This is the entry point that runs the full sequence; each phase is also its own skill (a-analyze … g-go) you can trigger independently when you only need that one step.
+description: End-to-end feature development workflow. Use whenever building, implementing, or shipping a non-trivial feature, fix, or change from start to finish — e.g. "build this feature", "implement X end to end", "take this from idea to shipped". Runs seven sequential phases in order — Analyze, Blueprint, Construct, Debug, Enhance, Finalize, Go (A–G). This is the entry point that runs the full sequence; each phase is also its own skill (a-analyze … g-go) you can trigger independently when you only need that one step.
 ---
 
 # abcdefg
