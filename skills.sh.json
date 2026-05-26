@@ -50,8 +50,8 @@
     },
     {
       "title": "Authoring",
-      "description": "Author and organize agent knowledge itself — decide whether something belongs in AGENTS.md, a docs index, or a skill.",
-      "skills": ["skill-or-agents-md"]
+      "description": "Author and organize agent knowledge itself — decide whether something belongs in AGENTS.md, a docs index, or a skill, and configure Claude Code lifecycle hooks.",
+      "skills": ["skill-or-agents-md", "claude-code-hooks"]
     },
     {
       "title": "Templates",

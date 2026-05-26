@@ -59,7 +59,7 @@ See [CLAUDE.md](./CLAUDE.md) for authoring conventions.
 ## Our skills
 
 - **[engineering](./skills/engineering/README.md)** — skills for code work (`abcdefg`, `example-skill`).
-- **[authoring](./skills/authoring/README.md)** — organize agent knowledge: decide skill vs `AGENTS.md` vs docs index (`skill-or-agents-md`).
+- **[authoring](./skills/authoring/README.md)** — organize agent knowledge: decide skill vs `AGENTS.md` vs docs index (`skill-or-agents-md`), and configure Claude Code lifecycle hooks (`claude-code-hooks`).
 - **[agent-sim](./skills/agent-sim/README.md)** — drive iOS simulators headlessly via the `agent-sim` CLI.
 - **[agent-emulate](./skills/agent-emulate/README.md)** — local drop-in API emulators (`npx agent-emulate`) for Vercel, GitHub, Google, Slack, AWS, Stripe, and more.
 - **[taskr](./skills/taskr/README.md)** — integrate with the Taskr platform from the outside via its REST API (`taskr-api`) and the `taskr` CLI/MCP server (`taskr-cli`).

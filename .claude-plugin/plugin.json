@@ -11,6 +11,7 @@
     "./skills/engineering/abcdefg/g-go",
     "./skills/engineering/example-skill",
     "./skills/authoring/skill-or-agents-md",
+    "./skills/authoring/claude-code-hooks",
     "./skills/agent-sim/agent-sim",
     "./skills/agent-emulate/emulate",
     "./skills/agent-emulate/vercel",
