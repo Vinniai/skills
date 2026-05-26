@@ -13,15 +13,25 @@ npx skills add Vinniai/skills --list     # just list what's available
 
 > The skills.sh page populates once the repo is first installed from with the `skills` CLI.
 
-Or install the whole repo as a **Claude Code plugin** via its marketplace manifest:
+Or install them as **Claude Code plugins** via the marketplace manifest. The
+marketplace is named `vinniai` and exposes one installable plugin **per
+category**, so you pull in only what you need:
 
 ```bash
 /plugin marketplace add Vinniai/skills   # register this repo as a marketplace
-/plugin install vinniai-skills@vinniai   # install the bundled plugin (all skills)
+/plugin install abcdefg@vinniai          # then install any category you want:
+/plugin install agent-emulate@vinniai
+/plugin install agent-sim@vinniai
+/plugin install taskr@vinniai
+/plugin install compliance@vinniai
+/plugin install authoring@vinniai
 ```
 
-The marketplace is named `vinniai` and the plugin is `vinniai-skills`
-([`.claude-plugin/marketplace.json`](./.claude-plugin/marketplace.json)).
+Each plugin namespaces its skills by the plugin name — e.g. `taskr@vinniai`
+gives you `/taskr:taskr-api` and `/taskr:taskr-cli`. Vendored third-party skills
+are individual plugins too (`impeccable`, `grill-with-docs`, `handoff`,
+`agent-browser`, `portless`). See the full catalog in
+[`.claude-plugin/marketplace.json`](./.claude-plugin/marketplace.json).
 
 ## Structure
 
