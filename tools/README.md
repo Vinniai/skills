@@ -26,6 +26,10 @@ that judges code you keep. **fallow** is the periodic sweep that finds code you
 can delete. **lefthook** is the automation layer that runs these at commit/push
 time so failures surface locally, not in CI.
 
+See **[EXAMPLES.md](./EXAMPLES.md)** for ready-to-use prompts per tool (and
+combined workflows like "run the full quality gate" or "get this branch ready for
+a PR").
+
 ## Running the wrappers
 
 Each `run.sh` is self-contained and resolves how to invoke the underlying CLI in
