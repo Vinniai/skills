@@ -1,12 +1,12 @@
 ---
 name: c-construct
-description: Phase C of the abcdefg feature workflow. Internal step invoked by abcdefg — not triggered on its own. Implement the blueprint: write the code in vertical slices, matching the surrounding conventions.
+description: Implement a planned change — write the code in vertical slices, reusing existing patterns and shared packages, matching the surrounding conventions and style. Phase C of the abcdefg workflow, also usable on its own. Triggers — "implement this plan/blueprint", "build it in vertical slices", "write the code for this design", "construct the feature".
 ---
 
 # C — Construct
 
-Third phase of [abcdefg](../SKILL.md). Run as a step of that workflow. Goal: working
-code that realizes the blueprint.
+Phase C of [abcdefg](../SKILL.md) — run as part of that workflow or on its own. Goal:
+working code that realizes the blueprint.
 
 ## Steps
 

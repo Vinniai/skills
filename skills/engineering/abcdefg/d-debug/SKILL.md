@@ -1,11 +1,11 @@
 ---
 name: d-debug
-description: Phase D of the abcdefg feature workflow. Internal step invoked by abcdefg — not triggered on its own. Make the implementation correct: run the code, reproduce issues, fix root causes, verify with tests, and capture a "before" baseline for later comparison.
+description: Make an implementation correct — run it, reproduce failures with the smallest case, fix root causes rather than symptoms, lock in behavior with tests, and capture a "before" baseline for later comparison. Phase D of the abcdefg workflow, also usable on its own. Triggers — "debug this", "find the root cause", "make the tests pass", "why is this failing", "reproduce and fix".
 ---
 
 # D — Debug
 
-Fourth phase of [abcdefg](../SKILL.md). Run as a step of that workflow. Goal:
+Phase D of [abcdefg](../SKILL.md) — run as part of that workflow or on its own. Goal:
 verified-correct behavior plus a recorded **"before" baseline** that Finalize uses to
 confirm the work landed.
 
@@ -25,7 +25,5 @@ confirm the work landed.
 
 Behavior is verified against the acceptance criteria, tests pass, and a "before"
 baseline is captured.
-
-→ Prev: [C — Construct](../c-construct/SKILL.md) · Next: [E — Enhance](../e-enhance/SKILL.md)
 
 → Prev: [C — Construct](../c-construct/SKILL.md) · Next: [E — Enhance](../e-enhance/SKILL.md)

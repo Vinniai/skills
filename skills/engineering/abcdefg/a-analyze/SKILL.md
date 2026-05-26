@@ -1,13 +1,13 @@
 ---
 name: a-analyze
-description: Phase A of the abcdefg feature workflow. Internal step invoked by abcdefg — not triggered on its own. Understand the request and existing code, survey the available ~/.claude skills and the tooling the task needs (framework, testing, browser/device testing, LSPs), ask the user when unclear, and state the problem precisely.
+description: Scope and investigate a coding task before any design or code — restate the request, map the relevant files and patterns, survey available ~/.claude skills and the tooling the task needs (framework, testing, browser/device testing, LSPs), and nail down acceptance criteria. Phase A of the abcdefg workflow, also usable on its own. Triggers — "analyze this task", "scope this before we build", "what do we need to know first", "survey the code and tooling for X".
 ---
 
 # A — Analyze
 
-First phase of [abcdefg](../SKILL.md). Run as a step of that workflow. Goal: a precise
-problem statement, a map of what's involved, and the set of skills/tooling the task
-needs. No design or code yet.
+Phase A of [abcdefg](../SKILL.md) — run as part of that workflow or on its own. Goal: a
+precise problem statement, a map of what's involved, and the set of skills/tooling the
+task needs. No design or code yet.
 
 ## Steps
 

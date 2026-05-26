@@ -1,12 +1,13 @@
 ---
 name: b-blueprint
-description: Phase B of the abcdefg feature workflow. Internal step invoked by abcdefg — not triggered on its own. Design the approach before writing code: decide structure, interfaces, and data flow, note trade-offs, and list the files to touch.
+description: Design the approach for a change before writing code — choose the structure, name components and their responsibilities, define interfaces and data flow, list the files to touch and in what order, and record trade-offs and rejected alternatives. Phase B of the abcdefg workflow, also usable on its own. Triggers — "design the approach for X", "plan this before I code", "blueprint this feature", "what's the structure and which files change".
 ---
 
 # B — Blueprint
 
-Second phase of [abcdefg](../SKILL.md). Run as a step of that workflow. Goal: a design
-you can implement directly. Comes after the problem is understood; precedes any code.
+Phase B of [abcdefg](../SKILL.md) — run as part of that workflow or on its own. Goal: a
+design you can implement directly. Comes after the problem is understood; precedes any
+code.
 
 ## Steps
 

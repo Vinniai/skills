@@ -1,6 +1,6 @@
 ---
 name: skill-or-agents-md
-description: Decide where a piece of agent knowledge belongs — inline in AGENTS.md (always-on context), a docs file indexed from AGENTS.md (retrieved on demand), or a skill (explicitly-triggered workflow). Works both directions. Use when you're about to write a skill or add to AGENTS.md and aren't sure which; when auditing a bloated AGENTS.md to see what should become a skill or a doc; or when a skill never triggers and might belong in AGENTS.md. Trigger phrases: "should this be a skill or AGENTS.md", "should this go in AGENTS.md", "is this skill in the right place".
+description: Decide where a piece of agent knowledge belongs — inline in AGENTS.md (always-on context), a docs file indexed from AGENTS.md (retrieved on demand), or a skill (explicitly-triggered workflow). Works both directions. Use when you're about to write a skill or add to AGENTS.md and aren't sure which; when auditing a bloated AGENTS.md to see what should become a skill or a doc; or when a skill never triggers and might belong in AGENTS.md. Trigger phrases "should this be a skill or AGENTS.md", "should this go in AGENTS.md", "is this skill in the right place".
 ---
 
 # Skill or AGENTS.md?
