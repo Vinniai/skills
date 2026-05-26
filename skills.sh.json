@@ -49,6 +49,11 @@
       "skills": ["compliance-standards"]
     },
     {
+      "title": "Authoring",
+      "description": "Author and organize agent knowledge itself — decide whether something belongs in AGENTS.md, a docs index, or a skill.",
+      "skills": ["skill-or-agents-md"]
+    },
+    {
       "title": "Templates",
       "description": "Starting points for authoring new skills.",
       "skills": ["example-skill"]

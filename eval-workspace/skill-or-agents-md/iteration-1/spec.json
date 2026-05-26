@@ -1,0 +1,64 @@
+{
+  "skill_name": "skill-or-agents-md",
+  "method": "Routing/classification eval. Each item is a piece of agent/project knowledge to route to exactly one of three destinations: agents-inline (put directly in project-root AGENTS.md), docs-index (a separate docs/ file that AGENTS.md only points to, retrieved on demand), or skill (a SKILL.md invoked on demand). Both conditions are given the same three destinations and the same items; the ONLY difference is the with_skill agent reads and applies the linked skill at ~/.claude/skills/skill-or-agents-md/SKILL.md, while the baseline uses its own judgment and reads no files. Grading is exact-match against expected (deterministic, no LLM grader).",
+  "leakage_control": "These 8 scenarios are held out — none appear in the skill's examples.md. Discriminators (3,4,7,8) probe the non-obvious parts (the docs-index destination and the two reverse audits) where naive skill-vs-AGENTS.md binary thinking is expected to misroute.",
+  "labels": ["agents-inline", "docs-index", "skill"],
+  "evals": [
+    {
+      "id": 1,
+      "name": "commit-and-branch-conventions",
+      "prompt": "The repo's commit-message format (Conventional Commits) and branch-naming rule (type/short-slug).",
+      "expected": "agents-inline",
+      "rationale": "Small facts relevant on most turns; no distinct invocation moment. Inline."
+    },
+    {
+      "id": 2,
+      "name": "package-manager-and-dev-command",
+      "prompt": "Which package manager the repo uses (pnpm) and the dev-server command (pnpm dev).",
+      "expected": "agents-inline",
+      "rationale": "Core command, needed constantly, tiny. Inline."
+    },
+    {
+      "id": 3,
+      "name": "event-sourcing-reference",
+      "prompt": "A 400-line reference describing the event-sourcing model: every event type, its payload shape, and which aggregate emits it.",
+      "expected": "docs-index",
+      "rationale": "Broad reference, large, only relevant when touching events. Index don't inline; not a procedure so not a skill. DISCRIMINATOR."
+    },
+    {
+      "id": 4,
+      "name": "feature-flag-catalogue",
+      "prompt": "A comprehensive catalogue of all ~120 feature flags and exactly what each one gates.",
+      "expected": "docs-index",
+      "rationale": "Large reference, retrieve on demand. Too big to inline; not a workflow. DISCRIMINATOR."
+    },
+    {
+      "id": 5,
+      "name": "rest-to-trpc-migration",
+      "prompt": "The step-by-step procedure for migrating a REST endpoint to a tRPC router, run when someone asks to migrate X to tRPC.",
+      "expected": "skill",
+      "rationale": "Ordered procedure with an explicit, recognizable trigger. Skill."
+    },
+    {
+      "id": 6,
+      "name": "cut-a-release",
+      "prompt": "What to do when asked to cut a release: bump version, regenerate changelog, tag, trigger deploy, smoke-test — in that order.",
+      "expected": "skill",
+      "rationale": "Multi-step procedure with a clear trigger (cut a release). Skill."
+    },
+    {
+      "id": 7,
+      "name": "reverse-audit-embedded-migration-procedure",
+      "prompt": "AGENTS.md currently embeds a 200-line step-by-step 'how to add a new database migration' procedure. Where should that content live?",
+      "expected": "skill",
+      "rationale": "Reverse audit: an embedded procedure needed only at a specific moment dilutes every turn. Extract to a skill. DISCRIMINATOR (naive answer: keep in AGENTS.md)."
+    },
+    {
+      "id": 8,
+      "name": "reverse-audit-never-triggered-conventions-skill",
+      "prompt": "There is a skill named 'naming-conventions' that only lists file/variable naming rules; it is relevant to almost every edit but rarely gets invoked. Where should that content live?",
+      "expected": "agents-inline",
+      "rationale": "Reverse audit: pure facts relevant on most turns with no invocation moment belong in always-on context. Fold into AGENTS.md. DISCRIMINATOR (naive answer: keep it a skill)."
+    }
+  ]
+}

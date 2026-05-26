@@ -29,6 +29,15 @@ external/       # third-party skills, vendored (each keeps its upstream LICENSE)
   README.md
   design/impeccable/
   agent-browser/
+tools/          # curated dev tools (not skills): a reference doc + run.sh wrapper each
+  README.md
+  biome/
+    TOOL.md
+    run.sh
+agents/         # guidance for AGENTS.md (the always-on project context file)
+  README.md
+  writing-agents-md.md
+  AGENTS.template.md
 scripts/
   link-skills.sh           # symlink every skill into ~/.claude/skills
   list-skills.sh           # list all SKILL.md paths
@@ -50,10 +59,34 @@ See [CLAUDE.md](./CLAUDE.md) for authoring conventions.
 ## Our skills
 
 - **[engineering](./skills/engineering/README.md)** — skills for code work (`abcdefg`, `example-skill`).
+- **[authoring](./skills/authoring/README.md)** — organize agent knowledge: decide skill vs `AGENTS.md` vs docs index (`skill-or-agents-md`).
 - **[agent-sim](./skills/agent-sim/README.md)** — drive iOS simulators headlessly via the `agent-sim` CLI.
 - **[agent-emulate](./skills/agent-emulate/README.md)** — local drop-in API emulators (`npx agent-emulate`) for Vercel, GitHub, Google, Slack, AWS, Stripe, and more.
 - **[taskr](./skills/taskr/README.md)** — integrate with the Taskr platform from the outside via its REST API (`taskr-api`) and the `taskr` CLI/MCP server (`taskr-cli`).
 - **[compliance](./skills/compliance/README.md)** — implement a regulatory standard as structured, testable data (`compliance-standards`).
+
+## Tools
+
+Curated dev tools — a reference doc plus a runnable `run.sh` wrapper each. Not
+skills (not auto-loaded); see **[tools/README.md](./tools/README.md)**. Together
+they form our standard quality gate: **typecheck → biome → vitest**.
+
+- **[typecheck](./tools/typecheck/TOOL.md)** — full TypeScript type check (`tsc --noEmit`).
+- **[biome](./tools/biome/TOOL.md)** — lint + format + structure rules (replaces ESLint + Prettier).
+- **[vitest](./tools/vitest/TOOL.md)** — run the test suite once or in watch mode.
+- **[fallow](./tools/fallow/TOOL.md)** — dead/unused code, duplication, circular deps, complexity (Rust-native).
+- **[lefthook](./tools/lefthook/TOOL.md)** — Git hooks manager; runs the checks above on pre-commit / pre-push.
+
+## Agents
+
+Guidance for **`AGENTS.md`** — the project-root file injected into a coding
+agent's context every turn. In [Vercel's evals][agents-post] it beat skills
+(100% vs 79% vs 53% baseline), so it's a first-class practice here. See
+**[agents/README.md](./agents/README.md)** for the findings, a do-this guide, and
+a copy-paste template. (Use `AGENTS.md` for broad always-on knowledge; reserve
+skills for explicitly-triggered workflows.)
+
+[agents-post]: https://vercel.com/blog/agents-md-outperforms-skills-in-our-agent-evals
 
 ## External skills
 

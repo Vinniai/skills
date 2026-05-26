@@ -1,0 +1,29 @@
+{
+  "skill_name": "skill-or-agents-md",
+  "iteration": 2,
+  "method": "Same 8 held-out scenarios as iteration-1, but three conditions at n=5 to get a truer lift number and decompose it: (1) baseline_binary — the naive real-world framing, only two destinations offered (skill OR agents/AGENTS.md), no skill, no file access; (2) baseline_3way — three destinations offered (agents-inline | docs-index | skill), no skill (isolates the value of merely naming the docs-index option); (3) with_skill — three destinations + reads and applies the linked skill at ~/.claude/skills/skill-or-agents-md/SKILL.md. Run via parallel general-purpose subagents.",
+  "grading": "Primary metric = 'correct home' on the strict 3-way truth (exact match). The binary condition can only emit {skill, agents}; it is scored correct when truth is agents-inline iff it said 'agents', correct when truth is skill iff it said 'skill', and ALWAYS incorrect when truth is docs-index (binary framing cannot express 'index, don't inline' — so it would inline a large reference, the anti-pattern). This caps baseline_binary at 6/8=0.75 by construction. Secondary metric for the binary condition: binary-axis accuracy (collapse truth docs-index->agents) to separate 'structurally under-resourced' from 'actually confused on the coarse call'.",
+  "labels_3way": ["agents-inline", "docs-index", "skill"],
+  "labels_binary": ["agents", "skill"],
+  "expected_3way": {
+    "1": "agents-inline",
+    "2": "agents-inline",
+    "3": "docs-index",
+    "4": "docs-index",
+    "5": "skill",
+    "6": "skill",
+    "7": "skill",
+    "8": "agents-inline"
+  },
+  "items": {
+    "1": "The repo's commit-message format (Conventional Commits) and branch-naming rule (type/short-slug).",
+    "2": "Which package manager the repo uses (pnpm) and the dev-server command (pnpm dev).",
+    "3": "A 400-line reference describing the event-sourcing model: every event type, its payload shape, and which aggregate emits it.",
+    "4": "A comprehensive catalogue of all ~120 feature flags and exactly what each one gates.",
+    "5": "The step-by-step procedure for migrating a REST endpoint to a tRPC router, run when someone asks to migrate X to tRPC.",
+    "6": "What to do when asked to cut a release: bump version, regenerate changelog, tag, trigger deploy, smoke-test — in that order.",
+    "7": "AGENTS.md currently embeds a 200-line step-by-step 'how to add a new database migration' procedure. Where should that content live?",
+    "8": "There is a skill named 'naming-conventions' that only lists file/variable naming rules; it is relevant to almost every edit but rarely gets invoked. Where should that content live?"
+  },
+  "n_per_condition": 5
+}

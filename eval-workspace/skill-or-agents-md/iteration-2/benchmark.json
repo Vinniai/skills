@@ -1,0 +1,37 @@
+{
+  "skill_name": "skill-or-agents-md",
+  "iteration": 2,
+  "n_per_condition": 5,
+  "primary_metric": "exact-match pass_rate vs the strict 3-way truth (binary condition scored under the cap described in spec.json)",
+  "summary": {
+    "with_skill":      {"pass_rate": 1.000, "n": 5, "stddev": 0.0, "avg_total_tokens": 20298, "avg_duration_ms": 19480, "avg_tool_uses": 2},
+    "baseline_3way":   {"pass_rate": 0.875, "n": 5, "stddev": 0.0, "avg_total_tokens": 16026, "avg_duration_ms": 7047,  "avg_tool_uses": 0},
+    "baseline_binary": {"pass_rate": 0.750, "n": 5, "stddev": 0.0, "avg_total_tokens": 15998, "avg_duration_ms": 6981,  "avg_tool_uses": 0, "binary_axis_pass_rate": 0.750}
+  },
+  "deltas": {
+    "with_skill_vs_baseline_binary": 0.250,
+    "with_skill_vs_baseline_3way":   0.125,
+    "baseline_3way_vs_baseline_binary": 0.125
+  },
+  "decomposition": {
+    "naming_docs_index_option (binary -> 3way)": "+0.125, recovers items 3 and 4 (large references the binary framing pushes into 'skill')",
+    "decision_procedure + reverse_audit (3way -> with_skill)": "+0.125, recovers item 7 (embedded migration procedure -> skill, not docs-index)",
+    "total (binary -> with_skill)": "+0.250"
+  },
+  "per_item": {
+    "_legend": "correct_count / n, per condition (primary scoring)",
+    "1": {"truth": "agents-inline", "baseline_binary": "5/5", "baseline_3way": "5/5", "with_skill": "5/5"},
+    "2": {"truth": "agents-inline", "baseline_binary": "5/5", "baseline_3way": "5/5", "with_skill": "5/5"},
+    "3": {"truth": "docs-index",    "baseline_binary": "0/5", "baseline_3way": "5/5", "with_skill": "5/5", "note": "binary misroutes large reference -> skill"},
+    "4": {"truth": "docs-index",    "baseline_binary": "0/5", "baseline_3way": "5/5", "with_skill": "5/5", "note": "binary misroutes large reference -> skill"},
+    "5": {"truth": "skill",         "baseline_binary": "5/5", "baseline_3way": "5/5", "with_skill": "5/5"},
+    "6": {"truth": "skill",         "baseline_binary": "5/5", "baseline_3way": "5/5", "with_skill": "5/5"},
+    "7": {"truth": "skill",         "baseline_binary": "5/5", "baseline_3way": "0/5", "with_skill": "5/5", "note": "reverse audit; 3way misroutes embedded procedure -> docs-index, skill fixes it"},
+    "8": {"truth": "agents-inline", "baseline_binary": "5/5", "baseline_3way": "5/5", "with_skill": "5/5"}
+  },
+  "notes": [
+    "Zero within-condition variance at n=5: every run in a condition produced identical labels. The misroutes are systematic failure modes, not noise — the skill removes deterministic errors, not just variance.",
+    "baseline_binary's binary-axis accuracy is also 0.75 (not higher): faced with a large reference and no docs-index option, the model chose 'skill' rather than 'agents', so it is wrong on the coarse call too — the harm of the binary framing is real, not merely notational.",
+    "Cost: with_skill spent ~1.27x tokens and ~2.8x wall-clock vs baselines (reading SKILL.md + examples.md, 2 tool calls). Negligible for a one-off routing decision."
+  ]
+}
