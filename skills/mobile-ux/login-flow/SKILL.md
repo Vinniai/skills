@@ -16,6 +16,9 @@ reset, and account deletion live in [auth-flows](../auth-flows/SKILL.md); nav/ty
   sign-in as long as possible."* If login is required, **say why** in one line on the screen.
 - **Neutral failure copy — no account enumeration.** Use *"Your email or password is incorrect,"* never
   *"no account with that email."*
+- **Surface every state — never swallow a failure.** On error show a **visible** message (Alert/inline),
+  not just a logged `console.warn`, so the user can retry; keep the loading indicator moving; design
+  **idle / loading / error / success** for every method.
 - **Face ID/Touch ID does NOT replace server auth.** It **unlocks a credential** stored in the **Keychain**
   (Android: Keystore); always provide a **passcode/password fallback**. Offer biometric unlock *after* the
   first successful sign-in.

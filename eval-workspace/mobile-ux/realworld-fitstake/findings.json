@@ -1,0 +1,45 @@
+{
+  "app": "fitstake",
+  "task": "Audit auth/login, paywall/monetization, permissions, settings for mobile-UX quality + App Store/Play compliance, grounded in real code.",
+  "conditions": {
+    "without_skills": "own knowledge, no skill files",
+    "with_skills": "read the 6 mobile-ux SKILL.md first, then audited"
+  },
+  "counts": {"without_skills": 15, "with_skills": 11},
+  "without_skills_findings": [
+    {"id":"F1","area":"settings","sev":"high","asr":true,"title":"No account deletion path (5.1.1v)","file":"app/(tabs)/profile.tsx + convex/users.ts"},
+    {"id":"F2","area":"auth","sev":"high","asr":false,"title":"No sign-out in user-facing UI (only dev.tsx)","file":"app/(tabs)/profile.tsx"},
+    {"id":"F3","area":"auth","sev":"high","asr":true,"title":"Apple sign-in advertised but native SIWA not configured","file":"app.json"},
+    {"id":"F4","area":"auth","sev":"med","asr":false,"title":"Auth failures swallowed (console.warn only, no user error)","file":"app/(auth)/sign-in.tsx"},
+    {"id":"F5","area":"auth","sev":"med","asr":true,"title":"No Terms/Privacy links on sign-in/onboarding","file":"app/(auth)/sign-in.tsx"},
+    {"id":"F6","area":"permissions","sev":"high","asr":true,"title":"Always/background location with surveillance justification","file":"app.json"},
+    {"id":"F7","area":"permissions","sev":"med","asr":false,"title":"HealthKit 'granted' inferred from initHealthKit success (unreliable)","file":"lib/health.ts"},
+    {"id":"F8","area":"permissions","sev":"med","asr":false,"title":"HealthKit re-prompts on every mount","file":"app/hooks/useHealthSteps.ts"},
+    {"id":"F9","area":"paywall","sev":"high","asr":true,"title":"Real-money IAP funds a wager pool → gambling exposure (5.3)","file":"app/(tabs)/wallet.tsx"},
+    {"id":"F10","area":"paywall","sev":"med","asr":true,"title":"Contradictory copy: 'No real cash' vs real-priced IAP","file":"app/(tabs)/wallet.tsx"},
+    {"id":"F11","area":"paywall","sev":"med","asr":false,"title":"Paywall presentation errors swallowed","file":"components/RevenueCatProvider.tsx"},
+    {"id":"F12","area":"paywall","sev":"low","asr":false,"title":"Restore uses literal 'fitStake Pro' not PRO_ENTITLEMENT constant","file":"app/(tabs)/profile.tsx"},
+    {"id":"F13","area":"permissions","sev":"low","asr":false,"title":"Notifications 'mocked' state shown as ON","file":"app/onboarding/notifications.tsx"},
+    {"id":"F14","area":"settings","sev":"low","asr":false,"title":"Dev error copy leaks ('Run npx expo prebuild')","file":"app/onboarding/region.tsx"},
+    {"id":"F15","area":"auth","sev":"low","asr":false,"title":"Guest accounts unrecoverable, only fine-print disclosure","file":"app/(auth)/sign-in.tsx"}
+  ],
+  "with_skills_findings": [
+    {"id":"F1","area":"auth","sev":"high","asr":true,"title":"No in-app account deletion (5.1.1v ship-blocker)","file":"app/(tabs)/profile.tsx","cites":"5.1.1(v)"},
+    {"id":"F2","area":"auth","sev":"high","asr":true,"title":"Custom-drawn Apple button instead of system SIWA button","file":"app/(auth)/sign-in.tsx","cites":"auth-flows SIWA button rule"},
+    {"id":"F3","area":"permissions","sev":"high","asr":true,"title":"HealthKit requested silently on mount, not in context","file":"app/hooks/useHealthSteps.ts"},
+    {"id":"F4","area":"permissions","sev":"high","asr":true,"title":"Always/background location, no when-in-use-first or priming","file":"app.json","cites":"permissions when-in-use-first"},
+    {"id":"F5","area":"settings","sev":"med","asr":false,"title":"No user-facing sign-out (only hidden dev screen)","file":"app/(tabs)/profile.tsx"},
+    {"id":"F6","area":"auth","sev":"high","asr":true,"title":"Terms/Privacy never linked at sign-in or paywall","file":"app/(auth)/sign-in.tsx"},
+    {"id":"F7","area":"settings","sev":"med","asr":false,"title":"Ships in-app appearance (ThemeToggle), duplicates system setting","file":"app/(tabs)/profile.tsx","cites":"foundations non-negotiable: no in-app toggle","baseline_missed":true},
+    {"id":"F8","area":"paywall","sev":"med","asr":true,"title":"Pre-purchase disclosures + Restore not on app-owned Pro surface; rely on RC dashboard","file":"app/(tabs)/profile.tsx","cites":"Schedule 2 §3.8(b) + Restore checklist"},
+    {"id":"F9","area":"permissions","sev":"low","asr":false,"title":"Notifications 'mocked' treated as enabled","file":"app/onboarding/notifications.tsx"},
+    {"id":"F10","area":"permissions","sev":"low","asr":false,"title":"Location-denied dead-ends, no Open Settings deep-link","file":"app/onboarding/region.tsx","cites":"permissions denied-state","baseline_missed":true},
+    {"id":"F11","area":"auth","sev":"low","asr":false,"title":"Auto-anonymous sign-in not __DEV__-gated","file":"app/_layout.tsx"}
+  ],
+  "verified_true_against_code": [
+    "ThemeToggle at app/(tabs)/profile.tsx:99 (import from @jv/ui) — WITH-only catch",
+    "Custom AntDesign apple button at app/(auth)/sign-in.tsx:101; no expo-apple-authentication in repo",
+    "convex/users.ts has no delete mutation — both caught",
+    "profile.tsx:50 uses literal 'fitStake Pro'; iapSkus.ts:29 defines PRO_ENTITLEMENT — WITHOUT-only catch"
+  ]
+}

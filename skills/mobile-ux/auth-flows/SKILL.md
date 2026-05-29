@@ -25,6 +25,8 @@ Stack-agnostic. Citations: **[reference.md](./reference.md)**.
 - **OTP = one single field** with the **one-time-code** content type (segmented boxes break AutoFill).
 - **MFA must have a recovery path** — backup codes saved at enrollment — so a lost factor doesn't lock the account.
 - **Prefer passkeys over passwords;** offer passkey creation right after first sign-in.
+- **Surface every state — never swallow a failure.** Every auth step (sign-in, SSO, OTP, reset) must show a
+  **visible** error on failure (not a silent `console.warn`) plus a loading state, so the user can retry.
 
 ## When to use
 
