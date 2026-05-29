@@ -1,0 +1,10 @@
+{
+  "skill_name": "mobile-ux-layout-devices + mobile-ux-foundations",
+  "iteration": 5,
+  "premise": "Iteration 4 showed the skill's lift is concentrated on the exact non-obvious device number — a strong base model coasted on the conceptual/trade-off items (baseline 0.90), losing only the one precise device-trap (landscape side-ear inset). Iteration 5 tests that hypothesis directly with a 12-item set that is ENTIRELY device-precision: exact point sizes, exact safe-area insets (incl. the mini 50 pt and landscape 21 pt gotchas), the @3x hairline, and the Material window-class dp breakpoints. Prediction: baseline drops well below iter-4's 0.90; skill holds near 1.0; the gap = how non-obvious these facts are.",
+  "method": "Two blind answer conditions — baseline (general knowledge, must commit to numbers) and skill (after reading layout-devices SKILL.md + reference.md). Both graded by a 3-judge panel against benchmark.json truth keys; majority vote per item. Grading tolerance: insets +/-2 pt; point sizes within a few pt with correct scale; a hedge that refuses to commit to a number = FAIL.",
+  "external_verification": "Point-size truth keys (items 1,2,9,10) verified against iosref.com/res and a web search (iPhone 16 Pro 402x874, 16 Pro Max 440x956 confirmed) so they are not self-referential to the skill doc. Inset keys (3-8) are community-empirical (Apple publishes no inset table); the skill and the keys share these values, so for those items skill~=1.0 is partly by construction and the BASELINE failure rate is the real signal.",
+  "conditions": ["baseline", "skill"],
+  "judges": 3,
+  "items": 12
+}

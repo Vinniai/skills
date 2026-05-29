@@ -11,6 +11,11 @@ restating the rules.
 - **[mobile-ux-foundations](./mobile-ux-foundations/SKILL.md)** — entry point. Navigation (tab bar vs
   sidebar vs nav bar), modality, layout & safe areas, typography & Dynamic Type, color & dark mode,
   touch targets, accessibility/contrast, motion, gestures. The non-negotiables every screen rests on.
+- **[mobile-ux-layout-devices](./mobile-ux-layout-devices/SKILL.md)** — the *measurements* foundations
+  abstracts: per-device screen point sizes, safe-area insets (Dynamic Island / notch / home indicator),
+  layout margins & readable width, size classes/breakpoints, orientation, and iPad multitasking (Split
+  View, Slide Over, Stage Manager). Grounded in HIG Layout + Specifications; Android window-size-class
+  and edge-to-edge deltas. Read foundations first; come here for the numbers a layout lands on.
 - **[login-flow](./login-flow/SKILL.md)** — the sign-in screen: method ordering, fields & AutoFill,
   biometric re-auth, "Forgot password?", error/loading states, security copy.
 - **[auth-flows](./auth-flows/SKILL.md)** — sign-up, Sign in with Apple / SSO (App Store 4.8), passkeys,
@@ -24,6 +29,14 @@ restating the rules.
 - **[permissions-flow](./permissions-flow/SKILL.md)** — priming, asking in context, purpose strings,
   denied-state handling, ATT hard rules, and per-permission notes (camera, photos, location, mic,
   notifications, …).
+- **[mobile-ux-audit](./mobile-ux-audit/SKILL.md)** — the *procedure* (the others are *knowledge*): audit
+  an existing app against all of the above, grounded in real code. Maps the surfaces, walks the
+  non-negotiables checklist, and emits ranked findings (severity · `file:line` · violated rule + citation
+  · fix). Run inline or delegate per-app to subagents.
+- **[mobile-ux-screen-review](./mobile-ux-screen-review/SKILL.md)** — the *visual* half: reviews a **running
+  screen** via Argent (`describe` frames + `screenshot`) and **measures** what code can't — tap-target
+  size in pt, contrast, color-only state, safe-area/header overlap, nav. Companion to the audit
+  (audit the code, screen-review the render).
 
 Add new skills as their own folder containing a `SKILL.md` (see the repo
 [`CLAUDE.md`](../CLAUDE.md) authoring conventions), then register the path in

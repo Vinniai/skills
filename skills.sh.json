@@ -53,11 +53,14 @@
       "description": "Stack-agnostic UX design for the flows every mobile app needs — foundations, login, auth, paywalls, settings, permissions — grounded in Apple's Human Interface Guidelines with Android/Material deltas.",
       "skills": [
         "mobile-ux-foundations",
+        "mobile-ux-layout-devices",
         "login-flow",
         "auth-flows",
         "paywall-monetization-flow",
         "settings-screens",
-        "permissions-flow"
+        "permissions-flow",
+        "mobile-ux-audit",
+        "mobile-ux-screen-review"
       ]
     },
     {

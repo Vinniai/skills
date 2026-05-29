@@ -1,0 +1,41 @@
+{
+  "experiment": "Build A/B — same app (Debrief MVP) built twice from EvanBacon/chat-template; one agent read the mobile-ux skills first, one didn't.",
+  "verification": "All signals below were read directly from the generated code, not taken from the agents' self-reports.",
+  "builds": {
+    "with_skills": {"dir": "debrief-ab/with-skills", "src_files": 37, "typecheck": "pass (tsc 0, lint 0)", "files_created": 23},
+    "without_skills": {"dir": "debrief-ab/without-skills", "src_files": 62, "typecheck": "pass (1 pre-existing template CSS error; 4 pre-existing template lint errors left in place)", "files_created": 31}
+  },
+  "verified_differentiators": [
+    {
+      "axis": "in-app appearance toggle (foundations non-negotiable: ship NONE)",
+      "without_skills": "BUILT the anti-pattern — src/app/(app)/appearance.tsx ships a System/Light/Dark override via settings-context setAppearance",
+      "with_skills": "AVOIDED it — src/app/settings/appearance.tsx ships no toggle, follows the system, footer points to iOS Settings; code comment cites mobile-ux-foundations",
+      "verdict": "skill win (reproduces the fitstake ThemeToggle finding in a clean build)"
+    },
+    {
+      "axis": "permission denied-state at point of use (permissions skill)",
+      "without_skills": "DEAD-END — components/ui/voice-recorder.tsx:49 `if (!perm.granted) return;` silently does nothing on mic denial",
+      "with_skills": "HANDLED — voice-recorder.tsx shows an Alert with 'Open Settings' (Linking.openSettings) on iOS and just 'OK' on Android — even encodes the iOS-vs-Android denial divergence from the skill",
+      "verdict": "skill win"
+    },
+    {
+      "axis": "paywall price disclosure (show the real charged total, not only monthly)",
+      "without_skills": "shows a single p.price per plan",
+      "with_skills": "shows billedAs (e.g. annual total) AND a secondary per-month equivalent + plan title",
+      "verdict": "minor edge to skills"
+    }
+  ],
+  "ties_baseline_already_strong": [
+    "System Sign in with Apple button (BOTH used AppleAuthentication.AppleAuthenticationButton, not a custom one)",
+    "expo-apple-authentication installed (both)",
+    "In-app account deletion that truly deletes local data (both)",
+    "Visible sign-in error (both Alert on failure — no swallow)",
+    "Restore Purchases + Terms + Privacy links on the paywall (both)",
+    "Permissions requested in context, not at launch (both)",
+    "Guest / no forced login (both)"
+  ],
+  "other_notes": [
+    "with-skills is leaner (37 src files) and cleared the template's pre-existing lint/tsc errors by removing dead chat/markdown/drawer clusters; without-skills kept more scaffolding (62 files) and left the pre-existing template errors.",
+    "with-skills BUILD-NOTES.md maps each feature to the skill guidance applied; without-skills BUILD-NOTES cites App Store rules from its own knowledge."
+  ]
+}

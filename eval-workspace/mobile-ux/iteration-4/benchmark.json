@@ -1,0 +1,67 @@
+{
+  "skill_under_test": "mobile-ux-layout-devices",
+  "supporting": ["mobile-ux-foundations"],
+  "note": "Iteration-4 item set: device-specific facts + harder trade-off/judgment + adversarial traps, per iteration-3's 'next' (the factual set had saturated at 1.000). Truth keys are the grading rubric.",
+  "items": [
+    {
+      "id": 1,
+      "kind": "device-fact",
+      "prompt": "What is the top safe-area inset (points, portrait) on an iPhone with a Dynamic Island, versus an iPhone SE with a home button?",
+      "truth": "Dynamic Island ~59 pt; iPhone SE (home button) ~20 pt (status bar). Must give both, roughly right, with the point that they differ a lot."
+    },
+    {
+      "id": 2,
+      "kind": "device-fact",
+      "prompt": "Which iPhone should you treat as the smallest screen to test a layout against, and roughly what is its point size?",
+      "truth": "iPhone SE (2nd/3rd gen), 375 x 667 pt. Accept 'SE 375x667'. iPhone SE 1st gen 320x568 also acceptable as smallest-ever."
+    },
+    {
+      "id": 3,
+      "kind": "device-trap",
+      "prompt": "On a Face ID iPhone in LANDSCAPE, where does content commonly get clipped, and what inset clears it?",
+      "truth": "The notch/Dynamic Island moves to a side ear; left and right safe-area insets become ~44 pt. Full-width rows/back button clip into the ear unless you inset ~44 pt on the leading/trailing sides. Bottom home-indicator inset ~21 pt in landscape."
+    },
+    {
+      "id": 4,
+      "kind": "adversarial-trap",
+      "prompt": "An engineer says: 'Because the Pro models are @3x and others are @2x, we need a separate layout for @3x devices.' Correct?",
+      "truth": "No — scale (@2x/@3x) affects PIXELS, not your point-based layout. You lay out once in points; the same layout renders on @2x and @3x. Scale only matters for asset crispness and hairline (1px = 0.33pt) rendering, not layout structure. The real axis to adapt to is size class / available width, not pixel density."
+    },
+    {
+      "id": 5,
+      "kind": "trade-off",
+      "prompt": "A designer wants a transparent large-title navigation bar with the list scrolling behind it for a premium look. What layout risk must you handle, and how?",
+      "truth": "Content scrolls UNDER the transparent/large-title bar, so the first row/content hides behind it at rest. Must inset the scroll view's content by the bar+safe-area height (e.g. contentInsetAdjustmentBehavior / safe-area top inset) so the first item starts below the bar. This is a runtime-only bug — easy to miss in source; catch it on the rendered screen."
+    },
+    {
+      "id": 6,
+      "kind": "trade-off",
+      "prompt": "Our content app is designed portrait-only. The team wants to lock the entire app to portrait to save effort. Good idea per HIG?",
+      "truth": "Discouraged — apps should support both orientations unless a specific screen genuinely can't (e.g. a camera/capture screen). If you must lock, lock the individual SCREEN that needs it, not the whole app, and have a real reason. Locking everything hurts iPad and accessibility (mounted/landscape) users."
+    },
+    {
+      "id": 7,
+      "kind": "judgment",
+      "prompt": "On an iPad Pro 12.9\" (1024pt wide) and iPhone Pro Max, long body paragraphs run the full width. Problem? What do you do?",
+      "truth": "Yes — line length too long hurts readability. Cap text to a readable measure (~60-75 characters / the readable-content width guide) rather than spanning the full width on large screens. Body text should not stretch edge-to-edge on iPad/Pro Max; constrain the column and center/inset it."
+    },
+    {
+      "id": 8,
+      "kind": "android-delta",
+      "prompt": "On modern Android (API 35+), a developer puts a button row at the very bottom and it ends up under the gesture navigation bar. Why, and the fix?",
+      "truth": "Android is edge-to-edge by DEFAULT from API 35 — the app draws behind the system bars, so you MUST consume WindowInsets (navigationBars/systemBars) and pad the content, or it sits under the gesture bar. Fix: apply the navigation-bar/system-bar inset as bottom padding (don't hardcode dp). Same 'read insets at runtime' principle as iOS."
+    },
+    {
+      "id": 9,
+      "kind": "multi-rule-tension",
+      "prompt": "Design a sticky 'Continue' button pinned to the bottom of a scrolling form on a Face ID iPhone. List the two layout constraints you must satisfy simultaneously.",
+      "truth": "(1) The button's tappable area must sit ABOVE the ~34 pt home-indicator inset (gesture keep-out) — pad the bar up by the bottom safe-area inset. (2) The scroll view must have bottom content padding >= the sticky bar's height so the last form fields aren't hidden behind the bar at rest (occlusion). Both: respect bottom safe area AND reserve space so the bar doesn't cover content."
+    },
+    {
+      "id": 10,
+      "kind": "judgment",
+      "prompt": "Your iPad app looks great full-screen with a sidebar + two columns. A tester drags it to 1/3-width Split View and it breaks. What did the design miss?",
+      "truth": "It assumed iPad == lots of space. At 1/3 width the window is COMPACT width, so it must collapse to the phone-style single-column + tab bar layout. The layout must respond to size class / available width changes live (Split View, Slide Over, Stage Manager give arbitrary/compact widths), not to the device being an iPad. Re-check breakpoints at every multitasking size."
+    }
+  ]
+}

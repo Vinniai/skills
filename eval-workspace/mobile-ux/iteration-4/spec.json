@@ -1,0 +1,9 @@
+{
+  "skill_name": "mobile-ux-layout-devices (new 9th skill) + mobile-ux-foundations",
+  "iteration": 4,
+  "premise": "Iteration 3 saturated the factual set at 1.000 and flagged: add harder reasoning/trade-off items, device-specific items, and adversarial traps to find the next ceiling. This iteration introduces the new mobile-ux-layout-devices skill (per-device point sizes, safe-area insets, size classes, iPad multitasking, Android edge-to-edge) and tests it against a deliberately harder 10-item set: device facts + trade-offs (two rules in tension) + an adversarial pixel-density trap + an Android edge-to-edge delta.",
+  "method": "Two answer conditions, blind. (1) baseline — a model answers all 10 with NO skill (general knowledge). (2) skill — a model answers all 10 having read mobile-ux-layout-devices SKILL.md + reference.md + the foundations non-negotiables. Both answer sets graded by a 3-JUDGE PANEL against the benchmark.json truth keys; majority vote per item. Item kinds: device-fact, device-trap, adversarial-trap, trade-off, judgment, android-delta, multi-rule-tension.",
+  "conditions": ["baseline", "skill"],
+  "judges": 3,
+  "items": 10
+}

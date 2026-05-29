@@ -1,0 +1,19 @@
+{
+  "skill_under_test": "mobile-ux-layout-devices",
+  "supporting": ["mobile-ux-foundations"],
+  "note": "Iteration-5 item set: 12 DEVICE-PRECISION items, per iteration-4's finding that the skill's lift is concentrated on the exact non-obvious number a base model approximates. Built to pull the baseline down (where iter-4's mixed set let a strong base model coast on concepts). Point-size keys (1,2,9,10) externally verified vs iosref.com/res + web search (16 Pro 402x874, 16 Pro Max 440x956 confirmed); inset keys (3-8) use well-established community-empirical values (not published by Apple as a table). Grading tolerance: insets +/-2 pt, point sizes within a few pt with correct scale; a hedge that won't commit to a number = FAIL.",
+  "items": [
+    { "id": 1,  "kind": "point-size",   "prompt": "What is the iPhone 16 Pro's screen size in logical points (portrait) and its scale factor?", "truth": "402 x 874 pt, @3x. (Verified.) Accept 402x874 @3x." },
+    { "id": 2,  "kind": "point-size",   "prompt": "What is the iPhone 16 Pro Max's screen size in logical points (portrait) and its scale factor?", "truth": "440 x 956 pt, @3x. (Verified.) Accept 440x956 @3x." },
+    { "id": 3,  "kind": "inset-gotcha", "prompt": "What is the TOP safe-area inset (points, portrait) on an iPhone 13 mini / 12 mini specifically?", "truth": "~50 pt (the mini devices have a TALLER top inset than their full-size siblings, which are ~47). FAIL if they say 44 or 47 as the answer for mini." },
+    { "id": 4,  "kind": "inset",        "prompt": "What is the TOP safe-area inset (points, portrait) on a standard notch iPhone like the 13 or 14 (non-Pro)?", "truth": "~47 pt. Accept 47 (44 is acceptable-adjacent but 47 is the target for 12/13/14 standard)." },
+    { "id": 5,  "kind": "inset",        "prompt": "What is the TOP safe-area inset (points, portrait) on an iPhone X / XS / 11 Pro?", "truth": "~44 pt. Accept 44." },
+    { "id": 6,  "kind": "inset-gotcha", "prompt": "What is the BOTTOM safe-area inset (home indicator) in LANDSCAPE on a Face ID iPhone?", "truth": "~21 pt (NOT 34 — 34 is the portrait value). FAIL if they give 34 for landscape." },
+    { "id": 7,  "kind": "inset",        "prompt": "What are the LEFT/RIGHT safe-area insets (points) in landscape on a Face ID iPhone (the notch/Island side)?", "truth": "~44 pt on each side. Accept 44." },
+    { "id": 8,  "kind": "inset",        "prompt": "What are the top and bottom safe-area insets (points) on a home-button iPhone SE (2nd/3rd gen)?", "truth": "Top ~20 pt (status bar), bottom 0. Accept top 20 / bottom 0." },
+    { "id": 9,  "kind": "point-size",   "prompt": "What is the iPad Pro 12.9-inch screen size in logical points (portrait) and scale?", "truth": "1024 x 1366 pt, @2x. (Verified.) Accept 1024x1366 @2x." },
+    { "id": 10, "kind": "point-size",   "prompt": "What is the iPad mini (6th gen) screen size in logical points (portrait) and scale?", "truth": "744 x 1133 pt, @2x. (Verified.) Accept 744x1133 @2x." },
+    { "id": 11, "kind": "precision",    "prompt": "On a @3x device, how many points is one physical pixel (the hairline thickness)?", "truth": "1 px = 1/3 pt ≈ 0.33 pt on @3x. Accept 0.33 / one-third pt." },
+    { "id": 12, "kind": "android-precision", "prompt": "What are the three Material 3 window-size-class WIDTH breakpoints in dp (the Compact / Medium / Expanded thresholds)?", "truth": "Compact < 600 dp; Medium 600-840 dp; Expanded > 840 dp. Accept these thresholds." }
+  ]
+}

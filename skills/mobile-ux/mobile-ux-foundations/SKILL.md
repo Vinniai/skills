@@ -50,7 +50,9 @@ divergence lives in [permissions-flow](../permissions-flow/SKILL.md).)
 Respect **safe areas, margins, layout guides**; inset content/controls (on iOS avoid full-bleed buttons).
 Most-important content **top + leading** (mind RTL). Backgrounds may extend to edges; keep interactive
 content in the safe area. Design **adaptive** layouts and test portrait/landscape, smallest/largest device,
-every localization, and the largest Dynamic Type size.
+every localization, and the largest Dynamic Type size. For the **concrete numbers** — per-device point
+sizes, safe-area insets (Dynamic Island / notch / home indicator), margins, size classes, iPad
+multitasking — see **[mobile-ux-layout-devices](../mobile-ux-layout-devices/SKILL.md)**.
 
 ## Typography & Dynamic Type
 
@@ -77,8 +79,9 @@ override system gestures; never make a gesture the only way to do something.
 
 Flow skills reference these foundations instead of restating them. Read the flow skill for the
 screen-by-screen pattern; return here for the underlying rule (target size, contrast, nav choice, modal
-rules, tone). → [login](../login-flow/SKILL.md) · [auth](../auth-flows/SKILL.md) ·
-[paywall](../paywall-monetization-flow/SKILL.md) · [settings](../settings-screens/SKILL.md) ·
-[permissions](../permissions-flow/SKILL.md).
+rules, tone); go to [layout-devices](../mobile-ux-layout-devices/SKILL.md) for the device measurements.
+→ [layout-devices](../mobile-ux-layout-devices/SKILL.md) · [login](../login-flow/SKILL.md) ·
+[auth](../auth-flows/SKILL.md) · [paywall](../paywall-monetization-flow/SKILL.md) ·
+[settings](../settings-screens/SKILL.md) · [permissions](../permissions-flow/SKILL.md).
 
 **Canonical HIG/Material URLs and detail:** **[reference.md](./reference.md)**.

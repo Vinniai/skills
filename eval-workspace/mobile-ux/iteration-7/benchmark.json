@@ -1,0 +1,24 @@
+{
+  "iteration": 7,
+  "task": "mobile-ux audit identification pass on /Users/miniai/jv/fitstake",
+  "control": "same surface list given to every condition (isolates rule-knowledge + judgment, not file discovery)",
+  "truth_set": {
+    "n": 11,
+    "ship_blockers_high": ["F1 account-deletion", "F2 system-SIWA-button", "F3 healthkit-on-mount", "F4 always-location", "F6 terms-privacy"],
+    "med": ["F5 sign-out", "F7 in-app-themetoggle", "F8 paywall-disclosures-restore"],
+    "low": ["F9 notifications-mocked-on", "F10 denied-deeplink", "F11 auto-anon-not-dev-gated"],
+    "source": "Opus+skill baseline (realworld-fitstake/findings.json with_skills_findings)"
+  },
+  "results": [
+    { "condition": "haiku_no_skill",        "recall_11": 1,  "ship_blockers_5": 1, "hallucinations": 0, "caught": ["F1"], "notes": "scope-drift to a11y/i18n/buildNumber; misses rule-bound non-negotiables" },
+    { "condition": "haiku_skill_run1",       "recall_11": 5,  "ship_blockers_5": 4, "hallucinations": 0, "caught": ["F1","F2","F3","F6","F7"] },
+    { "condition": "haiku_skill_run2",       "recall_11": 6,  "ship_blockers_5": 4, "hallucinations": 0, "caught": ["F1","F3","F4","F5","F6","F7"] },
+    { "condition": "haiku_skill_run3",       "recall_11": 6,  "ship_blockers_5": 3, "hallucinations": 0, "caught": ["F1","F3","F5","F6","F7","F8"] },
+    { "condition": "haiku_skill_3x_union",   "recall_11": 8,  "ship_blockers_5": 5, "hallucinations": 0, "caught": ["F1","F2","F3","F4","F5","F6","F7","F8"], "missed": ["F9","F10","F11"], "notes": "all ship-blockers + all MED; only the 3 LOWs missed" },
+    { "condition": "sonnet_no_skill",        "recall_11": 6,  "ship_blockers_5": 4, "hallucinations": 0, "caught": ["F1","F3","F4","F6","F8","F11"], "notes": "missed F2 + F7 (rule-only); heavy scope creep" },
+    { "condition": "sonnet_skill",           "recall_11": 10, "ship_blockers_5": 5, "hallucinations": 0, "caught": ["F1","F2","F3","F4","F5","F6","F7","F8","F10","F11"], "missed": ["F9"], "notes": "sweet spot: near-ceiling single pass" },
+    { "condition": "opus_no_skill",          "recall_11": 6,  "ship_blockers_5": 4, "hallucinations": 0, "caught": ["F1","F3","F4","F5","F6","F9"], "notes": "missed F2,F7,F8,F10,F11 even at top tier" },
+    { "condition": "opus_skill",             "recall_11": 11, "ship_blockers_5": 5, "hallucinations": 0, "caught": ["F1","F2","F3","F4","F5","F6","F7","F8","F9","F10","F11"], "notes": "reference ceiling (defines the truth set)" }
+  ],
+  "headline": "3x Haiku+skill unioned = 8/11 incl. 5/5 ship-blockers + 3/3 MED, 0 hallucinations. Skill is the lever (no-skill ~6/11 at every tier and misses rule-only findings F2/F7). Sonnet+skill = 10/11 sweet spot."
+}

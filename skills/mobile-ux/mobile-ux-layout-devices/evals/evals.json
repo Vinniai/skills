@@ -1,0 +1,29 @@
+{
+  "skill_name": "mobile-ux-layout-devices",
+  "evals": [
+    {
+      "id": 1,
+      "name": "no-hardcoded-insets",
+      "prompt": "A developer sets `paddingTop: 44` to push content below the iPhone notch. Is that the right approach?",
+      "expected_output": "No — never hardcode safe-area insets. Read them at runtime (react-native-safe-area-context useSafeAreaInsets / SwiftUI safeAreaInsets / Android WindowInsets). The top inset is NOT a constant 44: it's ~20 on a home-button SE, ~47 on a notch phone, 59 on Dynamic Island devices, ~50 on mini, and changes with orientation. A literal 44 over- or under-pads most devices.",
+      "truth": "no — read insets at runtime; 44 isn't universal (SE 20 / notch 47 / Island 59 / mini 50)",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "home-indicator-keepout",
+      "prompt": "How much space should a sticky bottom action bar reserve at the bottom on a Face ID iPhone, and why?",
+      "expected_output": "Reserve the bottom safe-area inset — ~34 pt in portrait (21 pt landscape) — for the home indicator. That bottom band is a system swipe/gesture zone, so tappable controls must sit ABOVE it; the bar's background may extend under it but the label/tap target cannot. Read the inset at runtime rather than hardcoding 34.",
+      "truth": "~34pt portrait home-indicator inset; keep tappable controls above it (gesture zone)",
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "size-class-not-model",
+      "prompt": "To decide whether to show a sidebar instead of a tab bar, should the app check whether the device is an iPad?",
+      "expected_output": "No — branch on size class / available width (regular vs compact width), not the device model. An iPad in Split View, Slide Over, or Stage Manager can run at compact width (⅓/½ screen), where a phone-style single column + tab bar is correct; checking 'is iPad' breaks at those sizes. Android equivalent: window size classes (Compact/Medium/Expanded). Use sidebar at regular width, tab bar at compact.",
+      "truth": "no — branch on size class / available width, not model (iPad shrinks under multitasking)",
+      "files": []
+    }
+  ]
+}

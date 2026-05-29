@@ -1,0 +1,28 @@
+{
+  "iteration": 5,
+  "conditions": ["baseline", "skill"],
+  "models_tested": ["opus", "haiku"],
+  "grading": "Direct grading against externally-verified truth keys (objective numerics). Deviation from the iter-3/4 3-judge panel is deliberate and justified: every item is a checkable number, and the answer sets are unambiguously right/wrong against verified values — a judge panel on '390x844 vs 402x874' adds cost, not signal. Verification provenance in spec.json.",
+  "answerers_read_files": { "opus_baseline": false, "opus_skill": true, "haiku_baseline": false, "haiku_skill": true },
+  "results": {
+    "opus": {
+      "baseline": { "score": 12, "of": 12, "rate": 1.000, "fail_items": [] },
+      "skill":    { "score": 12, "of": 12, "rate": 1.000, "fail_items": [] },
+      "lift": 0.000,
+      "note": "Opus already holds every exact spec parametrically (read nothing, 12/12). Precision hypothesis REJECTED for a frontier model."
+    },
+    "haiku": {
+      "baseline": { "score": 8, "of": 12, "rate": 0.667, "fail_items": [1, 2, 7, 10] },
+      "skill":    { "score": 12, "of": 12, "rate": 1.000, "fail_items": [] },
+      "lift": 0.333,
+      "note": "Skill lifts the smaller model to frontier accuracy. Misses cluster on recent devices + an obsolete-device confusion + the landscape side-ear inset."
+    }
+  },
+  "haiku_baseline_errors": {
+    "1": { "given": "390x844 @3x", "truth": "402x874 @3x", "type": "recent-device (16 Pro), likely sparse/post-cutoff in training" },
+    "2": { "given": "430x932 @3x", "truth": "440x956 @3x", "type": "recent-device (16 Pro Max)" },
+    "7": { "given": "0 (notch makes no side inset)", "truth": "44 each side", "type": "the non-obvious landscape side-ear inset — SAME item that beat Opus in iteration 4" },
+    "10": { "given": "768x1024 @2x", "truth": "744x1133 @2x", "type": "confused iPad mini 6 with the OBSOLETE 9.7-inch iPad size" }
+  },
+  "headline": "Factual lift from the skill is CAPABILITY-DEPENDENT: ~0 for Opus (already parametric), +0.333 for Haiku. The hardest fact (item 7, landscape side inset) tripped BOTH Opus@iter4 and Haiku@iter5 baselines."
+}
