@@ -1,0 +1,29 @@
+{
+  "skill_name": "paywall-monetization-flow",
+  "evals": [
+    {
+      "id": 1,
+      "name": "annual-must-show-real-total",
+      "prompt": "Our annual subscription paywall shows the price as '$4.99/month' (billed annually) and no other number, because the monthly-equivalent looks cheaper. Any App Store / Play compliance problem?",
+      "expected_output": "Yes — you must prominently display the ACTUAL CHARGED TOTAL (e.g. $59.88/year), not only the monthly-equivalent. Apple Schedule 2 §3.8(b) / Guideline 3.1.2 and Google Play's anti-deception subscription policy both require the real price and billing period up front. Showing only the per-month figure is a documented rejection cause.",
+      "truth": "yes — must show actual annual charged total, not only monthly-equivalent",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "required-paywall-affordances",
+      "prompt": "Besides the price, what must a subscription paywall include to pass Apple review? List the required elements.",
+      "expected_output": "Title, length/billing period, price (and price-per-unit / real total), description of what you get, functional links to Terms of Use (EULA) AND Privacy Policy, and a visible Restore Purchases affordance — all on the paywall itself (not hidden behind a link). Missing Restore or missing Terms/Privacy is a frequent rejection.",
+      "truth": "Restore Purchases + Terms + Privacy links + full pre-purchase disclosure on-screen",
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "iap-required-for-digital",
+      "prompt": "We want to unlock premium in-app features by sending users to our website to pay with Stripe, avoiding Apple's cut. Allowed?",
+      "expected_output": "No (in general) — digital content/features unlocked in-app must use In-App Purchase (Guideline 3.1.1). External purchase links are only permitted in the US storefront or via the External Purchase Link Entitlement in some regions; otherwise prohibited. Region/date-sensitive — verify per storefront. Physical goods/services are the exception (don't use IAP).",
+      "truth": "no — digital unlocks require IAP (3.1.1); external links only US/entitlement regions",
+      "files": []
+    }
+  ]
+}

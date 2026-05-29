@@ -1,0 +1,21 @@
+{
+  "skill_name": "login-flow",
+  "evals": [
+    {
+      "id": 1,
+      "name": "no-account-enumeration",
+      "prompt": "On a failed login our error message reads: 'No account exists with that email address.' Any problem with that copy?",
+      "expected_output": "Yes — this enables account enumeration (reveals whether an email is registered). Use a single neutral message like 'Your email or password is incorrect.' Same neutrality applies to password-reset ('if an account exists, we sent instructions').",
+      "truth": "yes — account enumeration; use neutral combined error",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "biometric-stores-credential",
+      "prompt": "We want Face ID login for returning users. Does Face ID replace our server authentication, and where should the credential live?",
+      "expected_output": "Face ID does NOT replace server auth — it UNLOCKS a stored credential. Store the session/refresh token in the Keychain (Android: Keystore) and gate it with the biometric API; always provide a passcode/password fallback. Offer to enable it AFTER the first successful password sign-in.",
+      "truth": "no — biometrics unlock a Keychain-stored token, with fallback",
+      "files": []
+    }
+  ]
+}

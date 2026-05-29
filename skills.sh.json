@@ -49,6 +49,18 @@
       "skills": ["compliance-standards"]
     },
     {
+      "title": "Mobile UX",
+      "description": "Stack-agnostic UX design for the flows every mobile app needs — foundations, login, auth, paywalls, settings, permissions — grounded in Apple's Human Interface Guidelines with Android/Material deltas.",
+      "skills": [
+        "mobile-ux-foundations",
+        "login-flow",
+        "auth-flows",
+        "paywall-monetization-flow",
+        "settings-screens",
+        "permissions-flow"
+      ]
+    },
+    {
       "title": "Authoring",
       "description": "Author and organize agent knowledge itself — decide whether something belongs in AGENTS.md, a docs index, or a skill, and configure Claude Code lifecycle hooks.",
       "skills": ["skill-or-agents-md", "claude-code-hooks"]

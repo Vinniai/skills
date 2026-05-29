@@ -1,0 +1,29 @@
+{
+  "skill_name": "mobile-ux-foundations",
+  "evals": [
+    {
+      "id": 1,
+      "name": "min-touch-target",
+      "prompt": "What is the minimum recommended touch-target size for an interactive control on iOS, and on Android? Give the numbers and units.",
+      "expected_output": "iOS: 44 x 44 pt (HIG; absolute floor 28x28). Android/Material: 48 x 48 dp. Both numbers with correct units. (Control item — baseline models usually know this.)",
+      "truth": "44pt iOS / 48dp Android",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "no-in-app-appearance-toggle",
+      "prompt": "A designer wants to add a Light/Dark/System appearance picker inside our iOS app's settings. Is that the right call per Apple's guidance?",
+      "expected_output": "No — apps should respect the systemwide appearance setting and NOT ship an app-specific dark-mode toggle (Dark Mode HIG). Supplying a 'System' default that follows the OS is fine; a full in-app override toggle is discouraged.",
+      "truth": "no — respect system appearance, don't add app toggle",
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "color-alone",
+      "prompt": "We signal form-field errors by turning the field's border red. Accessibility concern?",
+      "expected_output": "Yes — must not convey state/meaning by COLOR ALONE (HIG Accessibility; fails for color-blind/low-vision users and WCAG). Pair the color with an icon and/or text label. Also ensure contrast 4.5:1.",
+      "truth": "yes — color alone insufficient, add icon/text",
+      "files": []
+    }
+  ]
+}

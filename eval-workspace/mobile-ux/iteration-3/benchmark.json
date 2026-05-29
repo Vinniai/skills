@@ -1,0 +1,40 @@
+{
+  "skill_name": "mobile-ux",
+  "iteration": 3,
+  "items": 24,
+  "graded_by": "3-judge panel (unanimous on every item)",
+  "summary": {
+    "baseline":      {"pass_rate": 0.813, "source": "carried from iteration 2", "skill_tokens": 0},
+    "skill_all_v3":  {"pass_rate": 1.000, "correct": "24/24", "judges": [24,24,24], "skill_tokens_all_six": 8065, "note": "leaner files, no regression vs the verbose v2 (also 1.000)"},
+    "skill_lite":    {"pass_rate": 1.000, "correct": "24/24", "judges": [24,24,24], "skill_tokens_one_block_avg": 280, "note": "non-negotiables block ONLY — same score"}
+  },
+  "lift_vs_baseline": 0.187,
+  "token_efficiency_ladder": {
+    "_desc": "Skill-content tokens needed to reach 1.000 (i.e. +0.187 over baseline). Lower is better.",
+    "all_six_full_v2":            15924,
+    "all_six_full_v3":            8065,
+    "one_relevant_full_v3":       1344,
+    "one_relevant_nonneg_block":  280,
+    "cheapest_vs_v2_allsix":      "≈57x cheaper for identical score",
+    "cheapest_vs_v2_targeted":    "≈9.5x cheaper than iteration-2 targeted full skill (2654)"
+  },
+  "restructure_effect": {
+    "skill_md_avg_tokens_before": 2654,
+    "skill_md_avg_tokens_after": 1344,
+    "reduction": "-49%",
+    "moved_to_reference_md_avg": 671,
+    "points_change": "0 (stayed 1.000)"
+  },
+  "routing": {
+    "tasks": 12,
+    "primary_correct": 12,
+    "accuracy": 1.000,
+    "cross_cutting_with_sensible_runner_up": ["R4 delete-account (auth primary / settings runner-up)", "R8 Face ID (login primary / auth runner-up)", "R11 dark-mode toggle (settings primary / foundations runner-up)", "R12 OTP screen (auth primary)"],
+    "note": "Validates the single-skill-loading assumption: the right skill is the top match for every task; genuinely cross-cutting tasks surface a reasonable second skill."
+  },
+  "judge_panel": {
+    "judges": 3,
+    "agreement": "unanimous (3/3 on all 48 graded answers)",
+    "addresses": "iteration-2 single-judge bias caveat"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "skill_name": "mobile-ux",
+  "iteration": 3,
+  "note": "skill_all_v3 = 1 agent read all 6 restructured SKILL.md, answered 24. skill_lite = 6 mini-agents, each given ONLY its non-negotiables block (~280 tok) inline, no file reading, answered its subset (assembled to 24). All scores are the 3-judge-panel majority (here unanimous).",
+  "scores": {
+    "skill_all_v3": {"1":1,"2":1,"3":1,"4":1,"5":1,"6":1,"7":1,"8":1,"9":1,"10":1,"11":1,"12":1,"13":1,"14":1,"15":1,"16":1,"17":1,"18":1,"19":1,"20":1,"21":1,"22":1,"23":1,"24":1},
+    "skill_lite":   {"1":1,"2":1,"3":1,"4":1,"5":1,"6":1,"7":1,"8":1,"9":1,"10":1,"11":1,"12":1,"13":1,"14":1,"15":1,"16":1,"17":1,"18":1,"19":1,"20":1,"21":1,"22":1,"23":1,"24":1}
+  },
+  "judge_totals": {
+    "judgeA": {"skill_all_v3": 24, "skill_lite": 24},
+    "judgeB": {"skill_all_v3": 24, "skill_lite": 24},
+    "judgeC": {"skill_all_v3": 24, "skill_lite": 24}
+  },
+  "routing": {
+    "R1_add_SIWA_button": {"primary": "auth-flows", "truth": "auth-flows", "ok": true, "runner_up": "login-flow"},
+    "R2_login_error_enumeration": {"primary": "login-flow", "truth": "login-flow", "ok": true},
+    "R3_build_paywall": {"primary": "paywall-monetization-flow", "truth": "paywall-monetization-flow", "ok": true},
+    "R4_delete_account_location": {"primary": "auth-flows", "truth": "auth-flows", "ok": true, "runner_up": "settings-screens"},
+    "R5_request_camera": {"primary": "permissions-flow", "truth": "permissions-flow", "ok": true},
+    "R6_settings_structure": {"primary": "settings-screens", "truth": "settings-screens", "ok": true},
+    "R7_tap_target_and_tabs": {"primary": "mobile-ux-foundations", "truth": "mobile-ux-foundations", "ok": true},
+    "R8_face_id_unlock": {"primary": "login-flow", "truth": "login-flow", "ok": true, "runner_up": "auth-flows"},
+    "R9_att_compliance": {"primary": "permissions-flow", "truth": "permissions-flow", "ok": true},
+    "R10_restore_and_disclosures": {"primary": "paywall-monetization-flow", "truth": "paywall-monetization-flow", "ok": true},
+    "R11_dark_mode_toggle": {"primary": "settings-screens", "truth": "settings-screens|mobile-ux-foundations", "ok": true, "runner_up": "mobile-ux-foundations"},
+    "R12_otp_screen": {"primary": "auth-flows", "truth": "auth-flows", "ok": true}
+  }
+}

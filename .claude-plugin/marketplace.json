@@ -65,6 +65,22 @@
       "keywords": ["taskr", "rest-api", "cli", "mcp", "automation"]
     },
     {
+      "name": "mobile-ux",
+      "source": "./skills/mobile-ux",
+      "strict": false,
+      "skills": [
+        "./mobile-ux-foundations",
+        "./login-flow",
+        "./auth-flows",
+        "./paywall-monetization-flow",
+        "./settings-screens",
+        "./permissions-flow"
+      ],
+      "description": "Stack-agnostic mobile UX design skills for the flows every app needs — foundations (HIG navigation, layout, type, color, accessibility), login, auth (Sign in with Apple, passkeys, OTP/2FA, account deletion), paywalls/subscriptions, settings, and permissions. Grounded in Apple's Human Interface Guidelines with Android/Material deltas.",
+      "category": "design",
+      "keywords": ["mobile", "ux", "design", "hig", "ios", "android", "auth", "paywall", "permissions"]
+    },
+    {
       "name": "compliance",
       "source": "./skills/compliance",
       "strict": false,

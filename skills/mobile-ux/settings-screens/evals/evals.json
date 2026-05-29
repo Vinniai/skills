@@ -1,0 +1,21 @@
+{
+  "skill_name": "settings-screens",
+  "evals": [
+    {
+      "id": 1,
+      "name": "task-options-in-context",
+      "prompt": "Where should we put the sort order and filter controls for our main list view — in the app's Settings screen, so everything's in one place?",
+      "expected_output": "No — task-specific options (sort, filter, show/hide, reorder) belong IN CONTEXT in the relevant view, not in Settings. The HIG Settings guidance says moving them to settings disconnects them from context and hides the result. Settings is for global, persistent preferences. Also: minimize settings overall.",
+      "truth": "no — keep task options in-context, not in Settings",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "settings-reachable-signed-out",
+      "prompt": "Is it fine to only show our Settings/account entry point after the user has logged in?",
+      "expected_output": "No — settings should be reachable even when SIGNED OUT (so people can sign in, get help, read legal/privacy). Don't gate settings behind login. (Android explicitly: 'settings always accessible, even in a signed-out state'.)",
+      "truth": "no — settings must be reachable when signed out",
+      "files": []
+    }
+  ]
+}

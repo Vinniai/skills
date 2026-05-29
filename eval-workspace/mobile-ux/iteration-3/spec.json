@@ -1,0 +1,9 @@
+{
+  "skill_name": "mobile-ux (category: 6 skills, restructured v3)",
+  "iteration": 3,
+  "premise": "After iteration 2, improvements #2-#5 were applied: each SKILL.md got a front-loaded '⚡ Non-negotiables (commonly missed)' block carrying the lift facts + an iOS-vs-Android divergence table + checklists; the long HIG URL lists and Android deep-dives moved to a sibling reference.md (progressive disclosure). This trimmed always-loaded SKILL.md from ~2654 to ~1344 tokens avg.",
+  "method": "Same 24 items as iteration 2. Conditions: (1) skill_all_v3 — read all 6 NEW SKILL.md, answer all 24 (regression check: did the -49% trim cost any points?); (2) skill_lite — 6 mini-runs, each given ONLY its skill's non-negotiables block (~280 tok) inline, no file reading (token-efficiency test of front-loading). Baseline (0.813) is carried from iteration 2 (same items, unchanged). Plus a ROUTING eval: a router agent picks the single best skill for 12 realistic tasks (validates the single-skill-loading assumption that powers the token savings). Grading by a 3-JUDGE PANEL (majority), replacing iteration 2's single judge.",
+  "grading": "3 independent judge subagents grade skill_all_v3 and skill_lite against the iteration-2 truth key with the same strict special rules (items 2,10,13,15,21,17,23). Majority vote per item. Routing scored as primary-choice exact match to the owning skill, with runner-up recorded for genuinely cross-cutting tasks.",
+  "conditions": ["skill_all_v3", "skill_lite", "routing"],
+  "judges": 3
+}

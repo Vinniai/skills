@@ -1,0 +1,29 @@
+{
+  "skill_name": "permissions-flow",
+  "evals": [
+    {
+      "id": 1,
+      "name": "ask-in-context",
+      "prompt": "When should our app trigger the iOS camera permission prompt — on first launch during onboarding, so it's out of the way?",
+      "expected_output": "No — request permission IN CONTEXT, at the moment the user invokes the camera feature, not at launch (HIG Privacy: 'avoid requesting permission at launch unless required to function'). Optionally show a priming screen explaining the benefit before the system alert. Also ensure NSCameraUsageDescription is set.",
+      "truth": "no — ask in context when the feature is used, not at launch",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "att-priming-violations",
+      "prompt": "Our App Tracking Transparency priming screen has a big button labeled 'Allow', a 'Skip' link to bypass it, and we keep the content feed hidden until the user opts in. Anything wrong?",
+      "expected_output": "Three ATT violations: (1) can't label the button 'Allow' or otherwise imitate the system alert — use 'Continue'/'Next'; (2) can't provide an escape hatch that skips the system alert; (3) can't withhold functionality/content or make the app unusable until people allow tracking (no bribing/coercion). All are explicit App Store rejection causes.",
+      "truth": "three violations: 'Allow' label/mimic, skip/escape hatch, withholding functionality",
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "location-when-in-use-first",
+      "prompt": "Our app shows nearby events. Should we request 'Always' location access up front so background features work later?",
+      "expected_output": "No — request 'When In Use' FIRST and only what you need; escalate to 'Always' only when background access is core and clearly beneficial (the system later re-confirms 'Always'). For a one-shot need, prefer the system Location Button (temporary access, no full prompt). Don't over-request.",
+      "truth": "no — request when-in-use first, escalate to always only if core",
+      "files": []
+    }
+  ]
+}

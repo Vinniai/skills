@@ -1,0 +1,29 @@
+{
+  "skill_name": "auth-flows",
+  "evals": [
+    {
+      "id": 1,
+      "name": "siwa-required-with-social",
+      "prompt": "Our iOS app offers 'Sign in with Google' and 'Sign in with Facebook' to create the user's primary account, and nothing else. Will this pass App Store review as-is?",
+      "expected_output": "No — App Store Review Guideline 4.8 requires offering an equivalent privacy-preserving login (limits data to name+email, lets users keep email private, no ad tracking without consent) alongside third-party/social login. Sign in with Apple satisfies this, so it must be offered too.",
+      "truth": "no — must also offer Sign in with Apple (Guideline 4.8)",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "in-app-account-deletion",
+      "prompt": "Users can create an account in our app. To delete it, they email support and we deactivate the record. Is that acceptable for the App Store?",
+      "expected_output": "No — Guideline 5.1.1(v) requires account DELETION (not deactivation) INITIATED IN-APP, easy to find (account settings). A website may only complete deletion, with a direct in-app link. Deactivation-only / email-only is insufficient. Warn that Apple subscriptions must be cancelled separately.",
+      "truth": "no — must offer in-app deletion (not deactivate), Guideline 5.1.1(v)",
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "otp-single-field-autofill",
+      "prompt": "We're building the SMS one-time-code screen. Should we use six separate single-digit boxes or one field, and what's the key detail to make autofill work?",
+      "expected_output": "Prefer a SINGLE field with the one-time-code content type (iOS textContentType=.oneTimeCode; web autocomplete='one-time-code') so SMS AutoFill drops the code in; numeric keyboard, auto-submit when full, visible Resend with cooldown. Segmented boxes often break AutoFill. Bonus: domain-bound SMS codes for anti-phishing.",
+      "truth": "single field + one-time-code content type for AutoFill",
+      "files": []
+    }
+  ]
+}

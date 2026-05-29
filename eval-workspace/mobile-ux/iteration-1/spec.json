@@ -1,0 +1,26 @@
+{
+  "skill_name": "mobile-ux (category: 6 skills)",
+  "iteration": 1,
+  "method": "16 held-out scenarios drawn from the per-skill evals.json files (foundations 3, login 2, auth 3, paywall 3, settings 2, permissions 3). Two conditions, each run by n=3 parallel general-purpose subagents that answer all 16 items in one pass: (1) baseline — answer from the model's own knowledge, NO file access, no skill; (2) with_skill — read the relevant skills/mobile-ux/*/SKILL.md files first, then apply. This isolates the lift the skills add over a capable model's prior knowledge.",
+  "grading": "Per item, exact-match on a rubric truth = correct DECISION (yes/no / which) AND presence of the critical required element(s). An answer that reaches the right decision but omits the load-bearing element (e.g. says 'add account deletion' but not 'in-app, not deactivation') is scored incorrect. pass_rate per condition = mean over items of (correct_runs / 3).",
+  "expected": {
+    "1": "iOS 44pt AND Android 48dp",
+    "2": "no — respect system appearance, don't ship app toggle",
+    "3": "yes — color alone insufficient, add icon/text",
+    "4": "yes — account enumeration; use neutral combined error",
+    "5": "no — biometrics unlock a Keychain-stored token, with fallback",
+    "6": "no — must also offer Sign in with Apple (Guideline 4.8)",
+    "7": "no — in-app deletion required, not deactivation (5.1.1(v))",
+    "8": "single field + one-time-code content type for AutoFill",
+    "9": "yes — must show actual annual charged total, not only monthly-equivalent",
+    "10": "Restore Purchases + Terms + Privacy links + on-screen disclosure",
+    "11": "no — digital unlocks require IAP (3.1.1); external links only US/entitlement regions",
+    "12": "no — keep task options in context, not Settings",
+    "13": "no — settings reachable when signed out",
+    "14": "no — request in context when feature used, not at launch",
+    "15": "three ATT violations: 'Allow'/mimic, skip/escape hatch, withholding functionality",
+    "16": "no — request when-in-use first, escalate to always only if core"
+  },
+  "n_per_condition": 3,
+  "conditions": ["baseline", "with_skill"]
+}

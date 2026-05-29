@@ -1,0 +1,52 @@
+{
+  "skill_name": "mobile-ux",
+  "iteration": 2,
+  "graded_by": "independent judge subagent (not the author)",
+  "items": 24,
+  "summary": {
+    "baseline":        {"pass_rate": 0.813, "n": 2, "correct": "39/48", "per_run": [0.833, 0.792], "avg_subagent_tokens": 25824, "file_read_tokens": 0},
+    "skill_all":       {"pass_rate": 1.000, "n": 2, "correct": "48/48", "per_run": [1.000, 1.000], "avg_subagent_tokens": 51722, "file_read_tokens": 15924, "note": "reads all 6 SKILL.md — upper bound, not how skills load in practice"},
+    "skill_targeted":  {"pass_rate": 1.000, "n": 1, "correct": "24/24", "per_run": [1.000], "file_read_tokens_per_skill_avg": 2654, "note": "each item answered after reading ONLY its one owning skill — mirrors real single-skill loading"}
+  },
+  "deltas": {
+    "skill_all_vs_baseline": 0.187,
+    "skill_targeted_vs_baseline": 0.187,
+    "skill_targeted_vs_skill_all": 0.000
+  },
+  "token_efficiency": {
+    "claim": "Loading the ONE relevant skill achieves the same lift as loading all six.",
+    "lift_pts": 18.7,
+    "file_tokens_skill_all": 15924,
+    "file_tokens_one_relevant_skill_avg": 2654,
+    "ratio": "≈6x cheaper for identical score",
+    "caveat": "skill_targeted subagent token totals look high only because each of the 6 mini-runs pays full agent overhead (~25k). The meaningful skill cost is the SKILL.md content size (~2.65k for one, ~15.9k for all six), which is what loads into a real Claude Code conversation."
+  },
+  "per_item_lift": [2, 10, 13, 15, 21],
+  "per_item": {
+    "_legend": "baseline correct_runs/2  ->  skill (all & targeted) correct",
+    "1":  {"truth": "iOS 44pt / Android 48dp",                  "baseline": "2/2", "skill": "ok"},
+    "2":  {"truth": "no in-app appearance toggle",              "baseline": "1/2", "skill": "ok", "note": "B2 called a toggle 'fine'"},
+    "3":  {"truth": "not color alone",                          "baseline": "2/2", "skill": "ok"},
+    "4":  {"truth": "no enumeration",                           "baseline": "2/2", "skill": "ok"},
+    "5":  {"truth": "biometrics unlock Keychain token",         "baseline": "2/2", "skill": "ok"},
+    "6":  {"truth": "Sign in with Apple (4.8)",                 "baseline": "2/2", "skill": "ok"},
+    "7":  {"truth": "in-app deletion (5.1.1v)",                 "baseline": "2/2", "skill": "ok"},
+    "8":  {"truth": "single field + one-time-code",            "baseline": "2/2", "skill": "ok"},
+    "9":  {"truth": "show actual annual total",                 "baseline": "2/2", "skill": "ok"},
+    "10": {"truth": "Restore + Terms + Privacy",                "baseline": "0/2", "skill": "ok", "note": "baseline omits Restore Purchases"},
+    "11": {"truth": "IAP for digital (3.1.1)",                  "baseline": "2/2", "skill": "ok"},
+    "12": {"truth": "task options in-context",                  "baseline": "2/2", "skill": "ok"},
+    "13": {"truth": "settings reachable signed-out",            "baseline": "0/2", "skill": "ok", "note": "baseline gates settings behind login"},
+    "14": {"truth": "ask in context",                          "baseline": "2/2", "skill": "ok"},
+    "15": {"truth": "all three ATT violations",                 "baseline": "0/2", "skill": "ok", "note": "baseline names only 2 of 3 (misses skip/escape hatch)"},
+    "16": {"truth": "when-in-use before always",                "baseline": "2/2", "skill": "ok"},
+    "17": {"truth": "no paywall (trap)",                        "baseline": "2/2", "skill": "ok", "note": "neither over-triggers"},
+    "18": {"truth": "trial disclosure",                         "baseline": "2/2", "skill": "ok"},
+    "19": {"truth": "backup/recovery codes",                    "baseline": "2/2", "skill": "ok"},
+    "20": {"truth": "never stack alerts",                       "baseline": "2/2", "skill": "ok"},
+    "21": {"truth": "Android: don't nudge to Settings",         "baseline": "0/2", "skill": "ok", "note": "baseline applies the iOS deep-link pattern to Android"},
+    "22": {"truth": "tab bar <=5",                              "baseline": "2/2", "skill": "ok"},
+    "23": {"truth": "no fixed SIWA width (honesty trap)",       "baseline": "2/2", "skill": "ok", "note": "neither fabricated a number"},
+    "24": {"truth": "single-use short-expiry magic link",       "baseline": "2/2", "skill": "ok"}
+  }
+}

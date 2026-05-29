@@ -1,0 +1,38 @@
+{
+  "skill_name": "mobile-ux",
+  "iteration": 1,
+  "n_per_condition": 3,
+  "primary_metric": "exact-match pass_rate vs the rubric truth (correct decision AND load-bearing element present)",
+  "summary": {
+    "with_skill": {"pass_rate": 1.000, "n": 3, "stddev": 0.0, "avg_total_tokens": 50892, "avg_duration_ms": 18602, "avg_tool_uses": 6},
+    "baseline":   {"pass_rate": 0.8125, "n": 3, "stddev": 0.0, "avg_total_tokens": 24863, "avg_duration_ms": 15478, "avg_tool_uses": 0}
+  },
+  "deltas": {
+    "with_skill_vs_baseline": 0.1875
+  },
+  "decomposition": {
+    "item_10 restore-purchases-on-paywall": "+0.0625 — all 3 baselines listed Terms+Privacy but OMITTED the required Restore Purchases affordance (a frequent App Store rejection cause). With-skill names it every time.",
+    "item_13 settings-reachable-when-signed-out": "+0.0625 — all 3 baselines said gating settings/account behind login is 'fine'. With-skill: settings must be reachable signed out.",
+    "item_15 full-ATT-violation-triple": "+0.0625 — baselines named 1-2 of the 3 ATT priming violations (typically 'withholding content'); none crisply named all three (no 'Allow' label / no skip-escape-hatch / no withholding). With-skill names all three.",
+    "total": "+0.1875 (baseline 13/16 -> with_skill 16/16)"
+  },
+  "per_item": {
+    "_legend": "correct_count / n, per condition (strict rubric scoring)",
+    "1":  {"truth": "iOS 44pt / Android 48dp",                 "baseline": "3/3", "with_skill": "3/3", "note": "control item — baseline knows it"},
+    "2":  {"truth": "no in-app appearance toggle",             "baseline": "3/3", "with_skill": "3/3"},
+    "3":  {"truth": "not color alone, add icon/text",          "baseline": "3/3", "with_skill": "3/3"},
+    "4":  {"truth": "no enumeration, neutral error",           "baseline": "3/3", "with_skill": "3/3"},
+    "5":  {"truth": "biometrics unlock Keychain token",        "baseline": "3/3", "with_skill": "3/3"},
+    "6":  {"truth": "must offer Sign in with Apple (4.8)",     "baseline": "3/3", "with_skill": "3/3", "note": "well-known rule — baseline gets it"},
+    "7":  {"truth": "in-app deletion not deactivation (5.1.1v)","baseline": "3/3", "with_skill": "3/3"},
+    "8":  {"truth": "single field + one-time-code type",       "baseline": "3/3", "with_skill": "3/3"},
+    "9":  {"truth": "show actual annual total",                "baseline": "3/3", "with_skill": "3/3"},
+    "10": {"truth": "Restore + Terms + Privacy on paywall",    "baseline": "0/3", "with_skill": "3/3", "note": "baseline omits Restore Purchases"},
+    "11": {"truth": "IAP required for digital (3.1.1)",        "baseline": "3/3", "with_skill": "3/3"},
+    "12": {"truth": "task options in-context not Settings",    "baseline": "3/3", "with_skill": "3/3"},
+    "13": {"truth": "settings reachable when signed out",      "baseline": "0/3", "with_skill": "3/3", "note": "baseline says gating is fine"},
+    "14": {"truth": "ask in context not at launch",            "baseline": "3/3", "with_skill": "3/3"},
+    "15": {"truth": "all three ATT priming violations",        "baseline": "0/3", "with_skill": "3/3", "note": "baseline names only 1-2 of 3"},
+    "16": {"truth": "when-in-use before always",               "baseline": "3/3", "with_skill": "3/3"}
+  }
+}
