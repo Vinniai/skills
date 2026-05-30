@@ -25,8 +25,11 @@ authoritative, Android/Material deltas are flagged. Full citations: **[reference
 | **Text scaling** | support Dynamic Type to **≥ 200%** without clipping | same |
 
 **iOS ↔ Android divergences that trip people up:** tap target **44 pt vs 48 dp**; Android's bottom nav
-hard range is **3–5** (iOS "≤5"); Android is consolidating drawer→expandable rail. (Permission-denial
-divergence lives in [permissions-flow](../permissions-flow/SKILL.md).)
+hard range is **3–5** (iOS "≤5"); Android is consolidating drawer→expandable rail. The **no-in-app-appearance-toggle**
+rule above is an **iOS-only** stance — Android (Material You) permits a theme setting; default to system on both.
+For the full classification of which non-negotiables are universal vs iOS-only vs Android-only, see
+**[cross-platform](../mobile-ux-cross-platform/SKILL.md)**. (Permission-denial divergence lives in
+[permissions-flow](../permissions-flow/SKILL.md).)
 
 ## When to use
 

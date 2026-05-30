@@ -54,6 +54,10 @@
       "skills": [
         "mobile-ux-foundations",
         "mobile-ux-layout-devices",
+        "mobile-ux-cross-platform",
+        "mobile-ux-states",
+        "mobile-ux-onboarding-launch",
+        "mobile-ux-detect",
         "login-flow",
         "auth-flows",
         "paywall-monetization-flow",

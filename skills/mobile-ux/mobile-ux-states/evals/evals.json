@@ -1,0 +1,37 @@
+{
+  "skill_name": "mobile-ux-states",
+  "evals": [
+    {
+      "id": 1,
+      "name": "skeleton-vs-spinner",
+      "prompt": "A list screen fetches data and shows a centered full-screen spinner until it arrives, then swaps in the list. Any issue, and what's the better pattern?",
+      "expected_output": "Yes — for content with a known layout, use a SKELETON placeholder that matches the final list (rows/cards), not a full-screen spinner. The spinner causes a blank-then-jump (layout shift) and conveys no structure; skeletons preserve layout and feel faster. Reserve the spinner for short indeterminate waits. Also: don't show any spinner for <~1s (it flickers).",
+      "truth": "skeleton matching layout, not full-screen spinner; avoid layout shift / <1s flash",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "empty-state-not-error",
+      "prompt": "Our list screen renders nothing when the API returns an empty array. What should an empty state include, and how is it different from an error?",
+      "expected_output": "An empty state needs an icon/illustration + a plain reason + a PRIMARY ACTION (e.g. 'Add your first X'), and should distinguish first-run (no data yet) from a zero-result filter/search (offer to clear) from all-done (celebratory). It is NOT an error: empty = a valid state with a path forward; error = something failed and needs a Retry/recovery. Rendering nothing for either is the bug.",
+      "truth": "empty = explain + primary action, distinguish first-run/zero-result/all-done; distinct from error (cause+retry)",
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "error-recovery-not-swallow",
+      "prompt": "A network submit fails. The code does `catch (e) { console.warn(e) }` and the form clears. Two problems?",
+      "expected_output": "(1) The error is SWALLOWED — never surfaced to the user; must show a human-readable cause + a Retry (or Open Settings if it's a permission/connectivity cause), not just a console.warn. (2) User INPUT is lost — a failed submit must preserve the form contents so the user can retry without re-typing. Log the technical detail, show the human one.",
+      "truth": "surface error with cause+retry (don't swallow); preserve user input on failure",
+      "files": []
+    },
+    {
+      "id": 4,
+      "name": "offline-is-a-state",
+      "prompt": "What should a content app do when the device goes offline mid-session?",
+      "expected_output": "Treat offline as a designed state: detect connectivity, show cached/last-known content with a persistent unobtrusive offline indicator (banner/Snackbar), disable or QUEUE actions that need the network (and tell the user they're queued), and auto-recover on reconnect. Don't spin forever, don't fail silently, don't lose queued writes.",
+      "truth": "detect + show cached + offline banner + queue/retry writes + auto-recover; not silent fail or infinite spinner",
+      "files": []
+    }
+  ]
+}

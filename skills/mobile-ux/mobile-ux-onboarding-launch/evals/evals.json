@@ -1,0 +1,37 @@
+{
+  "skill_name": "mobile-ux-onboarding-launch",
+  "evals": [
+    {
+      "id": 1,
+      "name": "launch-screen-not-brand-splash",
+      "prompt": "A designer wants the app's launch screen to show the company logo and name on a branded background for ~2 seconds. Is that the right call per Apple?",
+      "expected_output": "No — Apple's launch screen should be a seamless PLACEHOLDER that looks like your app's first screen, so launch feels instant. It should NOT be a branding/marketing moment (no logo reveal, no company name, no spinner, no fixed delay). Match light/dark. A brief branded splash is at most a deliberate exception, never a 2s gate.",
+      "truth": "no — launch screen mirrors the first screen, not a logo/marketing splash; no artificial delay",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "defer-signup",
+      "prompt": "Should a new app require account creation on first launch before the user can do anything?",
+      "expected_output": "No — let users reach the core value first and DEFER sign-up to when it's actually needed (save, sync, pay). A forced-login wall on launch hurts activation and (on iOS) is the 'no forced login' rule. Offer guest/skip; ask to create an account in context when there's a reason to.",
+      "truth": "no — get to value first, defer account creation, no forced-login wall",
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "onboarding-length-and-skip",
+      "prompt": "How long should an onboarding sequence be, what should it communicate, and what must it always include?",
+      "expected_output": "Short — about 3–4 screens max. Communicate the VALUE/benefit, not a feature tour of the UI. Must always include a Skip (and progress indication, e.g. dots). Don't teach the interface; let the UI teach itself in context. Prime permissions only when the feature is about to be used.",
+      "truth": "<=3-4 screens, value not feature-tour, Skip always available + progress shown",
+      "files": []
+    },
+    {
+      "id": 4,
+      "name": "cold-boot-deadend",
+      "prompt": "An expo-router app has app/index.tsx that, in a useEffect, redirects to /onboarding or /home based on auth. On a fresh install it sometimes shows a blank 'Unmatched Route'. Why, and the fix?",
+      "expected_output": "On a cold launch the empty index renders before the useEffect runs, so there's a frame with no matched route → blank/Unmatched. Fix: give the index a real synchronous default (a <Redirect> or a loading screen render), gate on auth-loaded + onboarding-complete flags, and verify the FIRST FRAME on a clean install (not just hot reload). Don't rely on an effect-only redirect from an empty root.",
+      "truth": "empty index renders before the effect redirect → blank first frame; use synchronous Redirect/default render, verify clean cold boot",
+      "files": []
+    }
+  ]
+}

@@ -16,6 +16,19 @@ restating the rules.
   layout margins & readable width, size classes/breakpoints, orientation, and iPad multitasking (Split
   View, Slide Over, Stage Manager). Grounded in HIG Layout + Specifications; Android window-size-class
   and edge-to-edge deltas. Read foundations first; come here for the numbers a layout lands on.
+- **[mobile-ux-cross-platform](./mobile-ux-cross-platform/SKILL.md)** — the *platform-dependence* layer:
+  classifies every non-negotiable as **[U] universal / [iOS] Apple-only / [Android] Material-only**, gives the
+  iOS→Android translation table, and lists platform-exclusive features. Read this before applying an iOS rule
+  on Android (e.g. the no-in-app-appearance-toggle rule is iOS-only).
+- **[mobile-ux-states](./mobile-ux-states/SKILL.md)** — the states a screen has *besides* "loaded fine":
+  loading / empty / error / success / offline. Skeletons vs spinners, empty = explain + act, error = cause +
+  recovery (never swallow), preserve input, offline degradation, latency thresholds, pull-to-refresh.
+- **[mobile-ux-onboarding-launch](./mobile-ux-onboarding-launch/SKILL.md)** — the first run: launch screen
+  (mirror the first screen, not a brand splash), get to value before sign-up, short skippable onboarding,
+  in-context permission priming, resuming returning users, and no cold-boot dead-end.
+- **[mobile-ux-detect](./mobile-ux-detect/SKILL.md)** — the *front door*: scan a codebase, detect the stack +
+  platform targets + which surfaces exist, and emit a targeted plan (which skills/audits to run + cross-platform
+  tags + tier recipe). Makes the audit self-targeting. Run this first on any existing app.
 - **[login-flow](./login-flow/SKILL.md)** — the sign-in screen: method ordering, fields & AutoFill,
   biometric re-auth, "Forgot password?", error/loading states, security copy.
 - **[auth-flows](./auth-flows/SKILL.md)** — sign-up, Sign in with Apple / SSO (App Store 4.8), passkeys,

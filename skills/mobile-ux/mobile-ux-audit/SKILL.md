@@ -23,6 +23,11 @@ obvious. The flow skills say *what's correct*; this is *how to audit against the
 
 ## Steps
 
+0. **Detect & scope first** (optional but recommended). Run [mobile-ux-detect](../mobile-ux-detect/SKILL.md)
+   to get the stack, platform targets, and the present-surface work-list, so you audit what exists instead of
+   walking blind. Use its platform targets + [cross-platform](../mobile-ux-cross-platform/SKILL.md) tags to
+   **scope which non-negotiables apply** — don't flag an [iOS]-only rule (appearance toggle, SIWA, ATT) on an
+   Android-only app.
 1. **Map the surfaces.** Locate the screens/modules for each area (grep, don't guess):
    - **auth/login** — sign-in, sign-up, SIWA/SSO, passkeys/OTP, the auth provider, `app.json`
      `usesAppleSignIn`, sign-out, account deletion.
@@ -37,6 +42,10 @@ obvious. The flow skills say *what's correct*; this is *how to audit against the
      `rg -n "Tabs|TabBar|Drawer|createBottomTab|hitSlop|backgroundColor.*red|borderColor.*red"`
    - **layout/devices** — hardcoded insets, missing safe-area handling, content under headers.
      `rg -n "paddingTop:\s*\d|marginTop:\s*\d|StatusBar.currentHeight|insets|SafeArea|edges=|headerTransparent"`
+   - **states** — blank/spinner-only loads, swallowed errors, missing empty/offline handling.
+     `rg -n "ActivityIndicator|Skeleton|RefreshControl|ListEmptyComponent|isLoading|isError|catch\s*\(|NetInfo"`
+   - **onboarding/launch** — brand splash, forced-login wall, cold-boot dead-end, re-onboarding.
+     `rg -n "onboarding|welcome|SplashScreen|expo-splash-screen|hasOnboarded|AutoAnonymous|<Redirect|index\.tsx"`
 2. **Walk each area's checklist** (below). For every rule, open the owning file, decide pass/fail
    **from the code**, and record failures.
 3. **Write each finding** in the [output format](#finding-format): `severity · area · title · file:line ·
@@ -74,6 +83,13 @@ obvious. The flow skills say *what's correct*; this is *how to audit against the
 - [ ] **Safe areas read at runtime, not hardcoded** — no literal `paddingTop: 44` / `34`; content stays
   clear of the Dynamic Island/notch/home indicator and doesn't render under a transparent/large-title
   header ([layout-devices](../mobile-ux-layout-devices/SKILL.md)). Hardcoded insets = `baseline-miss`.
+
+**states / [states](../mobile-ux-states/SKILL.md)**
+- [ ] **Every data view has loading / empty / error states** — not a blank flash or a bare full-screen spinner; skeletons for known layouts; offline handled. `baseline-miss` on a list with no `ListEmptyComponent` / no error branch.
+- [ ] **Errors surfaced with cause + retry**, input preserved on failure (the flows' "never swallow" rule).
+
+**onboarding / launch / [onboarding-launch](../mobile-ux-onboarding-launch/SKILL.md)**
+- [ ] **No brand/marketing splash** (launch screen mirrors first screen); **value reachable before sign-up**; onboarding short + skippable; **no cold-boot dead-end** (effect-only redirect from an empty `index` → blank/Unmatched). `baseline-miss` on the cold-boot dead-end.
 
 ## Finding format
 

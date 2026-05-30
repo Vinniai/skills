@@ -1,0 +1,29 @@
+{
+  "skill_name": "mobile-ux-cross-platform",
+  "evals": [
+    {
+      "id": 1,
+      "name": "appearance-toggle-is-ios-only",
+      "prompt": "Our rule says 'ship no in-app appearance toggle'. We're building for both iOS and Android. Does that rule apply on Android too?",
+      "expected_output": "No — that is an iOS/Apple-HIG opinion, not universal. Android (Material You) treats theming as first-class and a Light/Dark/System setting is common and acceptable there; it should NOT be flagged as a violation on Android. Default to the system setting on both platforms, but only iOS bans the in-app override.",
+      "truth": "iOS-only rule; Android permits a theme setting (Material You); default to system on both",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "siwa-not-required-on-android",
+      "prompt": "We offer Google sign-in. Do we need to add Sign in with Apple on our Android app to comply?",
+      "expected_output": "No — Sign in with Apple (App Store Guideline 4.8) is an iOS-only requirement, triggered by offering third-party/social login on iOS. Android/Google Play has no equivalent requirement. On Android, offer Google sign-in / Credential Manager; SIWA is not mandated.",
+      "truth": "no — SIWA (4.8) is iOS-only; no Android requirement",
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "denied-permission-model-differs",
+      "prompt": "On iOS we show an 'Open Settings' button after a permission is denied. Is the denied-permission model the same on Android?",
+      "expected_output": "No — different models. iOS denial is effectively PERMANENT after the first deny (the system won't prompt again), so the in-app 'Open Settings' deep-link is essential. Android can RE-PROMPT on subsequent attempts until the user selects 'Don't ask again', after which you fall back to the Settings deep-link. So the deep-link matters on both, but Android still allows in-app re-requests first.",
+      "truth": "different: iOS deny is permanent (deep-link essential); Android can re-prompt until 'Don't ask again'",
+      "files": []
+    }
+  ]
+}
