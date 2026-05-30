@@ -118,8 +118,16 @@ on the whole sweep. Validated split (see `eval-workspace/mobile-ux/`):
   Sonnet+skill pass** to prune out-of-scope noise, merge duplicates, set final severity, and hold scope.
   Validated to keep 17/17 real findings, drop 5/5 noise, and merge dupes — **as well as or better than Opus**
   (iter-10). Let the identify tier over-collect for recall; adjudication recovers precision cheaply and
-  **does not drop real findings**. Reserve **Opus** for the rare genuinely-ambiguous call or writing the
-  patch — it is a luxury, not a required stage.
+  **does not drop real findings**. Reserve **Opus** for the rare genuinely-ambiguous call — it is a luxury,
+  not a required stage.
+- **Fix-author (mid-tier — Sonnet):** Sonnet+skill authors complete, correct patches — incl. multi-file
+  fixes (account deletion across tables + auth identity, system SIWA button + the missing dependency) — on
+  par with Opus (iter-11). **Do not use the cheap tier here:** Haiku produces *plausible-but-incomplete*
+  patches (a button that doesn't authenticate, an account that "looks deleted" but isn't) that can ship —
+  the dangerous failure mode. **Run fix-authors isolated** (`isolation: 'worktree'`, or instruct
+  "propose a diff, do not apply") — they will otherwise write to the working tree, and parallel authors
+  corrupt a shared one. The minimum viable tier rises with generativity: **identify = Haiku, adjudicate &
+  fix = Sonnet, Opus rarely.**
 
 Why split there: the evals show the skill's *factual/rule* lift is large on small models and ~0 on frontier
 ones (they already know the facts), while *judgment* (is this a real violation? how bad?) still favors the
