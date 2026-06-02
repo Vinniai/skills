@@ -1,0 +1,18 @@
+{
+  "skill_name": "manualslib-fetch",
+  "iteration": 1,
+  "method": "8 held-out scenarios drawn from skills/retrieval/manualslib-fetch/evals/evals.json. Two conditions, each run by n=3 parallel general-purpose subagents that answer all 8 items in one pass: (1) baseline — answer from the model's own knowledge, NO tools, NO web, NO file access; (2) with_skill — read skills/retrieval/manualslib-fetch/SKILL.md (and optionally the sibling fetch-manual.mjs) first, then apply. This isolates the lift the skill adds over a capable model's prior knowledge for ManualsLib-specific, non-obvious mechanics.",
+  "grading": "Per item, exact-match on a rubric `truth` = correct DECISION AND presence of the load-bearing element(s). An answer that reaches the right decision but states the wrong mechanism or omits the load-bearing detail is scored incorrect. Examples: item 2 must attribute the 404 to the per-page EXTENSION varying (not host-sharding / zero-padding); item 5 must state the open text is a SNIPPET requiring your own OCR for full text (not a complete OCR text layer). pass_rate per condition = mean over items of (correct_runs / 3).",
+  "expected": {
+    "1": "Get manual = reCAPTCHA-gated, no PDF without human tick; don't bypass; rebuild from openly-served viewer page-render images + text and assemble a PDF",
+    "2": "extension varies per page (jpg/png/webp); not rate-limiting/host-sharding/padding; try each extension, use first 200",
+    "3": "derive base path + image slug from a page-embedded image URL (…/images/<slug>_<n>_thumb.png); don't hardcode",
+    "4": "/download/845165/Ampac-Firefinder-Plus.html — same id+slug, /manual/ -> /download/",
+    "5": "?page=N HTML -> ld+json description (snippet) + og:title (section); TOC from data-pretty-caption/data-page; snippet only, full text needs OCR",
+    "6": "probe _n_bg renders upward until ~2 consecutive misses = last page; reported count/thumbs are cross-checks",
+    "7": "WebFetch …?page=N directly (ungated); don't run the full pipeline for one value",
+    "8": "swap files-sdk adapter only (fs -> s3()/r2, bucket/region/endpoint); same 10 methods; AWS cred chain + @aws-sdk peers; in the script it's the STORAGE/S3_BUCKET env switch"
+  },
+  "n_per_condition": 3,
+  "conditions": ["baseline", "with_skill"]
+}

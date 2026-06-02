@@ -68,6 +68,11 @@
       ]
     },
     {
+      "title": "File Retrieval & Storage",
+      "description": "Fetch product manuals from ManualsLib and archive files to object storage (S3/R2/GCS/Azure) via files-sdk.",
+      "skills": ["manualslib-fetch", "object-storage-upload"]
+    },
+    {
       "title": "Authoring",
       "description": "Author and organize agent knowledge itself — decide whether something belongs in AGENTS.md, a docs index, or a skill, and configure Claude Code lifecycle hooks.",
       "skills": ["skill-or-agents-md", "claude-code-hooks"]

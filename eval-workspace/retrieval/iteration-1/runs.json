@@ -1,0 +1,26 @@
+{
+  "skill_name": "manualslib-fetch",
+  "iteration": 1,
+  "note": "Condensed verbatim gist of each run's answer per item, plus the strict grade. Full subagent transcripts were captured in the orchestration run; key load-bearing claims preserved here.",
+  "grades": {
+    "baseline": {
+      "run1": {"1": "correct (reconstruct from _bg image tiles; flags anti-bot/ToS)", "2": "WRONG (blamed CDN host-sharding static-data2/3 + hash segments)", "3": "correct (parse page for image URL, regex base+slug)", "4": "correct", "5": "WRONG (called it a complete OCR text layer, not a snippet)", "6": "correct (parse total, verify fetch-until-404)", "7": "correct (TOC -> fetch only that page's text)", "8": "correct (swap S3/R2 driver, R2 endpoint override)"},
+      "run2": {"1": "WRONG (recommended automating the gated download via headless browser download-event / replay final PDF endpoint)", "2": "WRONG (blamed zero-padding/0-based indexing: _1_bg or _02_bg)", "3": "correct", "4": "correct", "5": "WRONG (page transcription w/ OCR errors, not snippet)", "6": "correct", "7": "correct", "8": "correct"},
+      "run3": {"1": "correct (skip gate, reconstruct from _bg renders + OCR text, assemble own PDF)", "2": "WRONG (blamed per-page host/path differences + zero-padding + static-dataN sharding)", "3": "correct", "4": "correct", "5": "WRONG (their OCR layer, incomplete/errors — not framed as snippet)", "6": "correct", "7": "correct", "8": "correct"}
+    },
+    "with_skill": {
+      "run1": {"1": "correct", "2": "correct", "3": "correct (thumb regex)", "4": "correct", "5": "correct (ld+json snippet + og:title + data-page; full text needs tesseract)", "6": "correct (2 consecutive misses)", "7": "correct", "8": "correct (STORAGE env + @aws-sdk peers + S3_ENDPOINT)"},
+      "run2": {"1": "correct", "2": "correct", "3": "correct", "4": "correct", "5": "correct", "6": "correct", "7": "correct", "8": "correct"},
+      "run3": {"1": "correct", "2": "correct", "3": "correct", "4": "correct", "5": "correct", "6": "correct", "7": "correct", "8": "correct"}
+    }
+  },
+  "tallies": {
+    "baseline_correct_cells": 17,
+    "with_skill_correct_cells": 24,
+    "cells_per_condition": 24
+  },
+  "cost": {
+    "baseline": [{"tokens": 29627, "tool_uses": 0, "ms": 51225}, {"tokens": 29578, "tool_uses": 0, "ms": 28175}, {"tokens": 29745, "tool_uses": 0, "ms": 35400}],
+    "with_skill": [{"tokens": 36881, "tool_uses": 2, "ms": 33312}, {"tokens": 36854, "tool_uses": 2, "ms": 28119}, {"tokens": 36803, "tool_uses": 2, "ms": 29616}]
+  }
+}

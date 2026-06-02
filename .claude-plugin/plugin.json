@@ -30,6 +30,8 @@
     "./skills/taskr/taskr-api",
     "./skills/taskr/taskr-cli",
     "./skills/compliance/compliance-standards",
+    "./skills/retrieval/manualslib-fetch",
+    "./skills/storage/object-storage-upload",
     "./skills/mobile-ux/mobile-ux-foundations",
     "./skills/mobile-ux/mobile-ux-layout-devices",
     "./skills/mobile-ux/mobile-ux-cross-platform",

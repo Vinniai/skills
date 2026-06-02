@@ -1,0 +1,69 @@
+{
+  "skill_name": "manualslib-fetch",
+  "evals": [
+    {
+      "id": 1,
+      "name": "captcha-gate-automated-approach",
+      "prompt": "I need to fully automatically (no human) download a product manual from ManualsLib and store it. On the manual's /download/<id>/<slug>.html page there's a 'Get manual' button. If a script clicks that button, what happens, and what is the correct automated approach?",
+      "expected_output": "Clicking 'Get manual' does NOT yield a PDF: it triggers a Google reCAPTCHA ('tick the box') and no PDF request is issued until a human solves it. Do not try to solve/bypass the reCAPTCHA (intentional anti-bot control, against ToS). The correct automated path avoids the download button entirely: ManualsLib serves each page's RENDER IMAGE and text openly via the online viewer, so reconstruct the manual from those open assets (download every page image, capture the per-page text), assemble a PDF from the images, and store it. Zero user interaction, no captcha.",
+      "truth": "Get manual = reCAPTCHA-gated, no PDF without human tick; don't bypass/solve; instead rebuild from openly-served viewer page-render images + text and assemble a PDF",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "page-image-extension-varies",
+      "prompt": "I'm downloading ManualsLib page renders from https://static-data2.manualslib.com/.../images/<slug>_<n>_bg.jpg. Page 1 works but page 2 returns HTTP 404. The manual definitely has page 2. What's going on and how do I fix it?",
+      "expected_output": "It is not rate-limiting or a missing page — the file EXTENSION varies per page. Page 1 may be _1_bg.jpg while page 2 is _2_bg.png (and others can be .webp). The 404 is a genuine nginx 404 for that specific extension. Fix: for each page try the variants in order (.jpg, then .png, then .webp) and use the first that returns a 2xx with an image content-type.",
+      "truth": "extension varies per page (jpg/png/webp); not rate-limiting; try each extension and use first that 200s",
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "image-base-discovery",
+      "prompt": "Given a ManualsLib manual page like /manual/845165/Ampac-Firefinder-Plus.html, how do I discover the CDN base path and the image 'slug' needed to build the per-page render URLs? I don't want to hardcode them.",
+      "expected_output": "Parse a thumbnail URL out of the manual page HTML. The page contains data-src thumbnails like //static-data2.manualslib.com/pdf4/85/8452/845165-ampac/images/firefinder_plus_1_thumb.png. From any one of those you get the base path (everything up to /images/) and the image slug (firefinder_plus, the part before _<n>_thumb). The full-render URL is then <base>/<slug>_<n>_bg.<ext>. Don't try to derive the path from the id alone.",
+      "truth": "extract from a thumbnail URL (…/images/<slug>_<n>_thumb.png) on the manual page → gives base path + image slug; don't hardcode/derive from id",
+      "files": []
+    },
+    {
+      "id": 4,
+      "name": "download-url-construction",
+      "prompt": "I have a ManualsLib manual page URL: https://www.manualslib.com/manual/845165/Ampac-Firefinder-Plus.html. What is the URL of its official 'Download' page?",
+      "expected_output": "https://www.manualslib.com/download/845165/Ampac-Firefinder-Plus.html — same numeric id (845165) and same slug (Ampac-Firefinder-Plus), with the /manual/ path segment replaced by /download/.",
+      "truth": "/download/845165/Ampac-Firefinder-Plus.html — same id+slug, /manual/ → /download/",
+      "files": []
+    },
+    {
+      "id": 5,
+      "name": "per-page-text-and-toc-source",
+      "prompt": "For a ManualsLib manual, where can I get each page's text and section title, plus a table of contents, WITHOUT downloading the gated PDF and without OCR? And what's the limit of that text?",
+      "expected_output": "Fetch …/manual/<id>/<slug>.html?page=<n>: the application/ld+json 'description' is that page's published text snippet and og:title is the section name. The table of contents is on the manual page itself as data-pretty-caption=\"…\" paired with data-page=\"N\" attributes (section → page). Limitation: the ld+json text is only a published SNIPPET, not the full page body — for complete searchable text you must OCR the page images (e.g. tesseract).",
+      "truth": "?page=N HTML → ld+json description (snippet) + og:title (section); TOC from data-pretty-caption/data-page on manual page; snippet only, full text needs OCR",
+      "files": []
+    },
+    {
+      "id": 6,
+      "name": "page-count-discovery",
+      "prompt": "A ManualsLib manual doesn't give me a reliable total page count up front. How should my scraper determine how many pages to fetch?",
+      "expected_output": "Walk the page index upward (n = 1, 2, 3, …), fetching each page's render, and stop after ~2 consecutive pages have no render in any extension — that boundary is the last page. (The reported 'Pages: N' on the download page and the highest _n_thumb index are useful cross-checks, but probing the _n_bg renders until they run out is the robust method.)",
+      "truth": "probe _n_bg renders upward until ~2 consecutive misses = last page; reported count/thumbs are cross-checks",
+      "files": []
+    },
+    {
+      "id": 7,
+      "name": "read-without-download",
+      "prompt": "A user just needs one specification value out of a ManualsLib manual — they don't want the whole file. What's the fastest correct approach?",
+      "expected_output": "Don't run the download/scrape pipeline at all. The manual is readable online a page at a time at …/manual/<id>/<slug>.html?page=<N>, with no reCAPTCHA. WebFetch the relevant page(s) and read the value off directly. Reserve the full image/PDF pipeline for when the user actually wants the file.",
+      "truth": "WebFetch …?page=N directly (ungated, no captcha); don't run the full download pipeline for a single value",
+      "files": []
+    },
+    {
+      "id": 8,
+      "name": "storage-backend-swap",
+      "prompt": "My pipeline stores the manual to a local files-sdk filesystem bucket. How do I make it push to AWS S3 (or Cloudflare R2) instead, ideally without rewriting the upload code?",
+      "expected_output": "files-sdk keeps the same ten methods across backends — only the adapter changes. Swap the filesystem adapter (files-sdk/fs) for s3() from files-sdk/s3 (or r2), passing bucket/region (and endpoint for R2 or other S3-compatible). S3 reads the standard AWS credential chain (AWS_ACCESS_KEY_ID/SECRET/REGION) and needs the @aws-sdk/* peer deps installed. In the bundled script this is just an env switch (STORAGE=s3 S3_BUCKET=… AWS_REGION=…; STORAGE=r2 adds S3_ENDPOINT) — the upload calls are unchanged.",
+      "truth": "swap files-sdk adapter only (fs → s3()/r2 with bucket/region/endpoint); same 10 methods; AWS cred chain + @aws-sdk peers; in the script it's the STORAGE/S3_BUCKET env switch",
+      "files": []
+    }
+  ]
+}
