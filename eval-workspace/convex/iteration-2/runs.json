@@ -1,0 +1,37 @@
+{
+  "skill_name": "convex-best-practices",
+  "iteration": 2,
+  "legend": "verdicts map item id -> 'C' (correct) or 'X' (incorrect) under the iteration-2 uniform rubric (see spec.json).",
+  "runs": {
+    "haiku_baseline": [
+      {"run": "haiku-b1", "agent": "af3220d8ae71b7742", "tokens": 26760, "time_s": 12.3, "tool_uses": 0, "verdicts": {"1": "C", "2": "X", "3": "X", "4": "C", "5": "C", "6": "C", "7": "X", "8": "C"}, "pass_rate": 0.625, "misses": [{"id": 2, "got": "blamed missing client reactivity/subscriptions; never identified Date.now()"}, {"id": 3, "got": "said runAction is for 'use node' but proposed calling the action reference directly (invalid), not extracting a plain helper"}, {"id": 7, "got": "'fine because the index narrows it', not the .paginate() exception"}]},
+      {"run": "haiku-b2", "agent": "ab3902f5de8d9549b", "tokens": 26919, "time_s": 15.3, "tool_uses": 0, "verdicts": {"1": "X", "2": "X", "3": "C", "4": "C", "5": "C", "6": "C", "7": "X", "8": "C"}, "pass_rate": 0.625, "misses": [{"id": 1, "got": "recognized all rows are billed but then prescribed a Convex .filter pushdown, claiming it 'pays only for matching rows' — the misconception itself"}, {"id": 2, "got": "claimed 'queries aren't cached by default'; missed Date.now()"}, {"id": 7, "got": "index-narrowing justification, not the .paginate() exception"}]},
+      {"run": "haiku-b3", "agent": "a04cf227baae685ac", "tokens": 26634, "time_s": 11.2, "tool_uses": 0, "verdicts": {"1": "C", "2": "C", "3": "X", "4": "C", "5": "C", "6": "C", "7": "X", "8": "C"}, "pass_rate": 0.75, "misses": [{"id": 3, "got": "framed it as an api.* vs internal.* reference issue and 'actions shouldn't be cross-called'; never said call a plain TS helper / runtime-crossing"}, {"id": 7, "got": "index-narrowing justification, not the .paginate() exception"}]}
+    ],
+    "haiku_with_skill": [
+      {"run": "haiku-s1", "agent": "a1cf8d8a8e372e246", "tokens": 33640, "time_s": 15.7, "tool_uses": 2, "verdicts": {"1": "C", "2": "C", "3": "C", "4": "C", "5": "C", "6": "C", "7": "C", "8": "C"}, "pass_rate": 1.0, "misses": []},
+      {"run": "haiku-s2", "agent": "a8c740b6f37d899e4", "tokens": 33618, "time_s": 15.6, "tool_uses": 2, "verdicts": {"1": "C", "2": "C", "3": "C", "4": "C", "5": "C", "6": "C", "7": "C", "8": "C"}, "pass_rate": 1.0, "misses": []},
+      {"run": "haiku-s3", "agent": "a0fa1fb8281924def", "tokens": 33462, "time_s": 14.9, "tool_uses": 2, "verdicts": {"1": "C", "2": "C", "3": "C", "4": "C", "5": "C", "6": "C", "7": "C", "8": "C"}, "pass_rate": 1.0, "misses": []}
+    ],
+    "sonnet_baseline": [
+      {"run": "sonnet-b1", "agent": "afa1ef1be967330f2", "tokens": 26854, "time_s": 29.4, "tool_uses": 0, "verdicts": {"1": "C", "2": "C", "3": "C", "4": "C", "5": "C", "6": "C", "7": "X", "8": "C"}, "pass_rate": 0.875, "misses": [{"id": 7, "got": "index-narrowing justification ('secondary predicate on a small indexed set'), not the .paginate() exception"}]},
+      {"run": "sonnet-b2", "agent": "ab3902f5...sonnet-b2", "tokens": 26702, "time_s": 24.5, "tool_uses": 0, "verdicts": {"1": "X", "2": "X", "3": "C", "4": "C", "5": "C", "6": "C", "7": "X", "8": "C"}, "pass_rate": 0.625, "misses": [{"id": 1, "got": "prescribed a Convex .filter pushdown claiming it pays only for matching rows"}, {"id": 2, "got": "claimed 'queries aren't cached by default'; missed Date.now()"}, {"id": 7, "got": "index-narrowing justification, not the .paginate() exception"}]},
+      {"run": "sonnet-b3", "agent": "aa4136b27b094cbe2", "tokens": 26831, "time_s": 28.5, "tool_uses": 0, "verdicts": {"1": "C", "2": "C", "3": "C", "4": "C", "5": "C", "6": "C", "7": "X", "8": "C"}, "pass_rate": 0.875, "misses": [{"id": 7, "got": "index-narrowing justification, not the .paginate() exception"}]}
+    ],
+    "sonnet_with_skill": [
+      {"run": "sonnet-s1", "agent": "abfd3e8dd3e96f879", "tokens": 33736, "time_s": 33.8, "tool_uses": 2, "verdicts": {"1": "C", "2": "C", "3": "C", "4": "C", "5": "C", "6": "C", "7": "C", "8": "C"}, "pass_rate": 1.0, "misses": []},
+      {"run": "sonnet-s2", "agent": "aa681d6870cbe5236", "tokens": 33666, "time_s": 32.2, "tool_uses": 2, "verdicts": {"1": "C", "2": "C", "3": "C", "4": "C", "5": "C", "6": "C", "7": "C", "8": "C"}, "pass_rate": 1.0, "misses": []},
+      {"run": "sonnet-s3", "agent": "a70673a98293602d5", "tokens": 33760, "time_s": 33.5, "tool_uses": 2, "verdicts": {"1": "C", "2": "C", "3": "C", "4": "C", "5": "C", "6": "C", "7": "C", "8": "C"}, "pass_rate": 1.0, "misses": []}
+    ],
+    "opus_baseline": [
+      {"run": "opus-b1", "agent": "a5c1d2c48495bfa5f", "tokens": 33149, "time_s": 26.0, "tool_uses": 0, "verdicts": {"1": "C", "2": "C", "3": "C", "4": "C", "5": "C", "6": "C", "7": "X", "8": "C"}, "pass_rate": 0.875, "misses": [{"id": 7, "got": "claimed filtered rows make pages sparse — opposite of paginate fill-to-count"}], "note": "reused from iteration-1; item 2 credited under iteration-2 uniform rubric"},
+      {"run": "opus-b2", "agent": "a8ca23f5b64ecd5e3", "tokens": 33434, "time_s": 30.2, "tool_uses": 0, "verdicts": {"1": "C", "2": "C", "3": "C", "4": "C", "5": "C", "6": "C", "7": "X", "8": "C"}, "pass_rate": 0.875, "misses": [{"id": 7, "got": "index-narrowing justification, not the .paginate() exception"}], "note": "reused from iteration-1"},
+      {"run": "opus-b3", "agent": "aa462377075a2b201", "tokens": 33081, "time_s": 25.1, "tool_uses": 0, "verdicts": {"1": "C", "2": "C", "3": "C", "4": "C", "5": "C", "6": "C", "7": "X", "8": "C"}, "pass_rate": 0.875, "misses": [{"id": 7, "got": "index-narrowing justification, not the .paginate() exception"}], "note": "reused from iteration-1"}
+    ],
+    "opus_with_skill": [
+      {"run": "opus-s1", "agent": "a1ebe0787202d156a", "tokens": 41341, "time_s": 22.0, "tool_uses": 2, "verdicts": {"1": "C", "2": "C", "3": "C", "4": "C", "5": "C", "6": "C", "7": "C", "8": "C"}, "pass_rate": 1.0, "misses": [], "note": "reused from iteration-1"},
+      {"run": "opus-s2", "agent": "af5ab6f9724dd90c9", "tokens": 41413, "time_s": 22.2, "tool_uses": 2, "verdicts": {"1": "C", "2": "C", "3": "C", "4": "C", "5": "C", "6": "C", "7": "C", "8": "C"}, "pass_rate": 1.0, "misses": [], "note": "reused from iteration-1"},
+      {"run": "opus-s3", "agent": "afe349ebfa25a6345", "tokens": 41375, "time_s": 24.9, "tool_uses": 2, "verdicts": {"1": "C", "2": "C", "3": "C", "4": "C", "5": "C", "6": "C", "7": "C", "8": "C"}, "pass_rate": 1.0, "misses": [], "note": "reused from iteration-1"}
+    ]
+  }
+}

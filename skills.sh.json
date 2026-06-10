@@ -73,6 +73,11 @@
       "skills": ["manualslib-fetch", "object-storage-upload"]
     },
     {
+      "title": "Convex",
+      "description": "Backend best practices for Convex apps — the official query/index/validator/access-control/function-organization rules, plus function/schema/validator conventions, grounded in the monorepo's real Convex code.",
+      "skills": ["convex-best-practices"]
+    },
+    {
       "title": "Authoring",
       "description": "Author and organize agent knowledge itself — decide whether something belongs in AGENTS.md, a docs index, or a skill, and configure Claude Code lifecycle hooks.",
       "skills": ["skill-or-agents-md", "claude-code-hooks"]

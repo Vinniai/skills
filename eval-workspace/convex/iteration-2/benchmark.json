@@ -1,0 +1,34 @@
+{
+  "skill_name": "convex-best-practices",
+  "iteration": 2,
+  "primary_metric": "exact-match pass_rate vs the rubric truth (uniform rubric, see spec.json)",
+  "n_per_cell": 3,
+  "matrix": {
+    "haiku":  {"baseline": 0.667, "with_skill": 1.000, "lift": 0.333},
+    "sonnet": {"baseline": 0.792, "with_skill": 1.000, "lift": 0.208},
+    "opus":   {"baseline": 0.875, "with_skill": 1.000, "lift": 0.125}
+  },
+  "headline": "The skill lifts ALL THREE tiers to 1.000 (24/24). Baseline rises with model size (Haiku 0.667 < Sonnet 0.792 < Opus 0.875), so the lift is largest where the model is weakest: Haiku +0.333, Sonnet +0.208, Opus +0.125. With the skill, Haiku 4.5 matches Opus 4.8.",
+  "cost": {
+    "haiku":  {"baseline_avg_tokens": 26771, "with_skill_avg_tokens": 33573, "baseline_avg_ms": 12910, "with_skill_avg_ms": 15412},
+    "sonnet": {"baseline_avg_tokens": 26796, "with_skill_avg_tokens": 33721, "baseline_avg_ms": 27453, "with_skill_avg_ms": 33178},
+    "opus":   {"baseline_avg_tokens": 33221, "with_skill_avg_tokens": 41376, "baseline_avg_ms": 27142, "with_skill_avg_ms": 23043},
+    "note": "with_skill adds ~7-8k tokens (the two file reads, ~2 tool calls) at every tier. Haiku+skill is the cheapest AND fastest path to 8/8 — ~33.6k tokens / ~15s — well under Opus baseline's 33.2k tokens at a worse score."
+  },
+  "per_item_baseline": {
+    "_legend": "correct_count / 3 per model, baseline condition (with_skill is 3/3 on every item at every tier)",
+    "1": {"haiku": "2/3", "sonnet": "2/3", "opus": "3/3", "note": "Haiku/Sonnet each had one run prescribe a Convex .filter pushdown (the misconception); Opus never did"},
+    "2": {"haiku": "1/3", "sonnet": "2/3", "opus": "3/3", "note": "Date.now()-in-query — Haiku mostly missed it (blamed reactivity/'not cached'); clear size gradient"},
+    "3": {"haiku": "1/3", "sonnet": "3/3", "opus": "3/3", "note": "runAction same-runtime overhead — Haiku struggled to name the runtime-crossing rule / plain-helper fix"},
+    "4": {"haiku": "3/3", "sonnet": "3/3", "opus": "3/3", "note": "control — transaction isolation well-known at every tier"},
+    "5": {"haiku": "3/3", "sonnet": "3/3", "opus": "3/3", "note": "control — prefix-index redundancy well-known"},
+    "6": {"haiku": "3/3", "sonnet": "3/3", "opus": "3/3", "note": "control — public-vs-internal cron target well-known"},
+    "7": {"haiku": "0/3", "sonnet": "0/3", "opus": "0/3", "note": "UNIVERSAL discriminator — every baseline run at every tier justified 'it's fine' via index-narrowing, never the .paginate() exception. with_skill 3/3 everywhere."},
+    "8": {"haiku": "3/3", "sonnet": "3/3", "opus": "3/3", "note": "control — spoofable userId-arg auth well-known"}
+  },
+  "findings": [
+    "Item 7 (the .paginate() .filter exception) is a hard discriminator at EVERY model size: 0/9 baseline runs got it, 9/9 with_skill runs did. No tier knows this rule from priors; the skill supplies it.",
+    "The smaller the model, the more the skill helps: it back-fills items (2,3 for Haiku; 1,2 for Sonnet) that the larger model already knew, on top of the universal item-7 lift.",
+    "With the skill, tier no longer matters for this task — Haiku, Sonnet, and Opus all reach 24/24. This is the 'steer a cheap model to a strong-model result' pattern: Haiku+skill (~33.6k tok, ~15s) beats Opus baseline (0.875) on both score and cost."
+  ]
+}

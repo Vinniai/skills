@@ -1,0 +1,18 @@
+{
+  "skill_name": "convex-best-practices",
+  "iteration": 1,
+  "method": "8 held-out scenarios drawn from skills/convex/convex-best-practices/evals/evals.json. Two conditions, each run by n=3 parallel general-purpose subagents that answer all 8 items in one pass: (1) baseline — answer from the model's own Convex knowledge, NO tools, NO web, NO file access; (2) with_skill — read skills/convex/convex-best-practices/SKILL.md (and optionally ./conventions.md) first, then apply. This isolates the lift the skill adds over a capable model's prior knowledge for the non-obvious, mechanism-precise Convex rules (bandwidth accounting, cache invalidation, transaction isolation, runtime overhead, prefix-index redundancy, internal-vs-public, the paginate .filter exception, spoofable userId args).",
+  "grading": "Per item, exact-match on a rubric `truth` = correct DECISION AND presence of the load-bearing mechanism. An answer that reaches the right decision but states the wrong mechanism or omits the load-bearing detail is scored incorrect. Examples: item 1 must say filtered-out .collect rows STILL cost bandwidth (not 'filter makes it free'); item 2 must attribute staleness to queries only re-running on DATA change (not generic caching); item 4 must say each ctx.runQuery is its OWN transaction so the reads aren't a consistent snapshot; item 8 must reject the userId arg as spoofable and require ctx.auth.getUserIdentity(). pass_rate per condition = mean over items of (correct_runs / 3).",
+  "expected": {
+    "1": "WRONG — all .collect() rows count toward bandwidth even ones .filter drops, and reading them re-runs/conflicts on any change; use withIndex (by_user) to read only matches, or paginate/take; .collect only for <~1000",
+    "2": "Date.now() in a query is the bug — query only re-runs on DATA change so the time goes stale + over-invalidates cache; fix = scheduled fn sets an isReleased boolean to index, or pass a rounded client timestamp as an arg",
+    "3": "runAction = extra function call with its own memory/CPU overhead; same runtime → call a plain TS helper directly; reserve runAction only for crossing into a different (Node) runtime",
+    "4": "each ctx.runQuery/runMutation runs in its OWN transaction so the two reads aren't a consistent snapshot (can disagree); combine into ONE query (getTeamAndOwner) / batch writes into one mutation",
+    "5": "Drop by_org — it's a redundant prefix of by_org_and_status; query the compound index and omit the trailing status eq; fewer indexes = less storage + write overhead; keep both only if a different sort order is needed",
+    "6": "sendDigest is public (api.*) so anyone can call it; cron/scheduler/ctx.run* targets must be internal — convert to internalMutation and reference internal.messages.sendDigest",
+    "7": "Not wrong — .filter on a .paginate() query is the explicit exception (filtered page still returns the requested document count); the avoid-.filter rule targets non-paginated reads",
+    "8": "Not secure — validators check shape not identity; a userId arg is spoofable; derive the caller from ctx.auth.getUserIdentity() server-side and authorize on that, never on a userId/email passed as an argument"
+  },
+  "n_per_condition": 3,
+  "conditions": ["baseline", "with_skill"]
+}

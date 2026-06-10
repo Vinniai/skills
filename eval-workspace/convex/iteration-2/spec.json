@@ -1,0 +1,20 @@
+{
+  "skill_name": "convex-best-practices",
+  "iteration": 2,
+  "title": "model × condition matrix",
+  "method": "Same 8 held-out scenarios as iteration-1 (skills/convex/convex-best-practices/evals/evals.json), now run across a model tier axis to measure whether the skill closes the gap between weaker and stronger models. Grid = {Haiku 4.5, Sonnet 4.6, Opus 4.8} × {baseline, with_skill}, n=3 parallel general-purpose subagents per cell answering all 8 items in one pass. baseline = the model's own Convex knowledge (NO tools/web/files); with_skill = read SKILL.md + conventions.md first, then answer. Opus cells are reused from iteration-1's runs (re-scored under this iteration's uniform rubric — see note). Haiku and Sonnet cells were run fresh for this iteration (12 new runs).",
+  "grading": "Per item, exact-match on the rubric truth = correct DECISION AND load-bearing mechanism. UNIFORM RUBRIC NOTE: iteration-1 used a stricter reading of item 2 (penalizing any answer that framed the moving clock as *forcing* re-execution, even with the right fix). iteration-2 applies a single uniform rule across all tiers: item 2 is correct if it (a) fingers Date.now() inside the query as the root cause AND (b) prescribes a correct fix (scheduled isReleased boolean to index, or a rounded client-time arg) — the exact stale-vs-rerun framing is not required. Under this uniform rubric Opus baseline scores 0.875 (item 7 the sole miss) vs the 0.833 reported in iteration-1. Item 7 is unchanged and strict: credit requires citing the .paginate() exception (a filtered page still returns the requested document count); justifying acceptability via 'the index already narrows the read' is incorrect.",
+  "models": ["claude-haiku-4-5", "claude-sonnet-4-6", "claude-opus-4-8"],
+  "conditions": ["baseline", "with_skill"],
+  "n_per_cell": 3,
+  "expected": {
+    "1": "filtered-out .collect rows STILL cost bandwidth + re-run on change; remedy is withIndex/paginate/take (NOT a Convex .filter, which still scans)",
+    "2": "Date.now() inside a query is the bug; fix = scheduled fn sets an indexed isReleased boolean, or pass a rounded client timestamp as an arg",
+    "3": "runAction = extra fn call w/ own memory/CPU; same runtime -> plain TS helper; runAction only to cross into a Node (\"use node\") runtime",
+    "4": "each ctx.runQuery/runMutation runs in its OWN transaction -> the two reads aren't a consistent snapshot; combine into one query",
+    "5": "drop by_org (redundant prefix of by_org_and_status); query the compound index and omit the trailing status eq; keep both only for a different sort order",
+    "6": "public api.* target is internet-callable; cron/scheduler/ctx.run* targets must be internal -> internalMutation, internal.messages.sendDigest",
+    "7": ".filter on a .paginate() query is the explicit EXCEPTION (filtered page still returns the requested document count); the avoid-.filter rule targets non-paginated reads",
+    "8": "validators check shape not identity; a userId arg is spoofable; authorize off ctx.auth.getUserIdentity() server-side, never off a userId/email arg"
+  }
+}

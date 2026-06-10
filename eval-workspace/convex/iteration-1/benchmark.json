@@ -1,0 +1,29 @@
+{
+  "skill_name": "convex-best-practices",
+  "iteration": 1,
+  "n_per_condition": 3,
+  "primary_metric": "exact-match pass_rate vs the rubric truth (correct decision AND load-bearing mechanism present)",
+  "summary": {
+    "with_skill": {"pass_rate": 1.000, "n": 3, "stddev": 0.0, "avg_total_tokens": 41376, "avg_duration_ms": 23043, "avg_tool_uses": 2},
+    "baseline":   {"pass_rate": 0.833, "n": 3, "stddev": 0.059, "avg_total_tokens": 33221, "avg_duration_ms": 27142, "avg_tool_uses": 0}
+  },
+  "deltas": {
+    "with_skill_vs_baseline": 0.167
+  },
+  "decomposition": {
+    "item_7 filter-paginate-exception": "+0.333 — baseline 0/3 (all three reached 'not wrong' but for the WRONG reason: they justified it via the by_channel index already narrowing the read, not the documented .paginate() exception; one even claimed filtered rows make pages sparse, the opposite of paginate's fill-to-requested-count behavior), with_skill 3/3 (cited the exception: a filtered page still returns the requested document count).",
+    "item_2 date-now-in-query-cache": "+0.111 — baseline 2/3 (one run inverted the caching model, claiming the changing clock value forces constant re-execution rather than: the query only re-runs on DATA change, so the time bound goes stale), with_skill 3/3 (query re-runs only on data change → stale + over-invalidation; fix = scheduled isReleased boolean or rounded client-time arg).",
+    "total": "+0.167 (baseline 20/24 run-items -> with_skill 24/24)"
+  },
+  "per_item": {
+    "_legend": "correct_count / n, per condition (strict rubric scoring)",
+    "1": {"truth": "filtered-out .collect rows STILL cost bandwidth + re-run on change; use withIndex/paginate/take", "baseline": "3/3", "with_skill": "3/3", "note": "control — the collect-then-filter cost is widely understood"},
+    "2": {"truth": "query re-runs only on DATA change so Date.now() goes stale + over-invalidates; scheduled boolean or rounded client-time arg", "baseline": "2/3", "with_skill": "3/3", "note": "discriminator (partial) — easy to invert the caching-model direction"},
+    "3": {"truth": "runAction = extra fn call w/ own mem/CPU; same runtime -> plain TS helper; runAction only across (Node) runtimes", "baseline": "3/3", "with_skill": "3/3", "note": "control"},
+    "4": {"truth": "each ctx.runQuery = its own transaction -> not a consistent snapshot; combine into one query", "baseline": "3/3", "with_skill": "3/3", "note": "control — transaction isolation is well-known"},
+    "5": {"truth": "drop by_org (redundant prefix of by_org_and_status); query compound, omit trailing eq; keep both only for different sort", "baseline": "3/3", "with_skill": "3/3", "note": "control — prefix-index redundancy is well-known"},
+    "6": {"truth": "public api.* target is internet-callable; cron/scheduler/ctx.run* must target internal -> internalMutation, internal.messages.sendDigest", "baseline": "3/3", "with_skill": "3/3", "note": "control"},
+    "7": {"truth": ".filter on .paginate() is the explicit exception — filtered page still returns the requested document count", "baseline": "0/3", "with_skill": "3/3", "note": "strong discriminator"},
+    "8": {"truth": "validators check shape not identity; userId arg is spoofable; authorize off ctx.auth.getUserIdentity() server-side", "baseline": "3/3", "with_skill": "3/3", "note": "control — spoofable-arg auth is well-known"}
+  }
+}

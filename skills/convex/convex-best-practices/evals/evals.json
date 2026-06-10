@@ -1,0 +1,69 @@
+{
+  "skill_name": "convex-best-practices",
+  "evals": [
+    {
+      "id": 1,
+      "name": "collect-filter-bandwidth-cost",
+      "prompt": "In a Convex query I write `const recent = (await ctx.db.query(\"events\").collect()).filter(e => e.userId === uid)`. The table has ~50k rows but only a few match. A teammate says \"it's fine, .filter throws away the rows we don't need so they don't cost anything.\" Is that right? What's the correct approach?",
+      "expected_output": "No. EVERY row returned by .collect() counts toward database bandwidth, including the ones the later .filter() discards — the filter runs in JS after all 50k rows were read. Worse, because the query read all those rows, any change to ANY of them re-runs the query (or conflicts a mutation). .collect() should only be used for small (<~1000) result sets. Fix: add an index `by_user` on userId and do `ctx.db.query(\"events\").withIndex(\"by_user\", q => q.eq(\"userId\", uid))` so only matching rows are read; or .paginate()/.take(n) for large browses.",
+      "truth": "WRONG — all .collect() rows count toward bandwidth even ones .filter drops, and reading them re-runs/conflicts on any change; use withIndex (by_user) to read only matches, or paginate/take; .collect only for <~1000",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "date-now-in-query-cache",
+      "prompt": "My Convex query lists currently-released movies: `ctx.db.query(\"movies\").withIndex(\"by_released_at\", q => q.lte(\"releasedAt\", Date.now())).collect()`. Clients complain the list is sometimes stale and the query seems to re-run constantly. What's the underlying problem and the right fix?",
+      "expected_output": "Calling Date.now() inside a query is the problem. Convex queries are cached and only re-run when their underlying DATA changes, not when the wall clock advances — so the Date.now() bound is frozen at the value from the last data-driven execution, giving stale results; and the time value also makes the cache invalidate more than necessary. Fix: don't read the clock in the query. Add an `isReleased` boolean updated by a scheduled function and query `.withIndex(\"by_is_released\", q => q.eq(\"isReleased\", true))`; or pass the current time from the client as an argument, rounded (e.g. to the minute) to limit cache churn.",
+      "truth": "Date.now() in a query is the bug — query only re-runs on DATA change so the time goes stale + over-invalidates cache; fix = scheduled fn sets an isReleased boolean to index, or pass a rounded client timestamp as an arg",
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "runaction-same-runtime-overhead",
+      "prompt": "Inside a Convex action I have `await ctx.runAction(internal.scrape.scrapeSinglePage, { url })`, and scrapeSinglePage is a normal action in the same file (no \"use node\"). Reviewer flagged it. Why, and what should it be?",
+      "expected_output": "ctx.runAction is a full extra Convex function call with its own memory and CPU allocation and overhead — it's not a cheap function call. When the target runs in the SAME runtime it should just be a plain TypeScript function call, not runAction. Refactor scrapeSinglePage into a plain async helper `scrapeSinglePage(ctx, { url })` and call it directly. runAction is only justified when you must cross into a different runtime — e.g. calling a Node.js (\"use node\") action from the default runtime.",
+      "truth": "runAction = extra function call with its own memory/CPU overhead; same runtime → call a plain TS helper directly; reserve runAction only for crossing into a different (Node) runtime",
+      "files": []
+    },
+    {
+      "id": 4,
+      "name": "sequential-runquery-transaction-consistency",
+      "prompt": "In a Convex action I do `const team = await ctx.runQuery(api.teams.get, { id }); const owner = await ctx.runQuery(api.users.get, { id: team.ownerId });`. Besides being two round-trips, is there a correctness problem with reading the team and its owner this way?",
+      "expected_output": "Yes — consistency. Each ctx.runQuery (and ctx.runMutation) runs in its OWN separate transaction. So the team read and the owner read are not a consistent snapshot: the data can change between the two calls, and team/owner may not agree with each other. Fix: do both reads inside a SINGLE query that returns them together (e.g. getTeamAndOwner) so they come from one consistent transaction. (Same idea for writes: batch a loop of per-item mutations into one mutation like insertUsers(users[]).)",
+      "truth": "each ctx.runQuery/runMutation runs in its OWN transaction so the two reads aren't a consistent snapshot (can disagree); combine into ONE query (getTeamAndOwner) / batch writes into one mutation",
+      "files": []
+    },
+    {
+      "id": 5,
+      "name": "redundant-prefix-index",
+      "prompt": "My Convex schema has `.index(\"by_org\", [\"orgId\"]).index(\"by_org_and_status\", [\"orgId\", \"status\"])`. I query sometimes by org alone and sometimes by org+status. Do I need both indexes?",
+      "expected_output": "Usually no — by_org is prefix-redundant with by_org_and_status. A compound index can serve a query on its leading field(s), so for an org-only query you use by_org_and_status and simply omit the status condition: `.withIndex(\"by_org_and_status\", q => q.eq(\"orgId\", orgId))`. Drop by_org. Fewer indexes means less storage and lower write overhead on every insert/update. The one reason to keep both is if you need a different sort order that the compound index can't provide (e.g. ordering org rows by plain _creationTime).",
+      "truth": "Drop by_org — it's a redundant prefix of by_org_and_status; query the compound index and omit the trailing status eq; fewer indexes = less storage + write overhead; keep both only if a different sort order is needed",
+      "files": []
+    },
+    {
+      "id": 6,
+      "name": "public-cron-target-internal",
+      "prompt": "I scheduled a daily cron: `crons.daily(\"digest\", { hourUTC: 9, minuteUTC: 0 }, api.messages.sendDigest, {})`, where sendDigest is exported as a normal `mutation`. It works, but is there a security concern with how it's wired?",
+      "expected_output": "Yes. sendDigest is a PUBLIC function (exported via mutation and referenced as api.messages.sendDigest), so it's callable by anyone on the internet, not just your cron — they can trigger digests at will. Functions only ever called from within Convex (crons, schedulers, ctx.run*) should be marked INTERNAL (internalMutation) and referenced via internal.* . Fix: make it internalMutation and schedule internal.messages.sendDigest. Convex guarantees internal functions can't be invoked from outside, so it's safe (and you can relax the public-input checks).",
+      "truth": "sendDigest is public (api.*) so anyone can call it; cron/scheduler/ctx.run* targets must be internal — convert to internalMutation and reference internal.messages.sendDigest",
+      "files": []
+    },
+    {
+      "id": 7,
+      "name": "filter-paginate-exception",
+      "prompt": "I keep reading \"never use .filter on a Convex query.\" But I have a paginated feed and want to drop hidden posts: `ctx.db.query(\"posts\").withIndex(\"by_channel\", q => q.eq(\"channel\", c)).filter(q => q.eq(q.field(\"hidden\"), false)).paginate(opts)`. Is using .filter here actually wrong?",
+      "expected_output": "No — this is the documented exception. .filter on a .paginate() query is acceptable, because a filtered paginated query still returns the requested page-size number of documents (Convex keeps reading to fill the page), so you don't get short/empty pages. The general 'avoid .filter' rule is about non-paginated reads where .filter scans and bills every matched row; with pagination the filter is fine. (If hidden-ness is a common, selective query, an index that includes it could still be better, but .filter here is not a violation.)",
+      "truth": "Not wrong — .filter on a .paginate() query is the explicit exception (filtered page still returns the requested document count); the avoid-.filter rule targets non-paginated reads",
+      "files": []
+    },
+    {
+      "id": 8,
+      "name": "access-control-userid-arg",
+      "prompt": "A public Convex mutation updates a user's profile and takes `args: { userId: v.id(\"users\"), bio: v.string() }`, then patches that userId. It has argument validators, so it's validated. Is it secure? How should authorization work?",
+      "expected_output": "No — validators check the SHAPE of input but not WHO is calling. Accepting userId as an argument and trusting it for authorization is spoofable: any caller can pass someone else's id and edit their profile. Public functions must derive identity server-side from ctx.auth.getUserIdentity() (null if signed out), and use that identity (e.g. tokenIdentifier) to decide what the caller may touch — never authorize off a userId/email passed in args. So: look up the caller via getUserIdentity, and only allow patching their own profile (or check a role). Factor the check into a reusable helper.",
+      "truth": "Not secure — validators check shape not identity; a userId arg is spoofable; derive the caller from ctx.auth.getUserIdentity() server-side and authorize on that, never on a userId/email passed as an argument",
+      "files": []
+    }
+  ]
+}

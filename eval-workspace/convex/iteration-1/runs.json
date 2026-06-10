@@ -1,0 +1,78 @@
+{
+  "skill_name": "convex-best-practices",
+  "iteration": 1,
+  "grading_note": "Strict rubric: correct decision AND the load-bearing mechanism. Item 2 must say the query only re-runs on DATA change (so Date.now goes stale) — NOT that the changing clock forces constant re-execution. Item 7 must cite the .paginate() exception (a filtered page still returns the requested document count) — justifying acceptability via index-narrowing alone, or claiming pages go sparse, is incorrect.",
+  "runs": {
+    "baseline": [
+      {
+        "run": "baseline-1",
+        "agent": "a5c1d2c48495bfa5f",
+        "verdicts": {"1": "correct", "2": "incorrect", "3": "correct", "4": "correct", "5": "correct", "6": "correct", "7": "incorrect", "8": "correct"},
+        "tokens": 33149,
+        "time_s": 26.0,
+        "tool_uses": 0,
+        "pass_rate": 0.75,
+        "misses": [
+          {"id": 2, "expected": "query only re-runs on DATA change so Date.now goes stale + over-invalidates", "got": "framed it as the changing clock value forcing constant re-execution/re-subscription (wrong direction of the caching model), though it did note staleness"},
+          {"id": 7, "expected": ".paginate() exception — filtered page still returns the requested document count", "got": "said 'fine because the index already narrows', and claimed filtered-out rows make pages sparse/uneven — the opposite of the paginate fill-to-count behavior"}
+        ]
+      },
+      {
+        "run": "baseline-2",
+        "agent": "a8ca23f5b64ecd5e3",
+        "verdicts": {"1": "correct", "2": "correct", "3": "correct", "4": "correct", "5": "correct", "6": "correct", "7": "incorrect", "8": "correct"},
+        "tokens": 33434,
+        "time_s": 30.2,
+        "tool_uses": 0,
+        "pass_rate": 0.875,
+        "misses": [
+          {"id": 7, "expected": ".paginate() exception — filtered page still returns the requested document count", "got": "reached 'not wrong' but justified it via index-narrowing + 'filter as cheap secondary refinement'; did not cite the paginate fill-to-count exception"}
+        ]
+      },
+      {
+        "run": "baseline-3",
+        "agent": "aa462377075a2b201",
+        "verdicts": {"1": "correct", "2": "correct", "3": "correct", "4": "correct", "5": "correct", "6": "correct", "7": "incorrect", "8": "correct"},
+        "tokens": 33081,
+        "time_s": 25.1,
+        "tool_uses": 0,
+        "pass_rate": 0.875,
+        "misses": [
+          {"id": 7, "expected": ".paginate() exception — filtered page still returns the requested document count", "got": "'fine because withIndex already narrows; filter is a small secondary refinement' — correct verdict, wrong/ missing mechanism (no paginate exception)"}
+        ]
+      }
+    ],
+    "with_skill": [
+      {
+        "run": "withskill-1",
+        "agent": "a1ebe0787202d156a",
+        "verdicts": {"1": "correct", "2": "correct", "3": "correct", "4": "correct", "5": "correct", "6": "correct", "7": "correct", "8": "correct"},
+        "tokens": 41341,
+        "time_s": 22.0,
+        "tool_uses": 2,
+        "pass_rate": 1.0,
+        "misses": []
+      },
+      {
+        "run": "withskill-2",
+        "agent": "af5ab6f9724dd90c9",
+        "verdicts": {"1": "correct", "2": "correct", "3": "correct", "4": "correct", "5": "correct", "6": "correct", "7": "correct", "8": "correct"},
+        "tokens": 41413,
+        "time_s": 22.2,
+        "tool_uses": 2,
+        "pass_rate": 1.0,
+        "misses": []
+      },
+      {
+        "run": "withskill-3",
+        "agent": "afe349ebfa25a6345",
+        "verdicts": {"1": "correct", "2": "correct", "3": "correct", "4": "correct", "5": "correct", "6": "correct", "7": "correct", "8": "correct"},
+        "tokens": 41375,
+        "time_s": 24.9,
+        "tool_uses": 2,
+        "pass_rate": 1.0,
+        "misses": []
+      }
+    ]
+  }
+}
