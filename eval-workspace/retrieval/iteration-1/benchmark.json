@@ -1,0 +1,30 @@
+{
+  "skill_name": "manualslib-fetch",
+  "iteration": 1,
+  "n_per_condition": 3,
+  "primary_metric": "exact-match pass_rate vs the rubric truth (correct decision AND load-bearing element present)",
+  "summary": {
+    "with_skill": {"pass_rate": 1.000, "n": 3, "stddev": 0.0, "avg_total_tokens": 36846, "avg_duration_ms": 30349, "avg_tool_uses": 2},
+    "baseline":   {"pass_rate": 0.708, "n": 3, "stddev": 0.0, "avg_total_tokens": 29650, "avg_duration_ms": 38267, "avg_tool_uses": 0}
+  },
+  "deltas": {
+    "with_skill_vs_baseline": 0.292
+  },
+  "decomposition": {
+    "item_2 page-image-extension-varies": "+0.333 — baseline 0/3 (all blamed CDN host-sharding or zero-padding), with_skill 3/3 (extension varies jpg/png/webp).",
+    "item_5 per-page-text-and-toc-source": "+0.333 — baseline 0/3 (all assumed a complete OCR text layer), with_skill 3/3 (open text is a published SNIPPET; full text needs your own OCR; names ld+json/og:title/data-page).",
+    "item_1 captcha-gate-automated-approach": "+0.111 — baseline 2/3 (one run tried to automate the gated download via headless browser + endpoint replay instead of the viewer-asset route), with_skill 3/3.",
+    "total": "+0.292 (baseline 17/24 run-items -> with_skill 24/24)"
+  },
+  "per_item": {
+    "_legend": "correct_count / n, per condition (strict rubric scoring)",
+    "1": {"truth": "Get manual = reCAPTCHA-gated, no PDF w/o human; rebuild from viewer images", "baseline": "2/3", "with_skill": "3/3", "note": "discriminator (partial)"},
+    "2": {"truth": "extension varies per page; try jpg/png/webp", "baseline": "0/3", "with_skill": "3/3", "note": "strong discriminator"},
+    "3": {"truth": "derive base+slug from page-embedded image URL; don't hardcode", "baseline": "3/3", "with_skill": "3/3", "note": "control — parse-the-page is a common instinct"},
+    "4": {"truth": "/download/<id>/<slug>.html (/manual/ -> /download/)", "baseline": "3/3", "with_skill": "3/3", "note": "control"},
+    "5": {"truth": "?page=N ld+json snippet + og:title; TOC data-page; snippet only, full text needs OCR", "baseline": "0/3", "with_skill": "3/3", "note": "strong discriminator"},
+    "6": {"truth": "probe _n_bg until ~2 consecutive misses", "baseline": "3/3", "with_skill": "3/3", "note": "control — fetch-until-miss is guessable"},
+    "7": {"truth": "WebFetch ?page=N directly, ungated; skip pipeline", "baseline": "3/3", "with_skill": "3/3", "note": "control"},
+    "8": {"truth": "swap files-sdk adapter (fs->s3/r2); same methods; STORAGE env in script", "baseline": "3/3", "with_skill": "3/3", "note": "control — adapter-swap is a reasonable default"}
+  }
+}
