@@ -1,0 +1,18 @@
+{
+  "skill_name": "convex-best-practices",
+  "iteration": 4,
+  "title": "sharpen the skill, then re-measure (same fixture as iteration-3)",
+  "premise": "iteration-3 found three weaknesses in the skill's real-code application: (1) P8 (runAction same-runtime) recall was poor, especially at the Haiku tier (0/2 with_skill); (2) the rule-6 'every public function needs access control' non-negotiable drove blanket 'missing auth' flags on legitimately-public reads (noise, concentrated at Sonnet); (3) the .filter-on-.paginate() exception (C2) was occasionally flagged as a violation. This iteration edits SKILL.md to address (1) and (2), measures, then makes a follow-up edit for the regression that surfaced.",
+  "skill_edits": {
+    "round_a": [
+      "rule 9 (runAction): added explicit detection ('a ctx.runAction(internal.x.y) where y has no \"use node;\" is the violation'), a loop example matching the fixture, and a 'do not misfile a runAction loop as rule #10' note; also promoted runAction to a ⚡ non-negotiable.",
+      "rule 6 (access control): split into must-auth (public mutations + reads of user-scoped/private/PII data) vs may-be-public (genuinely public reads need no auth), with an explicit 'don't blanket-flag every query for missing auth' instruction and a worked spoofable-userId example."
+    ],
+    "round_b": [
+      "rule 2 exception (C2): made the .filter-on-.paginate() carve-out explicit that it is CORRECT, finished code — 'do not flag it, and do not recommend a withIndex rewrite for efficiency (that's a false positive)'. Added to both the ⚡ non-negotiable and rule 2 body."
+    ]
+  },
+  "method": "Re-run the iteration-3 audit (same seeded fixture, same prompt) with_skill only (baseline is unchanged, reuse iteration-3 baseline). round_a: Haiku/Sonnet/Opus x n=2 (6 runs) on the rule-9+rule-6 skill. round_b: Haiku/Sonnet/Opus x n=1 (3 runs) confirmation on the +C2 skill. Grade recall of the 10 planted issues, false positives (flagging correct code C1/C2 or inventing), and auth-noise (count of 'missing auth' flags on the 4 public reads byAuthor/recent/idsFor/latestInChannel).",
+  "metrics": ["recall (/10)", "false_positives/run", "P8_recall", "auth_noise_on_public_reads", "C2_false_positive_rate"],
+  "ground_truth": "../iteration-3/truth.json"
+}

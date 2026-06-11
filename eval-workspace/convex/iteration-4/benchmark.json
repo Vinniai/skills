@@ -1,0 +1,46 @@
+{
+  "skill_name": "convex-best-practices",
+  "iteration": 4,
+  "comparison": "iteration-3 skill (baseline-for-this-iter) -> round_a (sharpen rule 9 + rule 6) -> round_b (+ C2 fix). All with_skill; the model baselines are unchanged from iteration-3.",
+  "recall_mean_per_tier": {
+    "haiku":  {"iter3": 0.80, "round_a": 0.90, "round_b": 0.90},
+    "sonnet": {"iter3": 1.00, "round_a": 1.00, "round_b": 1.00},
+    "opus":   {"iter3": 1.00, "round_a": 1.00, "round_b": 1.00}
+  },
+  "targeted_metrics": {
+    "P8_runaction_recall": {
+      "iter3": "4/6 with_skill (Haiku 0/2)",
+      "round_a": "6/6 (Haiku 2/2)",
+      "round_b": "3/3 (Haiku 1/1)",
+      "verdict": "FIXED — the rule-9 sharpening (detection cue + loop example + 'don't misfile as rule 10') made even Haiku catch it every time."
+    },
+    "auth_noise_on_public_reads": {
+      "iter3": "~8 flags (Sonnet blanket-flagged all 4 public reads in both runs)",
+      "round_a": "0",
+      "round_b": "0",
+      "verdict": "FIXED — the rule-6 must-auth-vs-may-be-public split stopped the reflexive 'missing auth' flags on public reads while preserving P6 (updateProfile) recall (6/6)."
+    },
+    "C2_false_positive_rate": {
+      "iter3": "1/6 with_skill runs flagged the correct myMessages",
+      "round_a": "5/6 (REGRESSION — sharper 'use withIndex not .filter' emphasis made agents recommend an index for the paginate-exception function)",
+      "round_b": "0/3 (FIXED by the round_b edit: 'do not flag .filter-on-.paginate(), and do not recommend a withIndex rewrite')",
+      "verdict": "round_a regressed it; round_b fixed it."
+    }
+  },
+  "false_positives_per_run_avg": {
+    "haiku":  {"iter3": 0.0, "round_a": 1.0, "round_b": 0.0},
+    "sonnet": {"iter3": 0.0, "round_a": 1.0, "round_b": 0.0},
+    "opus":   {"iter3": 0.5, "round_a": 1.0, "round_b": 0.0}
+  },
+  "cost_avg_tokens": {
+    "round_a": {"haiku": 36210, "sonnet": 35849, "opus": 44251},
+    "round_b": {"haiku": 36555, "sonnet": 35814, "opus": 43959}
+  },
+  "findings": [
+    "Two targeted edits hit their targets: P8 (runAction) recall 4/6 -> 6/6 with Haiku going 0/2 -> 2/2; auth-noise on public reads ~8 -> 0 with P6 recall preserved at 6/6.",
+    "round_a surfaced a precision regression: emphasizing 'use withIndex not .filter' made 5/6 runs flag the CORRECT .filter-on-.paginate() function (C2), recommending an index 'for efficiency' — a false positive. One Sonnet run also hallucinated two 'missing argument validators' on functions that have them (over-eager validators emphasis).",
+    "round_b's explicit 'this is correct, finished code — do not flag it, do not recommend a withIndex rewrite' carve-out drove the C2 false positive to 0/3 across all tiers, with recall and P8 held.",
+    "Net vs iteration-3: the fully-sharpened skill is strictly better — Haiku recall 0.80 -> 0.90, P8 fixed at every tier, auth-noise eliminated, C2 false positive eliminated, 0 false positives in the round_b confirmation.",
+    "Remaining gap: Haiku still occasionally merges P3 (byAuthor unbounded .collect) into the P2 (.filter) finding rather than calling it out separately — 0.90 not 1.00. A future tweak could split the .collect rule's red-flag from the .filter rule's."
+  ]
+}

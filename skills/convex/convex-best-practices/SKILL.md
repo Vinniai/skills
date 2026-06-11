@@ -18,16 +18,24 @@ Grounded in this repo's real Convex code (`convex-platform-template/convex/`, `^
 
 - **Never `.filter()` a database query.** A `.withIndex(...)` condition (or filtering in TS after a
   bounded read) is the answer. `.filter` scans and bills every matched row. The *only* exception is
-  `.filter` on a `.paginate()` query.
+  `.filter` on a `.paginate()` query — that is **correct**: do not flag it in review and do not "upgrade"
+  it to an index for efficiency (the page-fill semantics are the point; recommending a `withIndex` rewrite
+  there is a false positive).
 - **Never `.collect()` an unbounded query.** Every returned row counts toward bandwidth — *including
   rows a later `.filter` throws away* — and any change to any returned row re-runs the query / conflicts
   the mutation. Use an index, `.paginate()`, or `.take(n)`.
 - **Never `Date.now()` (or `Math.random()`) inside a query.** Queries are cached and only re-run when
   their *data* changes, so the clock value goes stale and the cache over-invalidates. Use a scheduled
   function to flip a boolean field (`isReleased`), or pass a rounded client timestamp as an arg.
-- **Every public function needs argument validators AND an access-control check.** Public functions are
-  reachable by anyone on the internet. Validate args with `v.*`; authenticate with
-  `ctx.auth.getUserIdentity()` — never trust a `userId`/email passed as an argument.
+- **Every public function needs argument validators; the ones that touch protected data need an
+  access-control check.** Validate *every* public function's args with `v.*`. For auth: a public **mutation**,
+  or a **read of user-scoped / private / PII data**, must authenticate with `ctx.auth.getUserIdentity()`
+  (non-spoofable) and authorize off *that* — never off a `userId`/email passed as an argument. A genuinely
+  public read (public catalog, a public channel's messages) needs no auth — don't reflexively flag every
+  query; ask whether the data is protected first.
+- **Never `ctx.runAction` a same-runtime function.** `runAction` is a whole extra function invocation (own
+  memory + CPU). Only use it to cross into a `"use node";` action. If the target has no `"use node";`, call
+  it as a plain TS function. A *loop* of `ctx.runAction` calls is the worst case — N wasted invocations.
 - **Schedule and `ctx.run*` only `internal` functions.** A cron or `ctx.runMutation` pointed at a
   *public* function exposes that path to the world. Reference `internal.*`, not `api.*`.
 - **`await` every Promise** — `ctx.db.patch`, `ctx.scheduler.runAfter`, etc. A floating Promise silently
@@ -66,7 +74,8 @@ Grounded in this repo's real Convex code (`convex-platform-template/convex/`, `^
      .filter(m => m.author === "Tom");
    ```
    **Exception:** `.filter` on a `.paginate()` query is fine — a filtered page still returns the requested
-   document count.
+   document count. This is **correct, finished code**: don't flag it, and don't recommend replacing it with
+   a `withIndex` "for efficiency" — that's a false positive (a common reviewer reflex).
 
 3. **Only `.collect()` small result sets (< ~1000).** Every collected row costs bandwidth *even if a
    `.filter` later drops it*, and any change to any returned row invalidates the query / conflicts the
@@ -110,11 +119,32 @@ Grounded in this repo's real Convex code (`convex-platform-template/convex/`, `^
    });
    ```
 
-6. **Access control on every public function.** Check `ctx.auth.getUserIdentity()` (non-spoofable) — never
-   authorize off a `userId`/email passed as an argument. Split coarse functions into granular ones with
-   their own checks (`setTeamOwner` vs `setTeamName`). Factor checks into helpers (`isTeamOwner(ctx, …)`).
-   In this repo that helper is `requireMembership(ctx, orgId, minRole)` + `canAccessSite(...)` in
-   `convex/lib/auth.ts`.
+6. **Access control on the functions that touch protected data.** Check `ctx.auth.getUserIdentity()`
+   (non-spoofable) — never authorize off a `userId`/email passed as an argument. **Which functions need
+   it:** every public **mutation**, and any **read of user-scoped / private / PII data**, must
+   authenticate. A genuinely **public read** (a public catalog, a public channel's messages) does **not** —
+   don't blanket-flag every query for "missing auth"; first ask *is this data protected?* Split coarse
+   functions into granular ones with their own checks (`setTeamOwner` vs `setTeamName`), and factor checks
+   into helpers (`isTeamOwner(ctx, …)`). In this repo that helper is `requireMembership(ctx, orgId, minRole)`
+   + `canAccessSite(...)` in `convex/lib/auth.ts`.
+   ```ts
+   // ❌ patches whoever the caller names — spoofable, no identity check
+   export const setBio = mutation({
+     args: { userId: v.id("users"), bio: v.string() },
+     handler: (ctx, a) => ctx.db.patch(a.userId, { bio: a.bio }),
+   });
+   // ✅ derive the actor from the session, authorize off that
+   export const setBio = mutation({
+     args: { bio: v.string() },
+     handler: async (ctx, { bio }) => {
+       const id = await ctx.auth.getUserIdentity();
+       if (!id) throw new Error("Not signed in");
+       const me = await ctx.db.query("users")
+         .withIndex("by_token", q => q.eq("tokenIdentifier", id.tokenIdentifier)).unique();
+       await ctx.db.patch(me!._id, { bio });
+     },
+   });
+   ```
 
 ### Function organization
 
@@ -129,12 +159,24 @@ Grounded in this repo's real Convex code (`convex-platform-template/convex/`, `^
    wrappers should be thin and mostly call into plain TS helpers — easier to reuse and test than function-
    to-function calls.
 
-9. **`runAction` only across runtimes.** `ctx.runAction` is a full extra function call (its own memory +
-   CPU). If the target runs in the *same* runtime, call it as a plain TS function. Reserve `runAction` for
-   crossing into a Node.js (`"use node";`) action.
+9. **`runAction` only across runtimes.** `ctx.runAction` is a full extra function invocation (its own memory
+   + CPU). If the target runs in the *same* runtime, call it as a plain TS function. Reserve `runAction` for
+   crossing into a Node.js (`"use node";`) action. **Detection:** a `ctx.runAction(internal.x.y, …)` where
+   `y`'s file has **no `"use node";`** is the violation — extract `y`'s body into a plain helper and call it
+   directly. A **loop** of `ctx.runAction` is the loudest tell (N wasted invocations) — and don't misfile it
+   as rule #10: a loop of `runAction` is *this* rule (runtime/overhead), whereas sequential `ctx.runQuery`
+   from an action is rule #10 (transaction consistency).
    ```ts
-   // ❌ await ctx.runAction(internal.scrape.scrapeSinglePage, args)
-   // ✅ await scrapeSinglePage(ctx, args)   // plain function, same runtime
+   // ❌ same-runtime action invoked per item — N extra invocations
+   export const processAll = action({
+     args: { channel: v.id("channels") },
+     handler: async (ctx, { channel }) => {
+       const ids = await getIds(ctx, channel);
+       for (const id of ids) await ctx.runAction(internal.x.processOne, { id }); // processOne: no "use node"
+     },
+   });
+   // ✅ processOne's logic is a plain helper — call it directly
+   for (const id of ids) await processOne(ctx, id);
    ```
 
 10. **Don't make sequential `ctx.runMutation`/`ctx.runQuery` calls from an action.** Each runs in its *own

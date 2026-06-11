@@ -1,0 +1,30 @@
+{
+  "skill_name": "convex-best-practices",
+  "iteration": 4,
+  "legend": "found = planted issues P1..P10 identified (see ../iteration-3/truth.json). fp = false positives (flagging correct code C1 latestInChannel / C2 myMessages, or inventing a defect). auth_noise = count of 'missing auth' flags on the 4 public reads (byAuthor/recent/idsFor/latestInChannel).",
+  "round_a_rule9_rule6_skill": {
+    "haiku_with_skill": [
+      {"run": "a-haiku-s1", "agent": "a70b38131d76ded16", "tokens": 35848, "found": ["P1","P2","P3","P4","P5","P6","P7","P8","P10"], "recall": 0.90, "fp": ["C2: flagged myMessages and explicitly said 'the paginate exception does not apply' (it does)"], "fp_count": 1, "auth_noise": 0, "note": "P8 now CAUGHT (was missed in iter-3); missed P9 (channelHeader)"},
+      {"run": "a-haiku-s2", "agent": "ad8c57999373f98e9", "tokens": 36571, "found": ["P1","P2","P4","P5","P6","P7","P8","P9","P10"], "recall": 0.90, "fp": ["C2: flagged myMessages .filter as 'inefficient, should use an index'"], "fp_count": 1, "auth_noise": 0, "note": "P8 CAUGHT; missed P3 (byAuthor collect merged into filter finding)"}
+    ],
+    "sonnet_with_skill": [
+      {"run": "a-sonnet-s1", "agent": "aa5cdd8e950349b79", "tokens": 35842, "found": ["P1","P2","P3","P4","P5","P6","P7","P8","P9","P10"], "recall": 1.00, "fp": [], "fp_count": 0, "auth_noise": 0, "note": "10/10; auth-noise gone (did NOT blanket-flag public reads, unlike iter-3); did not flag myMessages"},
+      {"run": "a-sonnet-s2", "agent": "a7158505cc12588fa", "tokens": 35856, "found": ["P1","P2","P3","P4","P5","P6","P7","P8","P9","P10"], "recall": 1.00, "fp": ["invented: 'missing argument validators' on channelHeader (it has args)","C1/invented: 'missing argument validators' on latestInChannel (it has args)"], "fp_count": 2, "auth_noise": 0, "note": "10/10 recall but over-eager validators check hallucinated two missing-validator FPs"}
+    ],
+    "opus_with_skill": [
+      {"run": "a-opus-s1", "agent": "ade99db467b845652", "tokens": 44178, "found": ["P1","P2","P3","P4","P5","P6","P7","P8","P9","P10"], "recall": 1.00, "fp": ["C2 (hedged): flagged myMessages while noting it's 'the weakest finding, debatable given the paginate exception'"], "fp_count": 1, "auth_noise": 0, "note": "10/10; correctly left idsFor/processOne/latestInChannel unflagged"},
+      {"run": "a-opus-s2", "agent": "af4d8115d1b171903", "tokens": 44324, "found": ["P1","P2","P3","P4","P5","P6","P7","P8","P9","P10"], "recall": 1.00, "fp": ["C2 (hedged): flagged myMessages while noting .filter-on-paginate is the allowed exception"], "fp_count": 1, "auth_noise": 0, "note": "10/10; hedged residual C2 FP"}
+    ]
+  },
+  "round_b_plus_C2_fix_skill": {
+    "haiku_with_skill": [
+      {"run": "b-haiku-s1", "agent": "ab3cc25c2150a809c", "tokens": 36555, "found": ["P1","P2","P4","P5","P6","P7","P8","P9","P10"], "recall": 0.90, "fp": [], "fp_count": 0, "auth_noise": 0, "note": "P8 caught, P9 caught; explicitly REASONED myMessages is 'acceptable' and did NOT flag it (C2 fix worked); missed P3"}
+    ],
+    "sonnet_with_skill": [
+      {"run": "b-sonnet-s1", "agent": "a8e473c5e6e79cd09", "tokens": 35814, "found": ["P1","P2","P3","P4","P5","P6","P7","P8","P9","P10"], "recall": 1.00, "fp": [], "fp_count": 0, "auth_noise": 0, "note": "10/10, 0 FP; no myMessages flag, no invented validators"}
+    ],
+    "opus_with_skill": [
+      {"run": "b-opus-s1", "agent": "a1e720937c84eae95", "tokens": 43959, "found": ["P1","P2","P3","P4","P5","P6","P7","P8","P9","P10"], "recall": 1.00, "fp": [], "fp_count": 0, "auth_noise": 0, "note": "10/10, 0 FP; myMessages correctly unflagged"}
+    ]
+  }
+}
