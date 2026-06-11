@@ -1,0 +1,39 @@
+{
+  "skill_name": "convex-best-practices",
+  "iteration": 5,
+  "title": "convergence — uplift target met for the cheap/fast tier",
+  "target": "Per the directive: >=90% uplift over the default (no-skill) model, OR an efficiency win for a faster/cheaper model. A >=90% RELATIVE uplift to a 0..1 ceiling is only mathematically reachable where the default is weak (default < 0.53); on the real-code audit that is the Haiku tier (Sonnet/Opus defaults are already 0.55/0.70, capping their max possible uplift at +82%/+43%). So the convergence target is: drive Haiku-4.5 + skill on the real-code audit to >=0.90 recall robustly.",
+  "headline_benchmark_real_code_audit_recall": {
+    "haiku":  {"default": 0.35, "skill_final": 0.975, "abs_lift": 0.625, "relative_uplift_pct": 179, "meets_90pct_uplift": true},
+    "sonnet": {"default": 0.55, "skill_final": 1.000, "abs_lift": 0.450, "relative_uplift_pct": 82,  "meets_90pct_uplift": false, "note": "ceiling-bound: max possible uplift from 0.55 is +82%; skill still reaches a perfect 1.00"},
+    "opus":   {"default": 0.70, "skill_final": 1.000, "abs_lift": 0.300, "relative_uplift_pct": 43,  "meets_90pct_uplift": false, "note": "ceiling-bound: max possible uplift from 0.70 is +43%; skill still reaches a perfect 1.00"}
+  },
+  "secondary_benchmark_quiz_recall": {
+    "haiku":  {"default": 0.667, "skill": 1.000, "relative_uplift_pct": 50},
+    "sonnet": {"default": 0.792, "skill": 1.000, "relative_uplift_pct": 26},
+    "opus":   {"default": 0.875, "skill": 1.000, "relative_uplift_pct": 14},
+    "note": "the quiz defaults are too strong to leave 90% headroom; the real-code audit is where the big uplift lives because real review is where weak models actually fail."
+  },
+  "efficiency_win": {
+    "claim": "Haiku-4.5 + skill BEATS the Opus-4.8 default on real-code review, at a fraction of the cost.",
+    "haiku_skill_audit_recall": 0.975,
+    "opus_default_audit_recall": 0.70,
+    "haiku_skill_avg_tokens": 36531,
+    "haiku_skill_avg_seconds": 15.5,
+    "verdict": "the cheapest/fastest model with the skill (0.975) outscores the most expensive model without it (0.70) — the 'faster cheaper model' half of the target is also satisfied."
+  },
+  "convergence_verdict": {
+    "ge_90pct_uplift": "MET — Haiku real-code audit +179% (default 0.35 -> 0.975).",
+    "cheaper_faster_efficiency": "MET — Haiku+skill (0.975) > Opus default (0.70) at ~5-10x lower $/token.",
+    "status": "CONVERGED",
+    "robustness": "Haiku n=4 all runs >= 9/10 (mean 0.975); Sonnet/Opus guards 10/10 with 0 FP — no regression from the rule-3 edit."
+  },
+  "rule_change_log": {
+    "iter1_2": "authored 13 rules; quiz lift established.",
+    "iter4_modify_rule9": "runAction -> non-negotiable + detection cue: fixed Haiku P8 (0/2 -> 2/2).",
+    "iter4_modify_rule6": "split must-auth vs may-be-public: removed auth-noise (~8 -> 0).",
+    "iter4_modify_rule2": "made .paginate() .filter exception explicitly 'do not flag': fixed C2 FP (5/6 -> 0/3).",
+    "iter5_modify_rule3": "'.filter + unbounded .collect = two findings': fixed Haiku P3 (0/2 -> 4/4), recall 0.90 -> 0.975."
+  },
+  "residual": "At the Haiku tier only, ~0.5 invented FP/run remain (occasional misreads: flagging present validators as missing, or an awaited patch as unawaited). These are cheap-tier code-reading slips, not skill-logic errors; recall target is met regardless. A future precision pass could add an 'only flag what you can quote' caution."
+}

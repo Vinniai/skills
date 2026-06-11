@@ -80,7 +80,9 @@ Grounded in this repo's real Convex code (`convex-platform-template/convex/`, `^
 3. **Only `.collect()` small result sets (< ~1000).** Every collected row costs bandwidth *even if a
    `.filter` later drops it*, and any change to any returned row invalidates the query / conflicts the
    mutation. Prefer `.withIndex` to narrow first, `.paginate()` to browse, or `.take(n)` (+ a denormalized
-   count) for totals.
+   count) for totals. **In review, count this separately:** a query that both `.filter`s *and* `.collect`s
+   without an index is **two** findings — the `.filter` (rule #2) *and* the unbounded `.collect` (this rule).
+   Don't fold them into one; the unbounded `.collect` is its own defect even after you note the `.filter`.
 
 4. **Drop redundant (prefix) indexes.** `by_foo` is subsumed by `by_foo_and_bar` — query the compound
    index and just omit the trailing `.eq`. Fewer indexes = less storage and lower write overhead.

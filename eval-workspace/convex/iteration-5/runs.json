@@ -1,0 +1,25 @@
+{
+  "skill_name": "convex-best-practices",
+  "iteration": 5,
+  "change": "rule 3 modified: added 'count this separately — a query that both .filters and .collects without an index is TWO findings (rule 2 and rule 3); don't fold them'. Target: close the last Haiku gap (P3 folded into P2).",
+  "legend": "found = planted issues P1..P10 (see ../iteration-3/truth.json). fp = false positives. P3_separate = whether the unbounded .collect was named as a defect.",
+  "runs": {
+    "haiku_with_skill": [
+      {"run": "haiku-1", "agent": "a3e5c1344fd854be4", "tokens": 36358, "found": ["P1","P2","P3","P4","P5","P6","P7","P8","P9","P10"], "recall": 1.00, "P3_separate": true, "fp": [], "fp_count": 0, "note": "clean 10/10; byAuthor .filter and .collect listed as two findings; myMessages noted correct"},
+      {"run": "haiku-2", "agent": "a45cd1f00d683b516", "tokens": 36898, "found": ["P1","P2","P3","P4","P5","P6","P7","P8","P9","P10"], "recall": 1.00, "P3_separate": true, "fp": ["invented: 'missing argument validators' on byAuthor, which already has args:{author:v.string()}"], "fp_count": 1, "note": "10/10 recall; over-eager validators check misfired once"},
+      {"run": "haiku-3", "agent": "a5221e5534a533894", "tokens": 36402, "found": ["P1","P2","P3","P4","P5","P6","P7","P8","P9","P10"], "recall": 1.00, "P3_separate": "named-but-combined", "fp": [], "fp_count": 0, "note": "10/10; named both .filter and unbounded .collect but in one combined finding"},
+      {"run": "haiku-4", "agent": "ab31c0b8866c0b819", "tokens": 36464, "found": ["P1","P2","P3","P4","P5","P6","P7","P8","P10"], "recall": 0.90, "P3_separate": true, "fp": ["invented: 'unawaited ctx.db.patch' on updateProfile, whose patch is actually awaited"], "fp_count": 1, "note": "missed P9 (no channelHeader finding); misread updateProfile's awaited patch"}
+    ],
+    "sonnet_with_skill_guard": [
+      {"run": "sonnet-1", "agent": "a18f7775c37f2b064", "tokens": 35851, "found": ["P1","P2","P3","P4","P5","P6","P7","P8","P9","P10"], "recall": 1.00, "P3_separate": true, "fp": [], "fp_count": 0, "auth_noise": 0, "note": "10/10, 0 FP — no regression"}
+    ],
+    "opus_with_skill_guard": [
+      {"run": "opus-1", "agent": "a29facf12ad39b120", "tokens": 44143, "found": ["P1","P2","P3","P4","P5","P6","P7","P8","P9","P10"], "recall": 1.00, "P3_separate": true, "fp": [], "fp_count": 0, "auth_noise": 0, "note": "10/10, 0 FP; explicitly excluded myMessages/latestInChannel/processOne as correct"}
+    ]
+  },
+  "aggregates": {
+    "haiku": {"mean_recall": 0.975, "n": 4, "P3_recall": "4/4", "fp_per_run": 0.5},
+    "sonnet": {"mean_recall": 1.00, "n": 1, "fp_per_run": 0.0},
+    "opus": {"mean_recall": 1.00, "n": 1, "fp_per_run": 0.0}
+  }
+}
