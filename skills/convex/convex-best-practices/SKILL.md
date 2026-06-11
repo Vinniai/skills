@@ -51,6 +51,19 @@ Grounded in this repo's real Convex code (`convex-platform-template/convex/`, `^
 - Onboarding to this monorepo's Convex backends (`convex-platform-template`, `health-app`, `travel-app`,
   `fitstake`, …) and you want the conventions they already follow.
 
+## Reviewing checklist (don't report what you can't quote)
+
+Before you flag a defect, confirm it against the **actual line** — if you can't point at the offending
+token, don't report it. The common false positives:
+
+- **`await` (#1):** only flag a `ctx.db.*` / `ctx.scheduler.*` call with **no `await` in front of it**. A
+  call already written `await ctx.db.patch(…)` is correct — do not flag it. Check each call site separately
+  (one function can have an awaited patch and another an un-awaited one).
+- **validators (#5):** only flag a public function whose `args` is **absent or `any`**. A function that
+  already declares `args: { … v.* … }` is fine — do not flag it for "missing validators."
+- **the `.paginate()` `.filter` exception (#2)** and **genuinely-public reads (#6)** are correct code — do
+  not flag them, and do not "upgrade" the paginated filter to an index.
+
 ## The rules
 
 ### Database

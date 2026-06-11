@@ -1,0 +1,25 @@
+{
+  "skill_name": "convex-best-practices",
+  "iteration": 6,
+  "change": "Added a 'Reviewing checklist (don't report what you can't quote)' section: only flag an un-awaited call with no `await` token; only flag missing validators when args is absent/any; the .paginate() filter and genuinely-public reads are correct. Target: eliminate the ~0.5 invented FP/run at the Haiku tier without losing recall.",
+  "legend": "found = planted issues P1..P10 (see ../iteration-3/truth.json). fp = invented/incorrect findings (flagging correct code). The precision guard targets two observed misreads: 'missing validators' on a function that has them, and 'unawaited' on an awaited patch.",
+  "runs": {
+    "haiku_with_skill": [
+      {"run": "haiku-1", "agent": "ad156e841ec743560", "tokens": 36830, "found": ["P1","P2","P4","P5","P6","P7","P8","P9","P10"], "recall": 0.90, "fp": [], "fp_count": 0, "note": "0 invented FP; missed P3 (flagged byAuthor .filter but not its unbounded .collect); correctly left myMessages unflagged ('documented exception, do not flag')"},
+      {"run": "haiku-2", "agent": "a7605171b81e1dce6", "tokens": 36850, "found": ["P1","P2","P3","P4","P5","P6","P7","P8","P9","P10"], "recall": 1.00, "fp": [], "fp_count": 0, "note": "clean 10/10, 0 FP; byAuthor .filter + .collect as two findings"},
+      {"run": "haiku-3", "agent": "a75412be9346981f8", "tokens": 36610, "found": ["P1","P2","P3","P4","P5","P6","P7","P8","P9","P10"], "recall": 1.00, "fp": [], "fp_count": 0, "note": "10/10, 0 FP; P2/P3 named in one combined byAuthor finding"},
+      {"run": "haiku-4", "agent": "a4495c3568d9f35f3", "tokens": 36795, "found": ["P1","P2","P3","P4","P5","P6","P7","P8","P9","P10"], "recall": 1.00, "fp": [], "fp_count": 0, "note": "10/10, 0 FP; updateProfile correctly flagged for auth (not for await)"}
+    ],
+    "sonnet_with_skill_guard": [
+      {"run": "sonnet-1", "agent": "ac3548c0b00f66a35", "tokens": 36897, "found": ["P1","P2","P3","P4","P5","P6","P7","P8","P9","P10"], "recall": 1.00, "fp": [], "fp_count": 0, "note": "10/10, 0 FP; NEAR-MISS self-corrected — initially listed channelHeader 'missing validators', then wrote 'this is present and correct; disregard' and removed it. Guard working."}
+    ],
+    "opus_with_skill_guard": [
+      {"run": "opus-1", "agent": "a3a7e6d119704c02e", "tokens": 45134, "found": ["P1","P2","P3","P4","P5","P6","P7","P8","P9","P10"], "recall": 1.00, "fp": [], "fp_count": 0, "note": "10/10, 0 FP; explicitly reasoned 'updateProfile un-awaited? It is awaited' and did not flag it; myMessages/latestInChannel left correct"}
+    ]
+  },
+  "aggregates": {
+    "haiku": {"mean_recall": 0.975, "n": 4, "fp_per_run": 0.0, "P3_recall": "3/4"},
+    "sonnet": {"mean_recall": 1.00, "n": 1, "fp_per_run": 0.0},
+    "opus": {"mean_recall": 1.00, "n": 1, "fp_per_run": 0.0}
+  }
+}

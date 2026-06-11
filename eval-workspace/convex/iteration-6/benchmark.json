@@ -1,0 +1,31 @@
+{
+  "skill_name": "convex-best-practices",
+  "iteration": 6,
+  "title": "Haiku precision pass — invented false positives eliminated, recall held",
+  "haiku_before_after": {
+    "iter5_rule3_skill": {"mean_recall": 0.975, "fp_per_run": 0.5, "invented_fps": ["'missing validators' on byAuthor (has args)", "'unawaited' on updateProfile (is awaited)"]},
+    "iter6_plus_review_checklist": {"mean_recall": 0.975, "fp_per_run": 0.0, "invented_fps": []}
+  },
+  "delta": {
+    "recall": "0.975 -> 0.975 (held)",
+    "fp_per_run": "0.5 -> 0.0 (eliminated)",
+    "verdict": "clean precision win — the review-discipline guard removed the cheap-tier misreads with no recall cost"
+  },
+  "guard_observed_working": [
+    "Sonnet: initially listed channelHeader 'missing argument validators', then self-corrected ('this is present and correct; disregard') before returning — the 'don't report what you can't quote' rule fired.",
+    "Opus: explicitly checked 'updateProfile un-awaited? It is awaited' and did NOT flag it.",
+    "Haiku: 0 invented FPs across all 4 runs (was flagging present validators / awaited patches in iter-5)."
+  ],
+  "regression_check": {
+    "sonnet_guard": "10/10, 0 FP",
+    "opus_guard": "10/10, 0 FP",
+    "haiku_recall": "0.975 (every run >= 9/10) — unchanged from iter-5"
+  },
+  "final_convergence_state_real_code_audit": {
+    "haiku":  {"default": 0.35, "skill": 0.975, "fp_per_run": 0.0, "relative_uplift_pct": 179},
+    "sonnet": {"default": 0.55, "skill": 1.000, "fp_per_run": 0.0, "relative_uplift_pct": 82},
+    "opus":   {"default": 0.70, "skill": 1.000, "fp_per_run": 0.0, "relative_uplift_pct": 43},
+    "summary": "Convergence held AND precision is now clean: Haiku+skill 0.975 recall at 0 FP/run (+179% uplift over default, > Opus default 0.70 at ~5-10x lower cost). Sonnet/Opus perfect with 0 FP."
+  },
+  "note": "P3 recall dipped 4/4 -> 3/4 (one Haiku run flagged byAuthor's .filter but not its .collect) — within run-to-run noise at n=4 and offset by the FP elimination; overall Haiku recall unchanged at 0.975."
+}
