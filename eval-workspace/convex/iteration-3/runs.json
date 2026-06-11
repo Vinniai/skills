@@ -1,0 +1,31 @@
+{
+  "skill_name": "convex-best-practices",
+  "iteration": 3,
+  "legend": "found = planted issues (P1..P10, see truth.json) correctly identified. fp = false positives: flagging a correct function (C1 latestInChannel for an efficiency defect, or C2 myMessages for missing-auth or as a .filter violation despite the .paginate() exception) or inventing a defect. 'missing access control' flags on legitimately-public read queries are scored NEUTRAL (defensible under rule #6), not as FPs.",
+  "runs": {
+    "haiku_baseline": [
+      {"run": "haiku-b1", "agent": "a1b3c1100fd74c36f", "tokens": 28727, "time_s": 21.9, "found": ["P1", "P2", "P5", "P7"], "recall": 0.40, "fp": ["invented: claimed updateProfile's awaited patch was un-awaited"], "fp_count": 1, "notes": "P9 framed as efficiency (Promise.all), not consistency; P10 framed as 'undefined function', not public-vs-internal; missed P3/P4/P6/P8"},
+      {"run": "haiku-b2", "agent": "a5ab40535b6b180f9", "tokens": 28425, "time_s": 10.2, "found": ["P1", "P5", "P7"], "recall": 0.30, "fp": [], "fp_count": 0, "notes": "never flagged byAuthor (missed P2/P3); P10 framed as 'undefined function'; missed P4/P6/P8/P9"}
+    ],
+    "haiku_with_skill": [
+      {"run": "haiku-s1", "agent": "a6aaf8260645e655a", "tokens": 35515, "time_s": 14.5, "found": ["P1", "P2", "P4", "P5", "P6", "P7", "P10"], "recall": 0.70, "fp": [], "fp_count": 0, "notes": "merged byAuthor collect into the filter finding (missed P3 as distinct); framed processAll under rule 10 not rule 9 (missed P8); did not flag channelHeader (missed P9)"},
+      {"run": "haiku-s2", "agent": "a96467be6d1508a08", "tokens": 35399, "time_s": 16.0, "found": ["P1", "P2", "P3", "P4", "P5", "P6", "P7", "P9", "P10"], "recall": 0.90, "fp": [], "fp_count": 0, "notes": "explicitly noted myMessages .filter is 'the exception, correct'; missed only P8 (processAll runAction)"}
+    ],
+    "sonnet_baseline": [
+      {"run": "sonnet-b1", "agent": "aa92ab128f2484bbe", "tokens": 28170, "time_s": 18.4, "found": ["P1", "P4", "P5", "P6", "P7", "P9"], "recall": 0.60, "fp": ["C2: flagged myMessages .filter as a full-table-scan violation (it's the .paginate() exception + has auth)"], "fp_count": 1, "notes": "P9 caught via 'stale-read races'; never flagged byAuthor (missed P2/P3); P10 framed as 'non-existent function'; P8 framed as efficiency fan-out"},
+      {"run": "sonnet-b2", "agent": "a47f250f3e7a88d4c", "tokens": 28134, "time_s": 17.6, "found": ["P1", "P5", "P6", "P7", "P10"], "recall": 0.50, "fp": ["C2: flagged myMessages .filter as degrading full-table scan"], "fp_count": 1, "notes": "missed Date.now (P4) and byAuthor entirely (P2/P3); P9 framed as latency, not consistency; P8 framed as fan-out efficiency"}
+    ],
+    "sonnet_with_skill": [
+      {"run": "sonnet-s1", "agent": "aba168f2ec4cb3cac", "tokens": 35298, "time_s": 33.7, "found": ["P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10"], "recall": 1.00, "fp": [], "fp_count": 0, "notes": "10/10; explicitly cited rule 9 for processAll and rule 10 (inconsistent snapshot) for channelHeader; did not flag C1/C2"},
+      {"run": "sonnet-s2", "agent": "a51357fc712fddbdf", "tokens": 35242, "time_s": 26.4, "found": ["P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10"], "recall": 1.00, "fp": [], "fp_count": 0, "notes": "10/10; same as s1; emitted many neutral 'missing access control' flags on public reads"}
+    ],
+    "opus_baseline": [
+      {"run": "opus-b1", "agent": "aa727913959496d0d", "tokens": 34627, "time_s": 18.0, "found": ["P1", "P2", "P5", "P6", "P7", "P8", "P10"], "recall": 0.70, "fp": ["C2: flagged myMessages .filter as 'instead of indexed pagination'"], "fp_count": 1, "notes": "MISSED Date.now (P4) — flagged the adjacent createdAt .filter instead; P9 missed (flagged channelHeader null-deref + 'action where query suffices'); also caught a real unplanted bug (latestInChannel ordering)"},
+      {"run": "opus-b2", "agent": "a5188d55c33d0a2de", "tokens": 34718, "time_s": 21.3, "found": ["P1", "P2", "P5", "P6", "P7", "P8", "P10"], "recall": 0.70, "fp": ["C2: flagged myMessages 'full-table .filter in paginated query'"], "fp_count": 1, "notes": "MISSED Date.now (P4) — same distraction by the createdAt filter; P9 missed (null-deref + 'action where query suffices'); caught the same real latestInChannel ordering bug"}
+    ],
+    "opus_with_skill": [
+      {"run": "opus-s1", "agent": "a5439d571a58946bc", "tokens": 43740, "time_s": 27.1, "found": ["P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10"], "recall": 1.00, "fp": [], "fp_count": 0, "notes": "10/10; explicitly reasoned that latestInChannel and myMessages are CORRECT (named the .paginate() exception) and did not flag them"},
+      {"run": "opus-s2", "agent": "ac3d3253a6a4feb0a", "tokens": 43049, "time_s": 20.2, "found": ["P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10"], "recall": 1.00, "fp": ["C2 (soft): listed myMessages .filter as a fix-it while acknowledging 'only .filter on paginate is allowed'"], "fp_count": 1, "notes": "10/10 recall; the residual hedged FP on myMessages is the only blemish"}
+    ]
+  }
+}

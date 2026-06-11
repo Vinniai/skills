@@ -1,0 +1,12 @@
+{
+  "skill_name": "convex-best-practices",
+  "iteration": 3,
+  "title": "real-code audit (application, not recall)",
+  "method": "A seeded Convex module (eval-workspace/convex/iteration-3/fixtures/{schema,messages,crons}.ts) contains 10 planted best-practice violations (P1..P10, spanning rules 1,2,3,4,5,6,7,9,10,13) plus 2 deliberately-correct functions as false-positive bait (C1 indexed+bounded query; C2 auth + the .filter-on-.paginate() exception). Subagents audit the module and list every violation. Grid = {Haiku 4.5, Sonnet 4.6, Opus 4.8} × {baseline, with_skill}, n=2 per cell (12 runs). baseline reads ONLY the three fixture files; with_skill reads SKILL.md + conventions.md FIRST, then the fixture files. This tests whether the skill improves APPLICATION on real code — higher recall of real issues AND fewer false positives — rather than quiz recall.",
+  "grading": "Per run: recall = distinct planted issues found / 10 (a finding counts only if it names the right location AND the right defect). false_positives = findings that flag C1/C2 as broken or invent a violation in correct code. Neutral findings (the recent() secondary createdAt filter; idsFor's collect) are ignored. Primary metric = recall; secondary = false-positive count (lower is better). See truth.json for the ground truth.",
+  "models": ["claude-haiku-4-5", "claude-sonnet-4-6", "claude-opus-4-8"],
+  "conditions": ["baseline", "with_skill"],
+  "n_per_cell": 2,
+  "primary_metric": "recall of planted issues (/10)",
+  "secondary_metric": "false_positives (count; lower better)"
+}

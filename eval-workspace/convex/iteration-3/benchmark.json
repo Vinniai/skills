@@ -1,0 +1,43 @@
+{
+  "skill_name": "convex-best-practices",
+  "iteration": 3,
+  "task": "real-code audit of a seeded Convex module (10 planted issues + 2 correct functions as false-positive bait)",
+  "n_per_cell": 2,
+  "primary_metric": "recall of planted issues (/10)",
+  "secondary_metric": "false positives per run (lower is better)",
+  "matrix_recall": {
+    "haiku":  {"baseline": 0.35, "with_skill": 0.80, "lift": 0.45},
+    "sonnet": {"baseline": 0.55, "with_skill": 1.00, "lift": 0.45},
+    "opus":   {"baseline": 0.70, "with_skill": 1.00, "lift": 0.30}
+  },
+  "matrix_false_positives_avg": {
+    "haiku":  {"baseline": 0.5, "with_skill": 0.0},
+    "sonnet": {"baseline": 1.0, "with_skill": 0.0},
+    "opus":   {"baseline": 1.0, "with_skill": 0.5}
+  },
+  "cost": {
+    "haiku":  {"baseline_avg_tokens": 28576, "with_skill_avg_tokens": 35457},
+    "sonnet": {"baseline_avg_tokens": 28152, "with_skill_avg_tokens": 35270},
+    "opus":   {"baseline_avg_tokens": 34673, "with_skill_avg_tokens": 43395}
+  },
+  "per_issue_baseline_recall": {
+    "_legend": "how many of the 6 baseline runs (across all tiers) caught each planted issue, vs the 6 with_skill runs",
+    "P1_redundant_index_rule4":        {"baseline": "6/6", "with_skill": "6/6", "role": "control — universally caught"},
+    "P5_missing_arg_validators_rule5": {"baseline": "6/6", "with_skill": "6/6", "role": "control"},
+    "P7_floating_promise_rule1":       {"baseline": "6/6", "with_skill": "6/6", "role": "control — everyone spots the un-awaited patch"},
+    "P6_no_access_control_rule6":      {"baseline": "4/6", "with_skill": "6/6", "role": "minor — both Haiku baselines missed it"},
+    "P2_filter_on_query_rule2":        {"baseline": "3/6", "with_skill": "6/6", "role": "discriminator — Sonnet baselines & one Haiku never flagged byAuthor"},
+    "P10_cron_internal_rule7":         {"baseline": "3/6", "with_skill": "6/6", "role": "discriminator — baselines call it an 'undefined function', missing the public-vs-internal point"},
+    "P8_runaction_same_runtime_rule9": {"baseline": "2/6", "with_skill": "4/6", "role": "hard — only Opus baselines; both Haiku WITH skill still missed it"},
+    "P9_sequential_runquery_rule10":   {"baseline": "1/6", "with_skill": "5/6", "role": "discriminator — baselines flag latency/null-deref, not the inconsistent snapshot"},
+    "P4_date_now_in_query_rule13":     {"baseline": "1/6", "with_skill": "6/6", "role": "STRONG discriminator — BOTH Opus baselines missed it, distracted by the adjacent createdAt .filter"},
+    "P3_unbounded_collect_rule3":      {"baseline": "0/6", "with_skill": "5/6", "role": "STRONGEST discriminator — no baseline flagged byAuthor's unbounded .collect as a distinct issue"}
+  },
+  "findings": [
+    "Recall climbs monotonically with model size at baseline (Haiku 0.35 < Sonnet 0.55 < Opus 0.70); the skill lifts every tier to >=0.80 and Sonnet/Opus to a perfect 10/10.",
+    "The .paginate() .filter exception is the dominant false positive: every Sonnet and Opus BASELINE run (4/4) flagged the correct myMessages function as a .filter violation — the same item-7 blind spot from iterations 1-2, now causing wrong review comments on real code. with_skill drove FPs to 0 at Haiku/Sonnet (agents explicitly named the exception); Opus had one hedged residual.",
+    "Real code is harder than the quiz: BOTH Opus baselines MISSED Date.now() (P4) here — they saw the neighbouring `.filter` and flagged that, overlooking that `cutoff = Date.now()` is the bug. In iteration-1's quiz Opus got Date.now 3/3. The skill restored it to 6/6.",
+    "P3 (unbounded .collect, 0/6 baseline) and P9 (sequential-runQuery inconsistency, 1/6) and P4 (1/6) are the issues the skill adds most on; P8 (runAction) is the one even skilled Haiku still misses (4/6 with_skill).",
+    "Precision watch-item (not scored as FP): the rule-6 'every public function needs access control' non-negotiable makes skilled agents flag EVERY public read query for missing auth. On a real codebase with legitimately-public reads that is noise — the skill could distinguish mutations/PII reads (must-auth) from public reads."
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "skill_name": "convex-best-practices",
+  "iteration": 3,
+  "fixture": "eval-workspace/convex/iteration-3/fixtures/{schema,messages,crons}.ts",
+  "planted_issues": [
+    {"id": "P1", "rule": 4, "loc": "schema.ts messages", "issue": "redundant prefix index by_channel (subsumed by by_channel_and_author)"},
+    {"id": "P2", "rule": 2, "loc": "messages.byAuthor", "issue": ".filter on a db query instead of a withIndex condition (no by_author index)"},
+    {"id": "P3", "rule": 3, "loc": "messages.byAuthor", "issue": "unbounded .collect over the whole messages table"},
+    {"id": "P4", "rule": 13, "loc": "messages.recent", "issue": "Date.now() inside a query (stale + cache over-invalidation)"},
+    {"id": "P5", "rule": 5, "loc": "messages.updateProfile", "issue": "public mutation with no argument validators (args: any)"},
+    {"id": "P6", "rule": 6, "loc": "messages.updateProfile", "issue": "no access control; authorizes/patches off a spoofable userId arg instead of ctx.auth.getUserIdentity()"},
+    {"id": "P7", "rule": 1, "loc": "messages.markSeen", "issue": "floating promise: ctx.db.patch not awaited"},
+    {"id": "P8", "rule": 9, "loc": "messages.processAll", "issue": "ctx.runAction(processOne) in the same runtime — should be a plain TS helper"},
+    {"id": "P9", "rule": 10, "loc": "messages.channelHeader", "issue": "sequential ctx.runQuery from an action — two separate transactions, inconsistent snapshot; combine into one query"},
+    {"id": "P10", "rule": 7, "loc": "crons.ts daily-digest", "issue": "cron targets a public function api.messages.sendDigest — must be internal"}
+  ],
+  "false_positive_bait": [
+    {"id": "C1", "loc": "messages.latestInChannel", "why_correct": "indexed (by_channel_and_author), bounded (.take(50)), awaited — flagging it is a false positive"},
+    {"id": "C2", "loc": "messages.myMessages", "why_correct": "has auth (ctx.auth.getUserIdentity) AND .filter is on a .paginate() query — the documented exception; flagging the .filter or 'missing auth' is a false positive"}
+  ],
+  "neutral_uncounted": [
+    {"loc": "messages.recent secondary .filter on createdAt after withIndex", "note": "borderline — a compound by_channel_and_createdAt would be better, but a secondary filter after an index is defensible; neither TP nor FP"},
+    {"loc": "messages.idsFor unbounded .collect", "note": "real but secondary; not in the planted set — counted as neutral if flagged"}
+  ],
+  "grading": "Per audit run: recall = (distinct P1..P10 correctly identified) / 10. false_positives = count of findings that flag C1 or C2 as broken, or invent a violation in correct code. neutral findings (recent secondary filter, idsFor collect) are ignored. A finding maps to a planted issue if it names the right location AND the right defect (rule), not merely 'this function looks off'."
+}
