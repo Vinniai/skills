@@ -1,0 +1,45 @@
+{
+  "skill_name": "convex-best-practices",
+  "kind": "real-world audit (no planted ground truth; adjudicated by reading the actual file)",
+  "target_file": "a private production Convex project — a module of 7 dashboard widget queries over a 'task' table (project + path redacted; no source committed here)",
+  "file_shape": "7 public dashboard query() functions over the 'task' table; uses requireOrgContext + orgCtx.require for auth, validated args, withIndex + .take(n) reads, and JS .filter() on the bounded arrays.",
+  "conditions": ["sonnet_baseline x2 (file only, no skill)", "sonnet_with_skill x2", "haiku_with_skill x2"],
+  "ground_truth_as_adjudicated": {
+    "real_convex_issue_date_now_in_query": {
+      "rule": 13,
+      "functions_affected": ["getOverdueFaults (line 88)", "getJobsPipeline (line 236)", "getOverdueItems (line 314)", "getUnassignedJobs (line 392)", "getJobsWaiting (line 445)"],
+      "functions_clean": ["getActiveFaults (no Date.now)", "getOpenJobs (no Date.now)"],
+      "impact": "These widgets compute overdue/upcoming buckets from Date.now() inside the query. Convex caches the query and only re-runs it when the underlying task data changes — so a task that becomes overdue purely by the passage of time will not move buckets until some task in that org is mutated. Dashboard overdue/wait counts go stale. Real, user-visible.",
+      "fix": "compute the boundary outside the query (pass a rounded client timestamp as an arg), or maintain an indexed boolean (e.g. isOverdue) via a scheduled function."
+    },
+    "secondary_take_truncation": {
+      "rule": "3 (spirit)",
+      "note": "aggregates (counts, totalValue/totalRevenue, avgResolutionTime) are computed over .take(500/1000/300)-capped reads, so they silently undercount once an org exceeds the cap. Legit scale concern; surfaced mainly by the baseline and partially by the skill (the take(1000)+TS-filter reads in getUnassignedJobs/getJobsWaiting)."
+    },
+    "correct_code_not_to_flag": [
+      "access control: every function calls requireOrgContext(ctx, organizationId) + orgCtx.require('task','read')",
+      "validators: all args validated (organizationId: v.id, optional statuses)",
+      ".filter() calls are JS array filters AFTER a bounded .take() — the prescribed pattern, not Convex query .filter",
+      "organizationId-as-arg is authorized by requireOrgContext (not the spoofable-userId antipattern)"
+    ]
+  },
+  "results": {
+    "date_now_detection": {
+      "sonnet_baseline": "0/5 in BOTH runs — missed the Convex caching bug entirely",
+      "sonnet_with_skill": "5/5 in BOTH runs",
+      "haiku_with_skill": "5/5 in BOTH runs (run 1 also mis-attributed one to getActiveFaults = 1 FP; run 2 clean)"
+    },
+    "false_positives_on_correct_code": {
+      "all_baseline_and_skill_runs": "none flagged the auth / validators / .filter-in-TS as broken (correct)",
+      "skill_noise": "Sonnet-skill run 2 added 2 low-value 'index naming convention' nitpicks (index named 'baseType'/'status' vs the skill's by_field_and_field form) — not defects; Haiku-skill run 1 mis-attributed one Date.now finding."
+    },
+    "baseline_only_findings_out_of_convex_scope": [
+      "isBillable !== false counts undefined as billable (real general bug)",
+      "double-counted priority/severity buckets; urgent vs highPriority overlap",
+      "duplicate return field (overdueTasks == totalOverdue); overdueInvoiceValue mislabeled",
+      "avgWaitTime uses createdAt as a proxy for on_hold start; free-text notes keyword parsing",
+      "note: these are genuine software bugs but NOT Convex best-practice issues — the baseline's broad review found them; the skill-focused review skipped them"
+    ]
+  },
+  "verdict": "On real production code, the skill flips the signature Convex issue (Date.now() in a cached query) from a COMPLETE MISS at the strong-model baseline (0/2 runs) to a reliable catch with the skill (4/4 runs, incl. cheap Haiku), with no false positives on the file's well-written auth/validator/filter code. Honest tradeoff: the skill narrows the review to Convex correctness and does not surface the general logic bugs the unfocused baseline found — pair it with a general code review for those."
+}
