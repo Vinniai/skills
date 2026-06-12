@@ -1,0 +1,28 @@
+{
+  "skill_name": "convex-doctor-fix",
+  "iteration": 7,
+  "baseline": {"score": 94, "label": "Good", "convex_findings": 5, "file": "convex/myFunctions.ts",
+    "findings": ["convex-require-auth-check@L32", "convex-require-auth-check@L53", "convex-no-api-self-call@L68", "convex-no-sequential-ctx-run@L74", "convex-no-api-self-call@L74"]},
+  "part_A_deterministic_gate": {
+    "applied": "golden/myFunctions.fixed.ts via gate.sh",
+    "score": "94 -> 98 (+4)",
+    "convex_findings": "5 -> 1",
+    "new_rule_classes": [],
+    "remaining": ["convex-no-sequential-ctx-run (intentional / PROPOSE)"],
+    "result": "PASS",
+    "exit_code": 0,
+    "cost": "$0 (deterministic)",
+    "time": "~3s"
+  },
+  "part_B_llm_loop": {
+    "model": "claude-sonnet-4-6",
+    "n": 3,
+    "verification": "harness independently re-scanned each agent's output dir (self-report not trusted)",
+    "runs": [
+      {"run": "run1", "agent": "ad1a76d14dd0b61f9", "before": 94, "after": 98, "convex_findings": "5 -> 1", "fixed_rules": ["convex-require-auth-check", "convex-no-api-self-call"], "new_rules": [], "remaining": ["convex-no-sequential-ctx-run"], "independently_verified": true, "result": "PASS", "tokens": 41843, "time_s": 71.6},
+      {"run": "run2", "agent": "a2243c14889a98804", "before": 94, "after": 98, "convex_findings": "5 -> 1", "fixed_rules": ["convex-require-auth-check", "convex-no-api-self-call"], "new_rules": [], "remaining": ["convex-no-sequential-ctx-run"], "independently_verified": true, "result": "PASS", "tokens": 41947, "time_s": 67.4},
+      {"run": "run3", "agent": "a54dabf33a39bf96c", "before": 94, "after": 98, "convex_findings": "5 -> 1", "fixed_rules": ["convex-require-auth-check", "convex-no-api-self-call", "convex-prefer-convex-error"], "new_rules": [], "remaining": ["convex-no-sequential-ctx-run"], "independently_verified": true, "result": "PASS", "tokens": 43610, "time_s": 100.0}
+    ],
+    "aggregate": "3/3 PASS, all +4 score (94->98), all 5->1 convex findings, 0 new rule classes in every run"
+  }
+}

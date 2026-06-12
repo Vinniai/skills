@@ -1,0 +1,14 @@
+{
+  "skill_name": "convex-doctor-fix",
+  "iteration": 7,
+  "title": "functional regression eval — the detect→fix→verify loop actually raises the score with no regressions",
+  "premise": "Unlike the recall evals (does the skill help an LLM FIND issues), this is a FUNCTIONAL gate for the convex-doctor-fix loop: applying the skill's fixes to a real project must STRICTLY raise the react-convex-doctor score AND introduce zero new finding rule-classes. The analyzer's own re-run is the oracle.",
+  "target_project": "react-convex-doctor's bundled examples/convex-nextjs (the official Convex Next.js starter), copied portably (no node_modules / .git). Baseline score 94/100, 5 convex findings in convex/myFunctions.ts.",
+  "two_parts": {
+    "A_deterministic_gate": "gate.sh applies golden/myFunctions.fixed.ts (the loop's AUTO fixes) to a temp copy and asserts after.score > before.score AND (after_rules - before_rules) is empty. Reproducible, ~3s, $0, CI-able. Catches regressions from a doctor version bump, an example change, or a bad golden fix.",
+    "B_llm_loop": "n=3 Sonnet 4.6 fixer agents, each on its own isolated copy, read the convex-doctor-fix + convex-best-practices skills, then run the loop themselves: detect (doctor --json) → apply the AUTO fixes (auth checks + public→internal refs) and LEAVE the PROPOSE-class sequential-ctx-run → verify (re-run). Each agent's output is then INDEPENDENTLY re-scanned by the harness (not trusting self-report) under the same assertion."
+  },
+  "assertion": "PASS iff doctor(after).score > doctor(before).score AND no finding rule-class present in `after` was absent in `before`. Applied to the golden fix (part A) and to each LLM agent's independently re-scanned output (part B).",
+  "models": ["deterministic (golden fix)", "claude-sonnet-4-6 (fixer agents, n=3)"],
+  "files": ["gate.sh", "golden/myFunctions.fixed.ts"]
+}

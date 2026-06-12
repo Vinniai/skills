@@ -1,0 +1,16 @@
+{
+  "skill_name": "convex-doctor-fix",
+  "iteration": 7,
+  "kind": "functional regression gate (not a recall eval)",
+  "assertion": "doctor(after).score > doctor(before).score AND zero new finding rule-classes",
+  "target": "examples/convex-nextjs (Convex Next.js starter), baseline 94/100, 5 convex findings",
+  "results": {
+    "deterministic_gate": {"result": "PASS", "score": "94->98", "convex_findings": "5->1", "new_rule_classes": 0, "cost_usd": 0, "time_s": 3},
+    "llm_loop_sonnet_n3": {"pass": "3/3", "score": "94->98 (all)", "convex_findings": "5->1 (all)", "new_rule_classes": 0, "propose_left_unfixed": "convex-no-sequential-ctx-run (all 3)", "avg_tokens": 42467, "avg_time_s": 79.7, "independently_reverified": true}
+  },
+  "findings": [
+    "The convex-doctor-fix loop verifiably raises a real project's doctor score (94->98) with zero new findings, both via a deterministic golden-fix gate and via 3/3 independent LLM fixer runs.",
+    "Agents applied the AUTO fixes (auth checks, public->internal refs) and correctly LEFT the PROPOSE-class sequential-ctx-run unfixed every time — the apply-policy works behaviourally.",
+    "gate.sh is a $0, ~3s, CI-able regression gate; the LLM loop (~$0.20/run Sonnet) is what produces the fix. Self-reports were not trusted — every result was re-scanned independently."
+  ]
+}
