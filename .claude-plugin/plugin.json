@@ -33,6 +33,7 @@
     "./skills/retrieval/manualslib-fetch",
     "./skills/storage/object-storage-upload",
     "./skills/convex/convex-best-practices",
+    "./skills/convex/convex-doctor-fix",
     "./skills/mobile-ux/mobile-ux-foundations",
     "./skills/mobile-ux/mobile-ux-layout-devices",
     "./skills/mobile-ux/mobile-ux-cross-platform",

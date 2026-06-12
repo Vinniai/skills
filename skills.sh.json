@@ -74,8 +74,8 @@
     },
     {
       "title": "Convex",
-      "description": "Backend best practices for Convex apps — the official query/index/validator/access-control/function-organization rules, plus function/schema/validator conventions, grounded in the monorepo's real Convex code.",
-      "skills": ["convex-best-practices"]
+      "description": "Backend best practices for Convex apps — the official query/index/validator/access-control/function-organization rules, plus function/schema/validator conventions, grounded in the monorepo's real Convex code; and a detect→fix→verify loop that pairs the react-convex-doctor analyzer with those remedies.",
+      "skills": ["convex-best-practices", "convex-doctor-fix"]
     },
     {
       "title": "Authoring",
