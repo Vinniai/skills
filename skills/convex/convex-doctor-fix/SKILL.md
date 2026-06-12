@@ -23,6 +23,9 @@ hallucinated locations, no per-file LLM cost to *find* anything); the skill give
 re-run gives a **deterministic oracle** on the edit — "the model says it's fixed" becomes "the analyzer
 confirms the count dropped." The LLM only ever edits the located sites, never reviews clean files.
 
+A worked run of this loop on the official Convex Next.js starter (score **94 → 98**, 5 findings → 1, zero
+new findings) is in [`./example-run.md`](./example-run.md).
+
 ## When to use
 
 - The user asks to fix / clean up / triage Convex diagnostics, "raise the doctor score", or types
